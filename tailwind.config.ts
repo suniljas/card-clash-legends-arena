@@ -52,6 +52,20 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
+				// Game-specific colors
+				rarity: {
+					common: 'hsl(var(--common))',
+					uncommon: 'hsl(var(--uncommon))',
+					rare: 'hsl(var(--rare))',
+					epic: 'hsl(var(--epic))',
+					legend: 'hsl(var(--legend))',
+					'ultra-legend': 'hsl(var(--ultra-legend))'
+				},
+				game: {
+					health: 'hsl(var(--health))',
+					attack: 'hsl(var(--attack))',
+					experience: 'hsl(var(--experience))'
+				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',

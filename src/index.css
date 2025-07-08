@@ -8,35 +8,64 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Game Background */
+    --background: 220 20% 8%;
+    --foreground: 210 40% 98%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    /* Card System */
+    --card: 220 15% 12%;
+    --card-foreground: 210 40% 98%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: 220 15% 12%;
+    --popover-foreground: 210 40% 98%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Game Primary (Magic Blue) */
+    --primary: 240 100% 65%;
+    --primary-foreground: 220 20% 8%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Game Secondary (Purple) */
+    --secondary: 280 80% 50%;
+    --secondary-foreground: 210 40% 98%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 220 15% 15%;
+    --muted-foreground: 215 20% 65%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    /* Game Accent (Gold) */
+    --accent: 45 100% 60%;
+    --accent-foreground: 220 20% 8%;
 
-    --destructive: 0 84.2% 60.2%;
+    --destructive: 0 84% 60%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 220 15% 20%;
+    --input: 220 15% 15%;
+    --ring: 240 100% 65%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
+
+    /* Game-specific colors */
+    --common: 120 15% 50%;
+    --uncommon: 180 50% 60%;
+    --rare: 240 70% 65%;
+    --epic: 280 80% 70%;
+    --legend: 45 100% 60%;
+    --ultra-legend: 320 100% 75%;
+
+    /* Health and attack colors */
+    --health: 0 80% 60%;
+    --attack: 30 100% 55%;
+    --experience: 270 100% 70%;
+
+    /* Game gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(240 100% 65%), hsl(280 80% 50%));
+    --gradient-card: linear-gradient(145deg, hsl(220 15% 12%), hsl(220 15% 18%));
+    --gradient-rare: linear-gradient(135deg, hsl(240 70% 65%), hsl(280 80% 70%));
+    --gradient-legend: linear-gradient(135deg, hsl(45 100% 60%), hsl(30 100% 55%));
+
+    /* Shadows */
+    --shadow-card: 0 4px 20px hsl(220 20% 5% / 0.5);
+    --shadow-rare: 0 0 30px hsl(240 70% 65% / 0.3);
+    --shadow-legend: 0 0 40px hsl(45 100% 60% / 0.4);
 
     --sidebar-background: 0 0% 98%;
 
