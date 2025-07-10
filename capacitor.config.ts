@@ -1,11 +1,11 @@
-import type { CapacitorConfig } from '@capacitor/core';
+import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'app.lovable.994cfffa0d8e4a948c58725d5a05f780',
+  appId: 'com.suniljas.cardclash',
   appName: 'card-clash-legends-arena',
   webDir: 'dist',
   server: {
-    url: "https://994cfffa-0d8e-4a94-8c58-725d5a05f780.lovableproject.com?forceHideBadge=true",
+    url: "http://192.168.0.109:5173", 
     cleartext: true
   },
   plugins: {
