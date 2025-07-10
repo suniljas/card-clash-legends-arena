@@ -22,32 +22,32 @@ export function GameHeader({ stats }: GameHeaderProps) {
           </div>
 
           {/* Resources */}
-          <div className="flex gap-4">
-            <Card className="px-3 py-2 bg-card/50 backdrop-blur-sm">
-              <div className="flex items-center gap-2">
-                <Coins className="w-4 h-4 text-accent" />
-                <span className="font-medium text-accent">{stats.coins.toLocaleString()}</span>
+          <div className="flex gap-2 sm:gap-4 flex-wrap">
+            <Card className="px-2 sm:px-3 py-1 sm:py-2 bg-card/50 backdrop-blur-sm">
+              <div className="flex items-center gap-1 sm:gap-2">
+                <Coins className="w-3 h-3 sm:w-4 sm:h-4 text-accent" />
+                <span className="font-medium text-accent text-xs sm:text-sm">{stats.coins.toLocaleString()}</span>
               </div>
             </Card>
 
-            <Card className="px-3 py-2 bg-card/50 backdrop-blur-sm">
-              <div className="flex items-center gap-2">
-                <Gem className="w-4 h-4 text-primary" />
-                <span className="font-medium text-primary">{stats.gems}</span>
+            <Card className="px-2 sm:px-3 py-1 sm:py-2 bg-card/50 backdrop-blur-sm">
+              <div className="flex items-center gap-1 sm:gap-2">
+                <Gem className="w-3 h-3 sm:w-4 sm:h-4 text-primary" />
+                <span className="font-medium text-primary text-xs sm:text-sm">{stats.gems}</span>
               </div>
             </Card>
 
-            <Card className="px-3 py-2 bg-card/50 backdrop-blur-sm">
-              <div className="flex items-center gap-2">
-                <Trophy className="w-4 h-4 text-secondary" />
-                <span className="font-medium text-secondary">{stats.pvpWins}</span>
+            <Card className="px-2 sm:px-3 py-1 sm:py-2 bg-card/50 backdrop-blur-sm">
+              <div className="flex items-center gap-1 sm:gap-2">
+                <Trophy className="w-3 h-3 sm:w-4 sm:h-4 text-secondary" />
+                <span className="font-medium text-secondary text-xs sm:text-sm">{stats.pvpWins}</span>
               </div>
             </Card>
 
-            <Card className="px-3 py-2 bg-card/50 backdrop-blur-sm">
-              <div className="flex items-center gap-2">
-                <Zap className="w-4 h-4 text-foreground" />
-                <span className="font-medium">{stats.totalCards}</span>
+            <Card className="px-2 sm:px-3 py-1 sm:py-2 bg-card/50 backdrop-blur-sm">
+              <div className="flex items-center gap-1 sm:gap-2">
+                <Zap className="w-3 h-3 sm:w-4 sm:h-4 text-foreground" />
+                <span className="font-medium text-xs sm:text-sm">{stats.totalCards}</span>
               </div>
             </Card>
           </div>

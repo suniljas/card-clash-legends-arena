@@ -59,6 +59,13 @@ export interface CampaignLevel {
   completed: boolean;
 }
 
+export interface Opponent {
+  name: string;
+  deck: HeroCard[];
+  difficulty: number;
+  avatar?: string;
+}
+
 export interface Tournament {
   id: string;
   name: string;
