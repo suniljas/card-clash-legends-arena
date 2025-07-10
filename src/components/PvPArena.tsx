@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import { PlayerDeck, GameStats, BattleResult } from '@/types/game';
+import { PlayerDeck, GameStats, BattleResult, Opponent } from '@/types/game';
+import { HERO_DATABASE } from '@/data/heroes';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ArrowLeft, Users, Zap, Trophy, Coins } from 'lucide-react';
-import { HERO_DATABASE } from '@/data/heroes';
 
 interface PvPArenaProps {
   playerDeck: PlayerDeck;
@@ -17,14 +17,44 @@ export function PvPArena({ playerDeck, gameStats, onBack, onBattleComplete }: Pv
   const [searching, setSearching] = useState(false);
   const [battling, setBattling] = useState(false);
   const [battleResult, setBattleResult] = useState<BattleResult | null>(null);
-  const [currentOpponent, setCurrentOpponent] = useState<any>(null);
+  const [currentOpponent, setCurrentOpponent] = useState<(Opponent & { rank: string; power: number }) | null>(null);
 
-  const opponents = [
-    { name: 'DragonSlayer99', rank: 'Silver', power: 1200 },
-    { name: 'MysticMage', rank: 'Gold', power: 1500 },
-    { name: 'ShadowHunter', rank: 'Bronze', power: 800 },
-    { name: 'FrostKnight', rank: 'Platinum', power: 1800 },
-    { name: 'PhoenixRider', rank: 'Gold', power: 1400 }
+  const opponents: (Opponent & { rank: string; power: number })[] = [
+    { 
+      name: 'DragonSlayer99', 
+      rank: 'Silver', 
+      power: 1200,
+      deck: HERO_DATABASE.slice(0, 3).map(hero => ({ ...hero, id: `opp1-${hero.id}` })),
+      difficulty: 2
+    },
+    { 
+      name: 'MysticMage', 
+      rank: 'Gold', 
+      power: 1500,
+      deck: HERO_DATABASE.slice(1, 4).map(hero => ({ ...hero, id: `opp2-${hero.id}` })),
+      difficulty: 3
+    },
+    { 
+      name: 'ShadowHunter', 
+      rank: 'Bronze', 
+      power: 800,
+      deck: HERO_DATABASE.slice(2, 5).map(hero => ({ ...hero, id: `opp3-${hero.id}` })),
+      difficulty: 1
+    },
+    { 
+      name: 'FrostKnight', 
+      rank: 'Platinum', 
+      power: 1800,
+      deck: HERO_DATABASE.slice(3, 6).map(hero => ({ ...hero, id: `opp4-${hero.id}` })),
+      difficulty: 4
+    },
+    { 
+      name: 'PhoenixRider', 
+      rank: 'Gold', 
+      power: 1400,
+      deck: HERO_DATABASE.slice(0, 4).map(hero => ({ ...hero, id: `opp5-${hero.id}` })),
+      difficulty: 3
+    }
   ];
 
   const handleFindMatch = () => {
@@ -43,7 +73,7 @@ export function PvPArena({ playerDeck, gameStats, onBack, onBattleComplete }: Pv
     }, 2000);
   };
 
-  const startBattle = (opponent: any) => {
+  const startBattle = (opponent: Opponent) => {
     setBattling(true);
 
     setTimeout(() => {
