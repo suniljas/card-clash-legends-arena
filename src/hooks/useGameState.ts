@@ -23,26 +23,38 @@ export function useGameState() {
 
   // Load game state from localStorage
   useEffect(() => {
-    const savedCollection = localStorage.getItem(STORAGE_KEYS.COLLECTION);
-    const savedDeck = localStorage.getItem(STORAGE_KEYS.DECK);
-    const savedStats = localStorage.getItem(STORAGE_KEYS.STATS);
+    try {
+      const savedCollection = localStorage.getItem(STORAGE_KEYS.COLLECTION);
+      const savedDeck = localStorage.getItem(STORAGE_KEYS.DECK);
+      const savedStats = localStorage.getItem(STORAGE_KEYS.STATS);
 
-    if (savedCollection) {
-      setCollection(JSON.parse(savedCollection));
-    } else {
-      // Initialize with starter cards
+      if (savedCollection) {
+        const parsedCollection = JSON.parse(savedCollection);
+        setCollection(parsedCollection);
+      } else {
+        // Initialize with starter cards
+        const starterCards = HERO_DATABASE
+          .filter(hero => hero.unlocked)
+          .map(hero => ({ ...hero, id: `${hero.id}-${Date.now()}` }));
+        setCollection(starterCards);
+      }
+
+      if (savedDeck) {
+        const parsedDeck = JSON.parse(savedDeck);
+        setCurrentDeck(parsedDeck);
+      }
+
+      if (savedStats) {
+        const parsedStats = JSON.parse(savedStats);
+        setGameStats(parsedStats);
+      }
+    } catch (error) {
+      console.error('Error loading game state from localStorage:', error);
+      // Reset to initial state if localStorage is corrupted
       const starterCards = HERO_DATABASE
         .filter(hero => hero.unlocked)
         .map(hero => ({ ...hero, id: `${hero.id}-${Date.now()}` }));
       setCollection(starterCards);
-    }
-
-    if (savedDeck) {
-      setCurrentDeck(JSON.parse(savedDeck));
-    }
-
-    if (savedStats) {
-      setGameStats(JSON.parse(savedStats));
     }
   }, []);
 
@@ -129,26 +141,37 @@ export function useGameState() {
   };
 
   const openCardPack = (): HeroCard[] => {
-    const packCards: HeroCard[] = [];
-    const numCards = 5; // 5 cards per pack
+    try {
+      const packCards: HeroCard[] = [];
+      const numCards = 5; // 5 cards per pack
 
-    for (let i = 0; i < numCards; i++) {
-      const randomRarity = getRandomRarity();
-      const availableCards = HERO_DATABASE.filter(card => card.rarity === randomRarity);
-      const randomCard = availableCards[Math.floor(Math.random() * availableCards.length)];
-      
-      if (randomCard) {
-        const newCard = { 
-          ...randomCard, 
-          id: `${randomCard.id}-${Date.now()}-${i}`,
-          unlocked: true 
-        };
-        packCards.push(newCard);
-        addCardToCollection(newCard);
+      for (let i = 0; i < numCards; i++) {
+        const randomRarity = getRandomRarity();
+        const availableCards = HERO_DATABASE.filter(card => card.rarity === randomRarity);
+        
+        if (availableCards.length === 0) {
+          console.warn(`No cards available for rarity: ${randomRarity}`);
+          continue;
+        }
+        
+        const randomCard = availableCards[Math.floor(Math.random() * availableCards.length)];
+        
+        if (randomCard) {
+          const newCard = { 
+            ...randomCard, 
+            id: `${randomCard.id}-${Date.now()}-${i}`,
+            unlocked: true 
+          };
+          packCards.push(newCard);
+          addCardToCollection(newCard);
+        }
       }
-    }
 
-    return packCards;
+      return packCards;
+    } catch (error) {
+      console.error('Error opening card pack:', error);
+      return [];
+    }
   };
 
   const getRandomRarity = (): Rarity => {
