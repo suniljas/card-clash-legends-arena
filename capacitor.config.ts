@@ -5,7 +5,7 @@ const config: CapacitorConfig = {
   appName: 'card-clash-legends-arena',
   webDir: 'dist',
   server: {
-    url: "http://192.168.0.109:5173", 
+    url: "http://192.168.0.109:8080", 
     cleartext: true
   },
   plugins: {
