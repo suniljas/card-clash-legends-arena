@@ -83,8 +83,8 @@ export function Marketplace({ collection, gameStats, onBack, onTradeCard, onBuyC
   );
 
   const tradableCards = collection.filter(card => 
-    card.level > 1 && // Only tradable if leveled up
-    !selectedCard || card.id !== selectedCard.id
+    card && card.level > 1 && // Only tradable if leveled up
+    (!selectedCard || card.id !== selectedCard.id)
   );
 
   const handleListCard = () => {

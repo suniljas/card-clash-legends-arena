@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useGameState } from '@/hooks/useGameState';
+import { useErrorHandler } from '@/hooks/useErrorHandler';
 import { GameHeader } from './GameHeader';
 import { MainMenu } from './MainMenu';
 import { Collection } from './Collection';
@@ -11,6 +12,8 @@ import { Tutorial } from './Tutorial';
 import { BattleSystem } from './BattleSystem';
 import { Marketplace } from './Marketplace';
 import { EventCenter } from './EventCenter';
+import { PerformanceMonitor } from './PerformanceMonitor';
+import { NetworkStatusIndicator } from './NetworkStatusIndicator';
 
 type GamePage = 
   | 'menu' 
@@ -31,6 +34,9 @@ export function Game() {
   const [showTutorial, setShowTutorial] = useState(!localStorage.getItem('tutorial-completed'));
   const [battleData, setBattleData] = useState<{ playerDeck: any[], enemyDeck: any[] } | null>(null);
   const gameState = useGameState();
+  
+  // Enhanced error handling
+  useErrorHandler();
 
   const handleTutorialComplete = () => {
     localStorage.setItem('tutorial-completed', 'true');
@@ -221,6 +227,7 @@ export function Game() {
     <div className="min-h-screen bg-background">
       <GameHeader stats={gameState.gameStats} />
       {renderCurrentPage()}
+      <PerformanceMonitor />
     </div>
   );
 }
