@@ -7,23 +7,70 @@ import { DeckBuilder } from './DeckBuilder';
 import { CardPackShop } from './CardPackShop';
 import { Campaign } from './Campaign';
 import { PvPArena } from './PvPArena';
+import { Tutorial } from './Tutorial';
+import { BattleSystem } from './BattleSystem';
 
 type GamePage = 
   | 'menu' 
+  | 'tutorial'
   | 'collection' 
   | 'deck' 
   | 'shop' 
   | 'campaign' 
   | 'pvp' 
+  | 'battle'
   | 'tournament' 
   | 'settings';
 
 export function Game() {
   const [currentPage, setCurrentPage] = useState<GamePage>('menu');
+  const [showTutorial, setShowTutorial] = useState(!localStorage.getItem('tutorial-completed'));
+  const [battleData, setBattleData] = useState<{ playerDeck: any[], enemyDeck: any[] } | null>(null);
   const gameState = useGameState();
+
+  const handleTutorialComplete = () => {
+    localStorage.setItem('tutorial-completed', 'true');
+    setShowTutorial(false);
+  };
+
+  const handleTutorialSkip = () => {
+    localStorage.setItem('tutorial-completed', 'true');
+    setShowTutorial(false);
+  };
+
+  const startBattle = (playerDeck: any[], enemyDeck: any[]) => {
+    setBattleData({ playerDeck, enemyDeck });
+    setCurrentPage('battle');
+  };
 
   const renderCurrentPage = () => {
     switch (currentPage) {
+      case 'tutorial':
+        return (
+          <Tutorial
+            onComplete={handleTutorialComplete}
+            onSkip={handleTutorialSkip}
+          />
+        );
+
+      case 'battle':
+        return battleData ? (
+          <BattleSystem
+            playerDeck={battleData.playerDeck}
+            enemyDeck={battleData.enemyDeck}
+            onBattleComplete={(result) => {
+              // Handle battle completion
+              result.cardsEarned.forEach(card => gameState.addCardToCollection(card));
+              gameState.addCoins(result.coinsEarned);
+              result.survivingCards.forEach(card => {
+                gameState.gainExperience(card.id, result.experienceGained);
+              });
+              setCurrentPage('campaign');
+            }}
+            onBack={() => setCurrentPage('campaign')}
+          />
+        ) : null;
+
       case 'collection':
         return (
           <Collection
@@ -60,6 +107,7 @@ export function Game() {
             playerDeck={gameState.currentDeck}
             gameStats={gameState.gameStats}
             onBack={() => setCurrentPage('menu')}
+            onStartBattle={startBattle}
             onBattleComplete={(result) => {
               // Handle battle completion
               result.cardsEarned.forEach(card => gameState.addCardToCollection(card));
@@ -124,6 +172,15 @@ export function Game() {
         return <MainMenu onNavigate={(page) => setCurrentPage(page as GamePage)} />;
     }
   };
+
+  if (showTutorial) {
+    return (
+      <Tutorial
+        onComplete={handleTutorialComplete}
+        onSkip={handleTutorialSkip}
+      />
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
