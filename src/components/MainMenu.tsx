@@ -7,7 +7,8 @@ import {
   ShoppingBag, 
   Settings,
   Trophy,
-  Package
+  Package,
+  Zap
 } from 'lucide-react';
 
 interface MainMenuProps {
@@ -77,7 +78,7 @@ export function MainMenu({ onNavigate }: MainMenuProps) {
           return (
             <Card
               key={item.id}
-              className="relative group cursor-pointer overflow-hidden bg-gradient-to-br from-card to-muted transition-all duration-300 hover:scale-105 hover:shadow-lg border-border/50"
+              className="relative group cursor-pointer overflow-hidden bg-gradient-to-br from-card to-muted transition-smooth hover:scale-105 hover:shadow-lg border-border/50 touch-target active:scale-95"
               onClick={() => onNavigate(item.id)}
             >
               {/* Background Gradient */}
@@ -109,6 +110,16 @@ export function MainMenu({ onNavigate }: MainMenuProps) {
         <Button
           variant="outline"
           size="sm"
+          className="touch-target transition-smooth hover:scale-105"
+          onClick={() => onNavigate('tutorial')}
+        >
+          <BookOpen className="w-4 h-4 mr-2" />
+          Tutorial
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          className="touch-target transition-smooth hover:scale-105"
           onClick={() => onNavigate('settings')}
         >
           <Settings className="w-4 h-4 mr-2" />
