@@ -1,5 +1,7 @@
 import { useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
+import { crashReportingService } from '@/services/crashReporting';
+import { analyticsService } from '@/services/analytics';
 
 interface ErrorReport {
   message: string;
@@ -16,29 +18,15 @@ export function useErrorHandler() {
   const { toast } = useToast();
 
   const reportError = (error: Error, errorInfo?: any) => {
-    const report: ErrorReport = {
-      message: error.message,
-      stack: error.stack,
-      userAgent: navigator.userAgent,
-      timestamp: Date.now(),
-      gameState: errorInfo?.gameState
-    };
+    // Use the new crash reporting service
+    crashReportingService.reportError(error, errorInfo);
 
-    // In production, send to crash reporting service
-    if (import.meta.env.PROD) {
-      // Example: Send to Firebase Crashlytics or similar
-      console.error('Error Report:', report);
-      
-      // Could also send to analytics
-      if ('gtag' in window) {
-        (window as any).gtag('event', 'exception', {
-          description: error.message,
-          fatal: false
-        });
-      }
-    } else {
-      console.error('Development Error:', error, errorInfo);
-    }
+    // Track analytics event
+    analyticsService.track('app_error', {
+      error_message: error.message,
+      error_stack: error.stack?.substring(0, 200),
+      timestamp: Date.now()
+    });
 
     // Show user-friendly toast
     toast({

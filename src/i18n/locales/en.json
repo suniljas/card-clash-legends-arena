@@ -1,0 +1,102 @@
+{
+  "common": {
+    "play": "Play",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "save": "Save",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "close": "Close",
+    "settings": "Settings",
+    "language": "Language"
+  },
+  "game": {
+    "title": "Card Clash: Legends Arena",
+    "welcome": "Welcome to Card Clash",
+    "campaign": "Campaign",
+    "collection": "Collection",
+    "pvp_arena": "PvP Arena",
+    "shop": "Shop",
+    "achievements": "Achievements",
+    "leaderboards": "Leaderboards",
+    "tutorial": "Tutorial",
+    "deck_builder": "Deck Builder"
+  },
+  "battle": {
+    "your_turn": "Your Turn",
+    "opponent_turn": "Opponent's Turn",
+    "victory": "Victory!",
+    "defeat": "Defeat",
+    "health": "Health",
+    "attack": "Attack",
+    "defense": "Defense",
+    "mana": "Mana",
+    "play_card": "Play Card",
+    "end_turn": "End Turn",
+    "battle_start": "Battle Start!"
+  },
+  "cards": {
+    "common": "Common",
+    "uncommon": "Uncommon", 
+    "rare": "Rare",
+    "epic": "Epic",
+    "legendary": "Legendary",
+    "ultra_legendary": "Ultra Legendary",
+    "owned": "Owned",
+    "not_owned": "Not Owned",
+    "card_details": "Card Details"
+  },
+  "shop": {
+    "buy_pack": "Buy Pack",
+    "gems": "Gems",
+    "coins": "Coins",
+    "purchase": "Purchase",
+    "buy_gems": "Buy Gems",
+    "starter_pack": "Starter Pack",
+    "premium_pack": "Premium Pack",
+    "legend_pack": "Legend Pack"
+  },
+  "achievements": {
+    "title": "Achievements",
+    "unlocked": "Unlocked",
+    "locked": "Locked",
+    "progress": "Progress",
+    "reward": "Reward",
+    "first_victory": "First Victory",
+    "card_collector": "Card Collector",
+    "arena_champion": "Arena Champion",
+    "legend_hunter": "Legend Hunter"
+  },
+  "leaderboards": {
+    "title": "Leaderboards",
+    "global": "Global",
+    "friends": "Friends",
+    "weekly": "Weekly",
+    "all_time": "All Time",
+    "rank": "Rank",
+    "player": "Player",
+    "score": "Score",
+    "battles_won": "Battles Won",
+    "cards_collected": "Cards Collected",
+    "arena_points": "Arena Points"
+  },
+  "notifications": {
+    "daily_reward": "Daily reward available!",
+    "pvp_challenge": "New PvP challenge received",
+    "achievement_unlocked": "Achievement unlocked!",
+    "event_started": "Special event has started",
+    "low_energy": "Energy restored, come back and play!"
+  },
+  "errors": {
+    "network_error": "Network connection failed",
+    "save_failed": "Failed to save game",
+    "load_failed": "Failed to load game",
+    "purchase_failed": "Purchase failed",
+    "battle_error": "Battle error occurred",
+    "unknown_error": "An unknown error occurred"
+  }
+}

@@ -6,6 +6,9 @@ import { achievementsService } from '@/services/achievements';
 import { LeaderboardCategory } from '@/types/achievements';
 import { auth } from '@/config/firebase';
 import { onAuthStateChanged } from 'firebase/auth';
+import { analyticsService } from '@/services/analytics';
+import { crashReportingService } from '@/services/crashReporting';
+import { pushNotificationService } from '@/services/pushNotifications';
 
 const STORAGE_KEYS = {
   COLLECTION: 'card-clash-collection',
@@ -108,13 +111,28 @@ export function useGameState() {
 
   // Auth state listener
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
       setIsAuthenticated(!!user);
+      
+      if (user) {
+        // Set up analytics and crash reporting
+        analyticsService.setUserId(user.uid);
+        analyticsService.setUserProperties({
+          level: gameStats.campaignProgress,
+          total_cards: gameStats.totalCards,
+          vip_status: gameStats.gems > 1000
+        });
+        crashReportingService.setUserId(user.uid);
+        
+        // Set up push notifications
+        await pushNotificationService.subscribe(user.uid);
+      }
+      
       setIsLoading(false);
     });
 
     return unsubscribe;
-  }, []);
+  }, [gameStats]);
 
   // Load local data on mount
   useEffect(() => {
@@ -168,6 +186,9 @@ export function useGameState() {
     const newCard = { ...card, id: `${card.id}-${Date.now()}-${Math.random()}` };
     setCollection(prev => [...prev, newCard]);
     setGameStats(prev => ({ ...prev, totalCards: prev.totalCards + 1 }));
+    
+    // Track analytics
+    analyticsService.trackCardPurchase(card.rarity, 0, 'earned');
     
     // Check for achievements
     await checkAchievements();

@@ -4,7 +4,7 @@ import { useErrorHandler } from '@/hooks/useErrorHandler';
 import { GemPurchase } from './GemPurchase';
 import { FirebaseAuth } from './FirebaseAuth';
 import { FirebaseGemPurchase } from './FirebaseGemPurchase';
-import { GameHeader } from './GameHeader';
+import { NewGameHeader } from './NewGameHeader';
 import { MainMenu } from './MainMenu';
 import { Collection } from './Collection';
 import { DeckBuilder } from './DeckBuilder';
@@ -288,11 +288,7 @@ export function Game() {
 
   return (
     <div className="min-h-screen bg-background">
-      <GameHeader 
-        stats={gameState.gameStats} 
-        isAuthenticated={gameState.isAuthenticated}
-        isSyncing={gameState.isSyncing}
-      />
+      <NewGameHeader />
       {renderCurrentPage()}
       <PerformanceMonitor />
       
