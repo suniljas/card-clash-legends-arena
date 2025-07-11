@@ -2,12 +2,15 @@ import { GameStats } from '@/types/game';
 import { Card } from '@/components/ui/card';
 import { Coins, Gem, Trophy, Zap } from 'lucide-react';
 import premiumLogo from '@/assets/game-logo-premium.png';
+import { CloudSaveIndicator } from '@/components/CloudSaveIndicator';
 
 interface GameHeaderProps {
   stats: GameStats;
+  isAuthenticated?: boolean;
+  isSyncing?: boolean;
 }
 
-export function GameHeader({ stats }: GameHeaderProps) {
+export function GameHeader({ stats, isAuthenticated = false, isSyncing = false }: GameHeaderProps) {
   return (
     <div className="w-full bg-gradient-to-r from-primary/20 to-secondary/20 backdrop-blur-sm border-b border-border">
       <div className="container mx-auto px-4 py-3">
@@ -19,10 +22,15 @@ export function GameHeader({ stats }: GameHeaderProps) {
               alt="Legends Card Clash Arena" 
               className="h-12 w-auto object-contain filter drop-shadow-lg"
             />
-            <div>
+            <div className="flex flex-col gap-1">
               <p className="text-sm text-muted-foreground">
                 Campaign Level {stats.campaignProgress}
               </p>
+              <CloudSaveIndicator 
+                isAuthenticated={isAuthenticated} 
+                isSyncing={isSyncing}
+                className="text-xs"
+              />
             </div>
           </div>
 

@@ -268,7 +268,11 @@ export function Game() {
 
   return (
     <div className="min-h-screen bg-background">
-      <GameHeader stats={gameState.gameStats} />
+      <GameHeader 
+        stats={gameState.gameStats} 
+        isAuthenticated={gameState.isAuthenticated}
+        isSyncing={gameState.isSyncing}
+      />
       {renderCurrentPage()}
       <PerformanceMonitor />
     </div>
