@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { PlayerDeck, GameStats, BattleResult, CampaignLevel } from '@/types/game';
 import { HeroCard } from './HeroCard';
+import { HeroCard as HeroCardType } from '@/types/game';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -13,9 +14,10 @@ interface CampaignProps {
   gameStats: GameStats;
   onBack: () => void;
   onBattleComplete: (result: BattleResult) => void;
+  onStartBattle?: (playerDeck: HeroCardType[], enemyDeck: HeroCardType[]) => void;
 }
 
-export function Campaign({ playerDeck, gameStats, onBack, onBattleComplete }: CampaignProps) {
+export function Campaign({ playerDeck, gameStats, onBack, onBattleComplete, onStartBattle }: CampaignProps) {
   const [selectedLevel, setSelectedLevel] = useState<CampaignLevel | null>(null);
   const [battling, setBattling] = useState(false);
   const [battleResult, setBattleResult] = useState<BattleResult | null>(null);
@@ -70,17 +72,23 @@ export function Campaign({ playerDeck, gameStats, onBack, onBattleComplete }: Ca
       return;
     }
 
+    if (onStartBattle) {
+      // Use new battle system
+      onStartBattle(playerDeck.cards, level.enemyDeck);
+      return;
+    }
+
+    // Fallback to old system
     setBattling(true);
     setSelectedLevel(level);
 
-    // Simulate battle
     setTimeout(() => {
       const playerPower = playerDeck.cards.reduce((sum, card) => 
         sum + card.baseAttack + (card.level * 10), 0);
       const enemyPower = level.enemyDeck.reduce((sum, card) => 
         sum + card.baseAttack + (card.level * 10), 0);
       
-      const victory = playerPower > enemyPower * 0.8; // Give player slight advantage
+      const victory = playerPower > enemyPower * 0.8;
       
       const result: BattleResult = {
         victory,

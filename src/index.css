@@ -67,6 +67,24 @@ All colors MUST be HSL.
     --shadow-rare: 0 0 30px hsl(240 70% 65% / 0.3);
     --shadow-legend: 0 0 40px hsl(45 100% 60% / 0.4);
 
+  /* Android optimizations */
+  --touch-target: 48px;
+  --transition-smooth: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* Typography improvements for mobile */
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 1.875rem;
+  
+  /* Spacing for better touch targets */
+  --spacing-touch: 12px;
+  --spacing-comfortable: 16px;
+  --spacing-relaxed: 24px;
+
     --sidebar-background: 0 0% 98%;
 
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -130,5 +148,93 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Android touch optimizations */
+  .touch-target {
+    min-height: var(--touch-target);
+    min-width: var(--touch-target);
+    @apply flex items-center justify-center;
+  }
+
+  /* Smooth transitions for mobile */
+  .transition-smooth {
+    transition: var(--transition-smooth);
+  }
+
+  /* Prevent text selection on interactive elements */
+  button, .touch-target {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+  }
+
+  /* Typography improvements for readability */
+  .text-mobile-xs { font-size: var(--font-size-xs); }
+  .text-mobile-sm { font-size: var(--font-size-sm); }
+  .text-mobile-base { font-size: var(--font-size-base); }
+  .text-mobile-lg { font-size: var(--font-size-lg); }
+  .text-mobile-xl { font-size: var(--font-size-xl); }
+  .text-mobile-2xl { font-size: var(--font-size-2xl); }
+  .text-mobile-3xl { font-size: var(--font-size-3xl); }
+
+  /* Better contrast for accessibility */
+  .contrast-enhanced {
+    filter: contrast(1.1);
+  }
+
+  /* Loading states */
+  .loading-shimmer {
+    background: linear-gradient(
+      90deg,
+      hsl(var(--muted)) 0%,
+      hsl(var(--muted-foreground) / 0.1) 50%,
+      hsl(var(--muted)) 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite;
+  }
+
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+
+  /* Optimize for high DPI displays */
+  @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .crisp-edges {
+      image-rendering: -webkit-optimize-contrast;
+      image-rendering: crisp-edges;
+    }
+  }
+
+  /* Reduce motion for accessibility */
+  @media (prefers-reduced-motion: reduce) {
+    .transition-smooth {
+      transition: none;
+    }
+    
+    .animate-spin,
+    .animate-bounce,
+    .animate-pulse {
+      animation: none;
+    }
+  }
+
+  /* Better focus indicators for accessibility */
+  .focus-ring {
+    @apply focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2;
+  }
+
+  /* Network status indicators */
+  .connection-poor {
+    background: linear-gradient(45deg, hsl(var(--destructive)), hsl(var(--destructive) / 0.8));
+  }
+  
+  .connection-good {
+    background: linear-gradient(45deg, hsl(var(--common)), hsl(var(--common) / 0.8));
   }
 }

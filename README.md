@@ -1,73 +1,175 @@
-# Welcome to your Lovable project
+# Card Clash Legends Arena
 
-## Project info
+A strategic card battler built with React, TypeScript, and modern web technologies for Android MVP deployment.
 
-**URL**: https://lovable.dev/projects/994cfffa-0d8e-4a94-8c58-725d5a05f780
+## 🎮 Features
 
-## How can I edit this code?
+### Core Gameplay
+- **Real-time Battle System**: Turn-based combat with visual feedback and animations
+- **Hero Collection**: Collect and upgrade powerful heroes with different rarities
+- **Deck Building**: Strategic deck construction with 8-card limit
+- **Campaign Mode**: Single-player progression through levels
+- **PvP Arena**: Multiplayer battles with matchmaking system
 
-There are several ways of editing your application.
+### Android Optimizations
+- **Touch-Optimized UI**: Large touch targets and gesture-friendly interactions
+- **Haptic Feedback**: Vibration feedback for button interactions
+- **Performance Monitoring**: Real-time FPS and memory usage tracking
+- **Responsive Design**: Optimized for various Android screen sizes
+- **Network Status**: Connection quality indicators and offline handling
 
-**Use Lovable**
+### User Experience
+- **Interactive Tutorial**: Step-by-step guided onboarding
+- **Loading States**: Enhanced loading indicators with progress tracking
+- **Error Handling**: Comprehensive error boundaries and user feedback
+- **Accessibility**: High contrast modes and reduced motion support
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/994cfffa-0d8e-4a94-8c58-725d5a05f780) and start prompting.
+## 🚀 Quick Start
 
-Changes made via Lovable will be committed automatically to this repo.
+### Prerequisites
+- Node.js 16+ 
+- npm or yarn
 
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
+### Installation
+```bash
+# Clone the repository
 git clone <YOUR_GIT_URL>
+cd card-clash-legends
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+# Install dependencies
+npm install
 
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Start development server
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+### Building for Production
+```bash
+# Build for web
+npm run build
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+# Build for Android (requires Capacitor setup)
+npx cap build android
+```
 
-**Use GitHub Codespaces**
+## 📱 Android Deployment
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+### Capacitor Setup
+The project is configured with Capacitor for native Android deployment:
 
-## What technologies are used for this project?
+```bash
+# Add Android platform
+npx cap add android
 
-This project is built with:
+# Sync web assets
+npx cap sync
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+# Open in Android Studio
+npx cap open android
+```
 
-## How can I deploy this project?
+### APK Generation
+1. Open project in Android Studio
+2. Build → Build Bundle(s) / APK(s) → Build APK(s)
+3. APK will be generated in `android/app/build/outputs/apk/`
 
-Simply open [Lovable](https://lovable.dev/projects/994cfffa-0d8e-4a94-8c58-725d5a05f780) and click on Share -> Publish.
+## 🎯 MVP Features Implemented
 
-## Can I connect a custom domain to my Lovable project?
+### ✅ Battle System
+- Real-time turn-based combat
+- Visual damage indicators
+- Turn timers and timeouts
+- Win/lose conditions with rewards
 
-Yes, you can!
+### ✅ Tutorial System  
+- Interactive step-by-step guidance
+- Contextual tooltips with highlighting
+- Skip/complete functionality
+- First-time user onboarding
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+### ✅ Performance & Polish
+- FPS monitoring and optimization
+- Memory usage tracking
+- Loading state management
+- Android-specific optimizations
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+### ✅ Multiplayer Foundation
+- WebSocket connection handling
+- Matchmaking system (with AI fallback)
+- Network status indicators
+- Reconnection logic
+
+## 🛠 Technical Architecture
+
+### Frontend Stack
+- **React 18** with TypeScript
+- **Tailwind CSS** for styling
+- **Shadcn/UI** for component library
+- **Lucide Icons** for iconography
+- **React Router** for navigation
+
+### Mobile Integration
+- **Capacitor** for native Android features
+- **WebSocket** for real-time multiplayer
+- **Local Storage** for game state persistence
+- **Vibration API** for haptic feedback
+
+### Performance Features
+- **React Suspense** for code splitting
+- **Image optimization** and lazy loading
+- **Memory leak prevention**
+- **Reduced motion support**
+
+## 📊 Game Systems
+
+### Card Rarity System
+- Common (50% drop rate)
+- Uncommon (30% drop rate)  
+- Rare (15% drop rate)
+- Epic (4% drop rate)
+- Legend (0.9% drop rate)
+- Ultra Legend (0.1% drop rate)
+
+### Progression System
+- Hero experience and leveling
+- Campaign progression tracking
+- Coin and gem economy
+- Win/loss statistics
+
+## 🔧 Configuration
+
+### Customization
+- Game balance: Edit `src/data/heroes.ts`
+- UI colors: Modify `src/index.css` design tokens
+- Battle mechanics: Update `src/components/BattleSystem.tsx`
+
+## 📈 Performance Metrics
+
+### Target Performance
+- **First Load**: < 3 seconds
+- **Frame Rate**: 60 FPS sustained
+- **Memory Usage**: < 100MB on mid-range devices
+- **Bundle Size**: < 2MB gzipped
+
+## 🐛 Known Issues & Roadmap
+
+### Current Limitations
+- Multiplayer requires server infrastructure
+- Limited to local storage (no cloud saves)
+- AI opponents have basic difficulty scaling
+
+### Planned Improvements
+- Server-side multiplayer implementation
+- Cloud save synchronization
+- Enhanced AI with machine learning
+- Social features (friends, clans)
+
+## 📄 License
+
+This project is licensed under the MIT License.
+
+---
+
+**Project URL**: https://lovable.dev/projects/994cfffa-0d8e-4a94-8c58-725d5a05f780
+
+Built with ❤️ for the Android gaming community
