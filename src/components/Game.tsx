@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { useGameState } from '@/hooks/useGameState';
 import { useErrorHandler } from '@/hooks/useErrorHandler';
+import { GemPurchase } from './GemPurchase';
+import { AuthLogin } from './AuthLogin';
 import { GameHeader } from './GameHeader';
 import { MainMenu } from './MainMenu';
 import { Collection } from './Collection';
@@ -27,12 +29,15 @@ type GamePage =
   | 'tournament' 
   | 'marketplace'
   | 'events'
-  | 'settings';
+  | 'settings'
+  | 'gem-purchase'
+  | 'auth';
 
 export function Game() {
-  const [currentPage, setCurrentPage] = useState<GamePage>('menu');
+  const [currentPage, setCurrentPage] = useState<GamePage>('auth');
   const [showTutorial, setShowTutorial] = useState(!localStorage.getItem('tutorial-completed'));
   const [battleData, setBattleData] = useState<{ playerDeck: any[], enemyDeck: any[] } | null>(null);
+  const [user, setUser] = useState<{ email: string; name: string; provider: string } | null>(null);
   const gameState = useGameState();
   
   // Enhanced error handling
@@ -53,8 +58,29 @@ export function Game() {
     setCurrentPage('battle');
   };
 
+  const handleLogin = (userData: { email: string; name: string; provider: string }) => {
+    setUser(userData);
+    setCurrentPage('menu');
+  };
+
   const renderCurrentPage = () => {
     switch (currentPage) {
+      case 'auth':
+        return (
+          <AuthLogin
+            onLogin={handleLogin}
+            onClose={() => setCurrentPage('menu')}
+          />
+        );
+
+      case 'gem-purchase':
+        return (
+          <GemPurchase
+            onPurchaseGems={gameState.purchaseGems}
+            onClose={() => setCurrentPage('menu')}
+          />
+        );
+
       case 'tutorial':
         return (
           <Tutorial
@@ -126,6 +152,8 @@ export function Game() {
               result.survivingCards.forEach(card => {
                 gameState.gainExperience(card.id, result.experienceGained);
               });
+              // Update campaign progress
+              gameState.updateCampaignProgress(gameState.gameStats.campaignProgress + 1);
             }}
           />
         );
@@ -209,8 +237,21 @@ export function Game() {
           </div>
         );
       
-      default:
-        return <MainMenu onNavigate={(page) => setCurrentPage(page as GamePage)} />;
+        default:
+        return <MainMenu 
+          onNavigate={(page) => {
+            if (page === 'gem-purchase') {
+              setCurrentPage('gem-purchase');
+            } else {
+              setCurrentPage(page as GamePage);
+            }
+          }} 
+          user={user}
+          onLogout={() => {
+            setUser(null);
+            setCurrentPage('auth');
+          }}
+        />;
     }
   };
 

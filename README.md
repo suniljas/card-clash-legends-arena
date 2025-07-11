@@ -1,6 +1,6 @@
-# Legends Card Clash Arena
+# Legends Card Clash Arena 🎮
 
-A premium strategic card battler built with React, TypeScript, and modern web technologies. Features god-like sound effects, holographic card designs, and premium visual effects for the ultimate mobile gaming experience.
+A premium mobile card battle game built with React, Vite, and TypeScript. Experience epic battles, collect legendary heroes, and dominate the arena with social authentication, real-money purchases, and progressive deck unlocking!
 
 ## 🎮 Features
 
