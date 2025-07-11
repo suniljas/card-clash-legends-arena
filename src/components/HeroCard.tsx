@@ -3,6 +3,7 @@ import { calculateHeroStats, RARITY_COLORS } from '@/data/heroes';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
+import { useGameAudio } from '@/hooks/useAudio';
 
 interface HeroCardProps {
   hero: HeroCardType;
@@ -20,6 +21,7 @@ export function HeroCard({
   size = 'medium' 
 }: HeroCardProps) {
   const stats = calculateHeroStats(hero);
+  const { playCardPlay } = useGameAudio();
   
   const sizeClasses = {
     small: 'w-24 h-32',
@@ -30,14 +32,21 @@ export function HeroCard({
   const getRarityGlow = (rarity: Rarity) => {
     switch (rarity) {
       case Rarity.RARE:
+        return 'shadow-[0_0_20px_hsl(var(--rare)/0.6)] animate-pulse-glow';
       case Rarity.EPIC:
-        return 'shadow-[0_0_20px_hsl(var(--rare))]';
+        return 'shadow-[0_0_25px_hsl(var(--epic)/0.7)] animate-pulse-glow';
       case Rarity.LEGEND:
+        return 'shadow-[0_0_30px_hsl(var(--legend)/0.8)] animate-pulse-glow';
       case Rarity.ULTRA_LEGEND:
-        return 'shadow-[0_0_30px_hsl(var(--legend))]';
+        return 'shadow-[0_0_40px_hsl(var(--ultra-legend)/0.9)] animate-pulse-glow';
       default:
         return '';
     }
+  };
+
+  const handleClick = () => {
+    playCardPlay();
+    onClick?.();
   };
 
   return (
@@ -49,7 +58,7 @@ export function HeroCard({
         getRarityGlow(hero.rarity),
         'hover:scale-105 hover:shadow-lg'
       )}
-      onClick={onClick}
+      onClick={handleClick}
     >
       {/* Rarity Border */}
       <div className={cn(
@@ -77,9 +86,22 @@ export function HeroCard({
           </div>
         </div>
 
-        {/* Hero Image Placeholder */}
-        <div className="flex-1 bg-gradient-to-br from-muted to-muted/50 rounded-md mb-2 flex items-center justify-center">
-          <div className="text-2xl">⚔️</div>
+        {/* Hero Image */}
+        <div className="flex-1 bg-gradient-to-br from-muted to-muted/50 rounded-md mb-2 flex items-center justify-center overflow-hidden relative">
+          {hero.imageUrl ? (
+            <img 
+              src={hero.imageUrl} 
+              alt={hero.name}
+              className="w-full h-full object-cover rounded-md"
+              style={{ imageRendering: 'crisp-edges' }}
+            />
+          ) : (
+            <div className="text-2xl">⚔️</div>
+          )}
+          {/* Holographic overlay for Ultra Legends */}
+          {hero.rarity === Rarity.ULTRA_LEGEND && (
+            <div className="absolute inset-0 bg-gradient-to-br from-transparent via-white/20 to-transparent animate-pulse opacity-50" />
+          )}
         </div>
 
         {/* Hero Name */}
