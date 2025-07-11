@@ -1,6 +1,7 @@
 import { GameStats } from '@/types/game';
 import { Card } from '@/components/ui/card';
 import { Coins, Gem, Trophy, Zap } from 'lucide-react';
+import premiumLogo from '@/assets/game-logo-premium.png';
 
 interface GameHeaderProps {
   stats: GameStats;
@@ -11,14 +12,18 @@ export function GameHeader({ stats }: GameHeaderProps) {
     <div className="w-full bg-gradient-to-r from-primary/20 to-secondary/20 backdrop-blur-sm border-b border-border">
       <div className="container mx-auto px-4 py-3">
         <div className="flex justify-between items-center">
-          {/* Game Title */}
-          <div>
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-              Card Clash Legends
-            </h1>
-            <p className="text-sm text-muted-foreground">
-              Campaign Level {stats.campaignProgress}
-            </p>
+          {/* Premium Game Logo */}
+          <div className="flex items-center gap-3">
+            <img 
+              src={premiumLogo} 
+              alt="Legends Card Clash Arena" 
+              className="h-12 w-auto object-contain filter drop-shadow-lg"
+            />
+            <div>
+              <p className="text-sm text-muted-foreground">
+                Campaign Level {stats.campaignProgress}
+              </p>
+            </div>
           </div>
 
           {/* Resources */}

@@ -5,6 +5,10 @@ import commonKnight from '@/assets/cards/common-knight.png';
 import rareMage from '@/assets/cards/rare-mage.png';
 import legendDragon from '@/assets/cards/legend-dragon.png';
 import ultraLegendPhoenix from '@/assets/cards/ultra-legend-phoenix.png';
+import uncommonWarrior from '@/assets/cards/uncommon-warrior.png';
+import epicSorceress from '@/assets/cards/epic-sorceress.png';
+import legendGriffin from '@/assets/cards/legend-griffin.png';
+import ultraLegendTitan from '@/assets/cards/ultra-legend-titan.png';
 
 export const EXPANDED_HERO_DATABASE: HeroCard[] = [
   // Common Heroes (50 cards)
