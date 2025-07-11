@@ -10,6 +10,7 @@ import {
   Package,
   Zap
 } from 'lucide-react';
+import premiumLogo from '@/assets/game-logo-premium.png';
 
 interface MainMenuProps {
   onNavigate: (page: string) => void;
@@ -77,11 +78,20 @@ export function MainMenu({ onNavigate }: MainMenuProps) {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      {/* Welcome Section */}
+      {/* Premium Logo and Welcome Section */}
       <div className="text-center mb-8">
-        <h2 className="text-3xl font-bold mb-2">Welcome, Champion!</h2>
-        <p className="text-muted-foreground">
-          Choose your path to glory
+        <div className="mb-6 flex justify-center">
+          <img 
+            src={premiumLogo} 
+            alt="Legends Card Clash Arena" 
+            className="h-20 w-auto object-contain filter drop-shadow-2xl animate-pulse-glow"
+          />
+        </div>
+        <h2 className="text-3xl font-bold mb-2 bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent">
+          Welcome, Champion!
+        </h2>
+        <p className="text-muted-foreground text-lg">
+          Choose your path to glory in the ultimate card battle arena
         </p>
       </div>
 
