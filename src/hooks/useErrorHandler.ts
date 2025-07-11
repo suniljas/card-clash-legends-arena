@@ -1,66 +1,74 @@
-import { useState, useCallback } from 'react';
+import { useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
 
-interface ErrorState {
-  error: Error | null;
-  isLoading: boolean;
+interface ErrorReport {
+  message: string;
+  stack?: string;
+  url?: string;
+  lineNumber?: number;
+  columnNumber?: number;
+  userAgent: string;
+  timestamp: number;
+  gameState?: any;
 }
 
 export function useErrorHandler() {
-  const [errorState, setErrorState] = useState<ErrorState>({
-    error: null,
-    isLoading: false
-  });
   const { toast } = useToast();
 
-  const handleError = useCallback((error: Error | string, showToast = true) => {
-    const errorObj = typeof error === 'string' ? new Error(error) : error;
-    
-    console.error('Error caught by useErrorHandler:', errorObj);
-    
-    setErrorState(prev => ({ ...prev, error: errorObj }));
-    
-    if (showToast) {
-      toast({
-        title: "Error",
-        description: errorObj.message || "An unexpected error occurred",
-        variant: "destructive",
-      });
+  const reportError = (error: Error, errorInfo?: any) => {
+    const report: ErrorReport = {
+      message: error.message,
+      stack: error.stack,
+      userAgent: navigator.userAgent,
+      timestamp: Date.now(),
+      gameState: errorInfo?.gameState
+    };
+
+    // In production, send to crash reporting service
+    if (import.meta.env.PROD) {
+      // Example: Send to Firebase Crashlytics or similar
+      console.error('Error Report:', report);
+      
+      // Could also send to analytics
+      if ('gtag' in window) {
+        (window as any).gtag('event', 'exception', {
+          description: error.message,
+          fatal: false
+        });
+      }
+    } else {
+      console.error('Development Error:', error, errorInfo);
     }
-  }, [toast]);
 
-  const clearError = useCallback(() => {
-    setErrorState(prev => ({ ...prev, error: null }));
-  }, []);
-
-  const setLoading = useCallback((loading: boolean) => {
-    setErrorState(prev => ({ ...prev, isLoading: loading }));
-  }, []);
-
-  const executeWithErrorHandling = useCallback(async <T>(
-    operation: () => Promise<T>,
-    errorMessage?: string
-  ): Promise<T | null> => {
-    try {
-      setLoading(true);
-      clearError();
-      const result = await operation();
-      return result;
-    } catch (error) {
-      const message = errorMessage || (error instanceof Error ? error.message : 'Operation failed');
-      handleError(message);
-      return null;
-    } finally {
-      setLoading(false);
-    }
-  }, [handleError, clearError, setLoading]);
-
-  return {
-    error: errorState.error,
-    isLoading: errorState.isLoading,
-    handleError,
-    clearError,
-    setLoading,
-    executeWithErrorHandling
+    // Show user-friendly toast
+    toast({
+      title: "Something went wrong",
+      description: "The error has been reported. Please try again.",
+      variant: "destructive"
+    });
   };
+
+  const handlePromiseRejection = (event: PromiseRejectionEvent) => {
+    const error = event.reason instanceof Error ? event.reason : new Error(String(event.reason));
+    reportError(error);
+    event.preventDefault();
+  };
+
+  const handleError = (event: ErrorEvent) => {
+    const error = new Error(event.message);
+    error.stack = `at ${event.filename}:${event.lineno}:${event.colno}`;
+    reportError(error);
+  };
+
+  useEffect(() => {
+    window.addEventListener('error', handleError);
+    window.addEventListener('unhandledrejection', handlePromiseRejection);
+
+    return () => {
+      window.removeEventListener('error', handleError);
+      window.removeEventListener('unhandledrejection', handlePromiseRejection);
+    };
+  }, []);
+
+  return { reportError };
 }

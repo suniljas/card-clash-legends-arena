@@ -1,175 +1,139 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { AlertTriangle, CheckCircle, Zap } from 'lucide-react';
+import { Activity, Zap, Clock, MemoryStick } from 'lucide-react';
 
 interface PerformanceMetrics {
   fps: number;
   memoryUsage: number;
   loadTime: number;
-  connectionSpeed: 'fast' | 'slow' | 'offline';
+  batteryLevel?: number;
 }
 
-interface PerformanceMonitorProps {
-  className?: string;
-  showDetails?: boolean;
-  onPerformanceIssue?: (issue: string) => void;
-}
-
-export function PerformanceMonitor({ 
-  className, 
-  showDetails = false,
-  onPerformanceIssue 
-}: PerformanceMonitorProps) {
+export function PerformanceMonitor() {
   const [metrics, setMetrics] = useState<PerformanceMetrics>({
     fps: 60,
     memoryUsage: 0,
-    loadTime: 0,
-    connectionSpeed: 'fast'
+    loadTime: 0
   });
-  const [performanceScore, setPerformanceScore] = useState<'good' | 'fair' | 'poor'>('good');
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
+    // Show performance monitor in development or if debug query param is present
+    const isDev = import.meta.env.DEV;
+    const isDebug = new URLSearchParams(window.location.search).has('debug');
+    setIsVisible(isDev || isDebug);
+
+    if (!isVisible) return;
+
     let frameCount = 0;
     let lastTime = performance.now();
-    let animationFrame: number;
+    let animationId: number;
 
-    const measureFPS = () => {
+    const measurePerformance = () => {
       frameCount++;
       const currentTime = performance.now();
       
       if (currentTime - lastTime >= 1000) {
         const fps = Math.round((frameCount * 1000) / (currentTime - lastTime));
         
-        setMetrics(prev => ({ ...prev, fps }));
+        // Memory usage (if available)
+        const memory = (performance as any).memory;
+        const memoryUsage = memory ? Math.round(memory.usedJSHeapSize / 1048576) : 0;
+        
+        // Load time
+        const navigation = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
+        const loadTime = navigation ? Math.round(navigation.loadEventEnd - navigation.fetchStart) : 0;
+        
+        // Battery level (if available)
+        if ('getBattery' in navigator) {
+          (navigator as any).getBattery().then((battery: any) => {
+            setMetrics(prev => ({
+              ...prev,
+              fps,
+              memoryUsage,
+              loadTime,
+              batteryLevel: Math.round(battery.level * 100)
+            }));
+          });
+        } else {
+          setMetrics(prev => ({
+            ...prev,
+            fps,
+            memoryUsage,
+            loadTime
+          }));
+        }
         
         frameCount = 0;
         lastTime = currentTime;
       }
       
-      animationFrame = requestAnimationFrame(measureFPS);
+      animationId = requestAnimationFrame(measurePerformance);
     };
 
-    const measureMemory = () => {
-      if ('memory' in performance) {
-        const memory = (performance as any).memory;
-        const usedMB = Math.round(memory.usedJSHeapSize / 1048576);
-        setMetrics(prev => ({ ...prev, memoryUsage: usedMB }));
-      }
-    };
-
-    const measureLoadTime = () => {
-      const loadTime = performance.timing.loadEventEnd - performance.timing.navigationStart;
-      setMetrics(prev => ({ ...prev, loadTime }));
-    };
-
-    // Initial measurements
-    measureMemory();
-    measureLoadTime();
-    measureFPS();
-
-    // Periodic memory checks
-    const memoryInterval = setInterval(measureMemory, 5000);
+    measurePerformance();
 
     return () => {
-      cancelAnimationFrame(animationFrame);
-      clearInterval(memoryInterval);
+      if (animationId) {
+        cancelAnimationFrame(animationId);
+      }
     };
-  }, []);
+  }, [isVisible]);
 
-  useEffect(() => {
-    // Calculate performance score
-    let score = 100;
-    
-    if (metrics.fps < 30) score -= 30;
-    else if (metrics.fps < 50) score -= 15;
-    
-    if (metrics.memoryUsage > 100) score -= 20;
-    else if (metrics.memoryUsage > 50) score -= 10;
-    
-    if (metrics.loadTime > 3000) score -= 25;
-    else if (metrics.loadTime > 1500) score -= 10;
+  if (!isVisible) return null;
 
-    const newScore = score >= 80 ? 'good' : score >= 60 ? 'fair' : 'poor';
-    setPerformanceScore(newScore);
-
-    // Trigger performance issue callback
-    if (newScore === 'poor' && onPerformanceIssue) {
-      let issues = [];
-      if (metrics.fps < 30) issues.push('Low frame rate');
-      if (metrics.memoryUsage > 100) issues.push('High memory usage');
-      if (metrics.loadTime > 3000) issues.push('Slow loading');
-      
-      onPerformanceIssue(issues.join(', '));
-    }
-  }, [metrics, onPerformanceIssue]);
-
-  const getPerformanceIcon = () => {
-    switch (performanceScore) {
-      case 'good':
-        return <CheckCircle className="w-4 h-4 text-common" />;
-      case 'fair':
-        return <Zap className="w-4 h-4 text-accent" />;
-      default:
-        return <AlertTriangle className="w-4 h-4 text-destructive" />;
-    }
+  const getFPSColor = (fps: number) => {
+    if (fps >= 55) return 'bg-green-500';
+    if (fps >= 30) return 'bg-yellow-500';
+    return 'bg-red-500';
   };
 
-  const getPerformanceVariant = () => {
-    switch (performanceScore) {
-      case 'good':
-        return 'outline' as const;
-      case 'fair':
-        return 'secondary' as const;
-      default:
-        return 'destructive' as const;
-    }
+  const getMemoryColor = (memory: number) => {
+    if (memory < 50) return 'bg-green-500';
+    if (memory < 100) return 'bg-yellow-500';
+    return 'bg-red-500';
   };
-
-  if (!showDetails) {
-    return (
-      <Badge 
-        variant={getPerformanceVariant()}
-        className={className}
-      >
-        {getPerformanceIcon()}
-        <span className="ml-1 capitalize">{performanceScore}</span>
-      </Badge>
-    );
-  }
 
   return (
-    <Card className={`p-3 ${className}`}>
-      <div className="flex items-center gap-2 mb-2">
-        {getPerformanceIcon()}
-        <span className="text-sm font-medium">Performance</span>
-        <Badge variant={getPerformanceVariant()} className="ml-auto">
-          {performanceScore.toUpperCase()}
-        </Badge>
-      </div>
-      
-      <div className="grid grid-cols-2 gap-2 text-xs">
-        <div className="flex justify-between">
-          <span className="text-muted-foreground">FPS:</span>
-          <span className={metrics.fps < 30 ? 'text-destructive' : 'text-foreground'}>
-            {metrics.fps}
-          </span>
+    <div className="fixed bottom-4 right-4 z-50 opacity-80 hover:opacity-100 transition-opacity">
+      <Card className="p-3 bg-black/90 text-white border-gray-700">
+        <div className="grid grid-cols-2 gap-2 text-xs">
+          <div className="flex items-center gap-1">
+            <Activity className="w-3 h-3" />
+            <span>FPS:</span>
+            <Badge className={`px-1 py-0 text-xs ${getFPSColor(metrics.fps)}`}>
+              {metrics.fps}
+            </Badge>
+          </div>
+          
+          <div className="flex items-center gap-1">
+            <MemoryStick className="w-3 h-3" />
+            <span>RAM:</span>
+            <Badge className={`px-1 py-0 text-xs ${getMemoryColor(metrics.memoryUsage)}`}>
+              {metrics.memoryUsage}MB
+            </Badge>
+          </div>
+          
+          <div className="flex items-center gap-1">
+            <Clock className="w-3 h-3" />
+            <span>Load:</span>
+            <Badge variant="outline" className="px-1 py-0 text-xs">
+              {metrics.loadTime}ms
+            </Badge>
+          </div>
+          
+          {metrics.batteryLevel && (
+            <div className="flex items-center gap-1">
+              <Zap className="w-3 h-3" />
+              <span>Bat:</span>
+              <Badge variant="outline" className="px-1 py-0 text-xs">
+                {metrics.batteryLevel}%
+              </Badge>
+            </div>
+          )}
         </div>
-        
-        <div className="flex justify-between">
-          <span className="text-muted-foreground">Memory:</span>
-          <span className={metrics.memoryUsage > 100 ? 'text-destructive' : 'text-foreground'}>
-            {metrics.memoryUsage}MB
-          </span>
-        </div>
-        
-        <div className="flex justify-between col-span-2">
-          <span className="text-muted-foreground">Load Time:</span>
-          <span className={metrics.loadTime > 3000 ? 'text-destructive' : 'text-foreground'}>
-            {Math.round(metrics.loadTime)}ms
-          </span>
-        </div>
-      </div>
-    </Card>
+      </Card>
+    </div>
   );
 }

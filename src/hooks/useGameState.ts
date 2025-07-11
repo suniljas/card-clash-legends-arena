@@ -10,7 +10,7 @@ const STORAGE_KEYS = {
 
 export function useGameState() {
   const [collection, setCollection] = useState<HeroCard[]>([]);
-  const [currentDeck, setCurrentDeck] = useState<PlayerDeck>({ cards: [], maxSize: 8 });
+  const [currentDeck, setCurrentDeck] = useState<PlayerDeck>({ cards: [], maxSize: 3 });
   const [gameStats, setGameStats] = useState<GameStats>({
     totalCards: 0,
     totalBattles: 0,
@@ -20,6 +20,11 @@ export function useGameState() {
     coins: 1000,
     gems: 50
   });
+
+  // Calculate max deck size based on campaign progress
+  const getMaxDeckSize = (campaignLevel: number): number => {
+    return Math.min(3 + Math.floor((campaignLevel - 1) / 5), 8);
+  };
 
   // Load game state from localStorage
   useEffect(() => {
@@ -57,6 +62,14 @@ export function useGameState() {
       setCollection(starterCards);
     }
   }, []);
+
+  // Update deck max size when campaign progress changes
+  useEffect(() => {
+    const newMaxSize = getMaxDeckSize(gameStats.campaignProgress);
+    if (newMaxSize !== currentDeck.maxSize) {
+      setCurrentDeck(prev => ({ ...prev, maxSize: newMaxSize }));
+    }
+  }, [gameStats.campaignProgress]);
 
   // Save to localStorage when state changes
   useEffect(() => {
@@ -140,6 +153,14 @@ export function useGameState() {
     return true;
   };
 
+  const purchaseGems = (amount: number) => {
+    setGameStats(prev => ({ ...prev, gems: prev.gems + amount }));
+  };
+
+  const updateCampaignProgress = (level: number) => {
+    setGameStats(prev => ({ ...prev, campaignProgress: Math.max(prev.campaignProgress, level) }));
+  };
+
   const openCardPack = (): HeroCard[] => {
     try {
       const packCards: HeroCard[] = [];
@@ -197,6 +218,9 @@ export function useGameState() {
     spendCoins,
     addGems,
     spendGems,
-    openCardPack
+    openCardPack,
+    purchaseGems,
+    updateCampaignProgress,
+    getMaxDeckSize
   };
 }
