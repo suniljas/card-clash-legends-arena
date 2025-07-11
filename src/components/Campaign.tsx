@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { PlayerDeck, GameStats, BattleResult, CampaignLevel } from '@/types/game';
+import { CAMPAIGN_DATA, generateEndlessCampaign } from '@/data/campaigns';
 import { HeroCard } from './HeroCard';
 import { HeroCard as HeroCardType } from '@/types/game';
 import { Button } from '@/components/ui/button';
@@ -22,25 +23,23 @@ export function Campaign({ playerDeck, gameStats, onBack, onBattleComplete, onSt
   const [battling, setBattling] = useState(false);
   const [battleResult, setBattleResult] = useState<BattleResult | null>(null);
 
-  // Generate campaign levels
-  const campaignLevels: CampaignLevel[] = Array.from({ length: 20 }, (_, i) => {
-    const levelNum = i + 1;
-    const difficulty = Math.floor(levelNum / 3) + 1;
-    
-    return {
-      id: levelNum,
-      name: `Level ${levelNum}: ${getLevelName(levelNum)}`,
-      difficulty,
-      enemyDeck: generateEnemyDeck(difficulty),
-      rewards: {
-        coins: 100 + (levelNum * 50),
-        experience: 50 + (levelNum * 25),
-        cards: levelNum % 5 === 0 ? [HERO_DATABASE[Math.floor(Math.random() * HERO_DATABASE.length)]] : undefined
-      },
-      unlocked: levelNum <= gameStats.campaignProgress,
-      completed: levelNum < gameStats.campaignProgress
-    };
-  });
+  // Get campaign levels from data
+  const baseCampaignLevels = CAMPAIGN_DATA.map(level => ({
+    ...level,
+    unlocked: level.id <= gameStats.campaignProgress,
+    completed: level.id < gameStats.campaignProgress,
+  }));
+
+  // Generate endless campaign levels
+  const endlessLevels = [];
+  const maxEndlessLevels = 20;
+  for (let i = CAMPAIGN_DATA.length + 1; i <= CAMPAIGN_DATA.length + maxEndlessLevels; i++) {
+    if (i <= gameStats.campaignProgress + 3) { // Show up to 3 levels ahead
+      endlessLevels.push(generateEndlessCampaign(i));
+    }
+  }
+
+  const campaignLevels = [...baseCampaignLevels, ...endlessLevels];
 
   function getLevelName(level: number): string {
     const names = [

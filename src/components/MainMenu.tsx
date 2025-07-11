@@ -53,6 +53,20 @@ export function MainMenu({ onNavigate }: MainMenuProps) {
       gradient: 'from-muted-foreground to-muted-foreground/70'
     },
     {
+      id: 'marketplace',
+      title: 'Marketplace',
+      description: 'Trade with other players',
+      icon: ShoppingBag,
+      gradient: 'from-purple-500 to-purple-600'
+    },
+    {
+      id: 'events',
+      title: 'Events',
+      description: 'Limited-time challenges',
+      icon: Zap,
+      gradient: 'from-orange-500 to-red-500'
+    },
+    {
       id: 'tournament',
       title: 'Tournaments',
       description: 'Compete for prizes',
