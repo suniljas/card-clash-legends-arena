@@ -2,7 +2,8 @@ import { useState } from 'react';
 import { useGameState } from '@/hooks/useGameState';
 import { useErrorHandler } from '@/hooks/useErrorHandler';
 import { GemPurchase } from './GemPurchase';
-import { AuthLogin } from './AuthLogin';
+import { FirebaseAuth } from './FirebaseAuth';
+import { FirebaseGemPurchase } from './FirebaseGemPurchase';
 import { GameHeader } from './GameHeader';
 import { MainMenu } from './MainMenu';
 import { Collection } from './Collection';
@@ -37,7 +38,7 @@ export function Game() {
   const [currentPage, setCurrentPage] = useState<GamePage>('auth');
   const [showTutorial, setShowTutorial] = useState(!localStorage.getItem('tutorial-completed'));
   const [battleData, setBattleData] = useState<{ playerDeck: any[], enemyDeck: any[] } | null>(null);
-  const [user, setUser] = useState<{ email: string; name: string; provider: string } | null>(null);
+  const [user, setUser] = useState<{ email: string; name: string; provider: string; uid: string } | null>(null);
   const gameState = useGameState();
   
   // Enhanced error handling
@@ -58,7 +59,7 @@ export function Game() {
     setCurrentPage('battle');
   };
 
-  const handleLogin = (userData: { email: string; name: string; provider: string }) => {
+  const handleLogin = (userData: { email: string; name: string; provider: string; uid: string }) => {
     setUser(userData);
     setCurrentPage('menu');
   };
@@ -67,7 +68,7 @@ export function Game() {
     switch (currentPage) {
       case 'auth':
         return (
-          <AuthLogin
+          <FirebaseAuth
             onLogin={handleLogin}
             onClose={() => setCurrentPage('menu')}
           />
@@ -75,9 +76,10 @@ export function Game() {
 
       case 'gem-purchase':
         return (
-          <GemPurchase
+          <FirebaseGemPurchase
             onPurchaseGems={gameState.purchaseGems}
             onClose={() => setCurrentPage('menu')}
+            userId={user?.uid}
           />
         );
 
