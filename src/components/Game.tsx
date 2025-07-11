@@ -9,6 +9,8 @@ import { Campaign } from './Campaign';
 import { PvPArena } from './PvPArena';
 import { Tutorial } from './Tutorial';
 import { BattleSystem } from './BattleSystem';
+import { Marketplace } from './Marketplace';
+import { EventCenter } from './EventCenter';
 
 type GamePage = 
   | 'menu' 
@@ -20,6 +22,8 @@ type GamePage =
   | 'pvp' 
   | 'battle'
   | 'tournament' 
+  | 'marketplace'
+  | 'events'
   | 'settings';
 
 export function Game() {
@@ -133,6 +137,37 @@ export function Game() {
               result.survivingCards.forEach(card => {
                 gameState.gainExperience(card.id, result.experienceGained);
               });
+            }}
+          />
+        );
+      
+      case 'marketplace':
+        return (
+          <Marketplace
+            collection={gameState.collection}
+            gameStats={gameState.gameStats}
+            onBack={() => setCurrentPage('menu')}
+            onTradeCard={(cardId, price, currency) => {
+              // Handle card trading logic
+              console.log('Trading card:', cardId, price, currency);
+            }}
+            onBuyCard={(listing) => {
+              // Handle card purchase logic
+              console.log('Buying card:', listing);
+            }}
+          />
+        );
+      
+      case 'events':
+        return (
+          <EventCenter
+            gameStats={gameState.gameStats}
+            onBack={() => setCurrentPage('menu')}
+            onJoinEvent={(eventId) => {
+              console.log('Joining event:', eventId);
+            }}
+            onClaimReward={(eventId) => {
+              console.log('Claiming reward:', eventId);
             }}
           />
         );

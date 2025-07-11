@@ -80,3 +80,32 @@ export interface Tournament {
     gems: number;
   };
 }
+
+export interface MarketListing {
+  id: string;
+  card: HeroCard;
+  price: number;
+  currency: 'coins' | 'gems';
+  seller: string;
+  timeRemaining: number;
+}
+
+export interface GameEvent {
+  id: string;
+  name: string;
+  description: string;
+  startTime: Date;
+  endTime: Date;
+  type: 'tournament' | 'special_pack' | 'double_rewards' | 'arena_challenge';
+  rewards: {
+    coins?: number;
+    gems?: number;
+    cards?: HeroCard[];
+    specialPack?: string;
+  };
+  requirements?: {
+    minLevel?: number;
+    completedCampaigns?: number;
+  };
+  isActive: boolean;
+}
