@@ -1,10 +1,14 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { PlayerDeck, GameStats, BattleResult, Opponent } from '@/types/game';
 import { HERO_DATABASE } from '@/data/heroes';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ArrowLeft, Users, Zap, Trophy, Coins } from 'lucide-react';
+import { useWebSocket } from '@/hooks/useWebSocket';
+import { NetworkStatusIndicator } from './NetworkStatusIndicator';
+import { EnhancedLoadingSpinner } from './EnhancedLoadingSpinner';
+import { useToast } from '@/hooks/use-toast';
 
 interface PvPArenaProps {
   playerDeck: PlayerDeck;
@@ -18,6 +22,26 @@ export function PvPArena({ playerDeck, gameStats, onBack, onBattleComplete }: Pv
   const [battling, setBattling] = useState(false);
   const [battleResult, setBattleResult] = useState<BattleResult | null>(null);
   const [currentOpponent, setCurrentOpponent] = useState<(Opponent & { rank: string; power: number }) | null>(null);
+  const [matchmakingProgress, setMatchmakingProgress] = useState(0);
+  const { toast } = useToast();
+
+  // WebSocket for real multiplayer (fallback to mock for now)
+  const { isConnected, isConnecting, latency, sendMessage } = useWebSocket({
+    url: 'wss://demo-multiplayer-server.com', // Would be real server
+    onMessage: (message) => {
+      if (message.type === 'match_found') {
+        setCurrentOpponent(message.data.opponent);
+        setSearching(false);
+        startBattle(message.data.opponent);
+      }
+    },
+    onConnect: () => {
+      toast({
+        title: "Multiplayer Ready",
+        description: "Connected to PvP servers",
+      });
+    }
+  });
 
   const opponents: (Opponent & { rank: string; power: number })[] = [
     { 
@@ -59,18 +83,40 @@ export function PvPArena({ playerDeck, gameStats, onBack, onBattleComplete }: Pv
 
   const handleFindMatch = () => {
     if (playerDeck.cards.length === 0) {
-      alert('You need to build a deck first!');
+      toast({
+        title: "No Deck Found",
+        description: "You need to build a deck first!",
+        variant: "destructive"
+      });
       return;
     }
 
     setSearching(true);
+    setMatchmakingProgress(0);
     
-    setTimeout(() => {
-      const randomOpponent = opponents[Math.floor(Math.random() * opponents.length)];
-      setCurrentOpponent(randomOpponent);
-      setSearching(false);
-      startBattle(randomOpponent);
-    }, 2000);
+    // Try real multiplayer first, fallback to AI
+    if (isConnected) {
+      sendMessage('find_match', { 
+        deck: playerDeck, 
+        playerStats: gameStats 
+      });
+    } else {
+      // Simulate matchmaking with progress
+      const interval = setInterval(() => {
+        setMatchmakingProgress(prev => {
+          const newProgress = prev + 10;
+          if (newProgress >= 100) {
+            clearInterval(interval);
+            const randomOpponent = opponents[Math.floor(Math.random() * opponents.length)];
+            setCurrentOpponent(randomOpponent);
+            setSearching(false);
+            startBattle(randomOpponent);
+            return 100;
+          }
+          return newProgress;
+        });
+      }, 200);
+    }
   };
 
   const startBattle = (opponent: Opponent) => {
@@ -164,12 +210,35 @@ export function PvPArena({ playerDeck, gameStats, onBack, onBattleComplete }: Pv
   if (searching) {
     return (
       <div className="container mx-auto px-4 py-6 flex items-center justify-center min-h-[60vh]">
-        <div className="text-center">
-          <div className="text-6xl mb-4 animate-spin">🔍</div>
-          <h2 className="text-2xl font-bold mb-2">Finding Opponent...</h2>
-          <p className="text-muted-foreground">
-            Searching for a worthy challenger
+        <div className="text-center space-y-4">
+          <EnhancedLoadingSpinner 
+            size="xl"
+            text="Finding worthy opponent..."
+            progress={matchmakingProgress}
+            variant="card"
+          />
+          
+          <div className="flex justify-center">
+            <NetworkStatusIndicator latency={latency} />
+          </div>
+          
+          <p className="text-xs text-muted-foreground">
+            {isConnected 
+              ? "Searching online players..." 
+              : "Searching AI opponents..."
+            }
           </p>
+          
+          <Button 
+            variant="outline" 
+            size="sm" 
+            onClick={() => {
+              setSearching(false);
+              setMatchmakingProgress(0);
+            }}
+          >
+            Cancel Search
+          </Button>
         </div>
       </div>
     );
@@ -179,13 +248,16 @@ export function PvPArena({ playerDeck, gameStats, onBack, onBattleComplete }: Pv
     <div className="container mx-auto px-4 py-6">
       {/* Header */}
       <div className="flex items-center gap-4 mb-6">
-        <Button variant="ghost" onClick={onBack}>
+        <Button variant="ghost" onClick={onBack} className="touch-target">
           <ArrowLeft className="w-4 h-4 mr-2" />
           Back
         </Button>
-        <div>
-          <h1 className="text-2xl font-bold">PvP Arena</h1>
-          <p className="text-muted-foreground">
+        <div className="flex-1">
+          <div className="flex items-center gap-3">
+            <h1 className="text-mobile-2xl font-bold">PvP Arena</h1>
+            <NetworkStatusIndicator latency={latency} />
+          </div>
+          <p className="text-muted-foreground text-mobile-sm">
             Battle other players for glory and rewards
           </p>
         </div>
