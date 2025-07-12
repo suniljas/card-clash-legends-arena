@@ -47,7 +47,7 @@
         <!-- App category for Google Play Store -->
         <meta-data
             android:name="com.google.android.gms.games.APP_ID"
-            android:value="@string/package_name" />
+            android:value="com.suniljas.cardclash" />
     </application>
 
     <!-- Permissions -->
