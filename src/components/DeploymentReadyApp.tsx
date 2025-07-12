@@ -11,13 +11,15 @@ export function DeploymentReadyApp() {
   const { toast } = useToast();
 
   useEffect(() => {
-    // Simulate app initialization
+    // Initialize app with timeout fallback
     const initializeApp = async () => {
       try {
-        // Pre-load critical assets
-        await preloadAssets();
+        // Pre-load critical assets with timeout
+        const assetsPromise = preloadAssets();
+        const timeoutPromise = new Promise(resolve => setTimeout(resolve, 3000));
         
-        // Initialize analytics
+        await Promise.race([assetsPromise, timeoutPromise]);
+        
         console.log('App initialized successfully');
         
         // Show welcome message for new installs
@@ -34,15 +36,28 @@ export function DeploymentReadyApp() {
         setIsLoading(false);
       } catch (error) {
         console.error('App initialization failed:', error);
+        // Always complete loading even if initialization fails
         setIsLoading(false);
       }
     };
 
-    initializeApp();
+    // Add a maximum loading timeout
+    const maxLoadingTimeout = setTimeout(() => {
+      console.log('Loading timeout reached, proceeding with app launch');
+      setIsLoading(false);
+    }, 5000);
+
+    initializeApp().finally(() => {
+      clearTimeout(maxLoadingTimeout);
+    });
+
+    return () => {
+      clearTimeout(maxLoadingTimeout);
+    };
   }, [toast]);
 
   const preloadAssets = async () => {
-    // Preload critical images and sounds
+    // Preload critical images and sounds with individual timeouts
     const criticalAssets = [
       '/sounds/card-play.mp3',
       '/sounds/victory.mp3',
@@ -52,14 +67,29 @@ export function DeploymentReadyApp() {
     await Promise.allSettled(
       criticalAssets.map(asset => {
         return new Promise((resolve) => {
+          const timeout = setTimeout(resolve, 2000); // 2s timeout per asset
+          
           if (asset.endsWith('.mp3')) {
             const audio = new Audio(asset);
-            audio.addEventListener('canplaythrough', resolve);
+            audio.addEventListener('canplaythrough', () => {
+              clearTimeout(timeout);
+              resolve(asset);
+            });
+            audio.addEventListener('error', () => {
+              clearTimeout(timeout);
+              resolve(asset);
+            });
             audio.load();
           } else {
             const img = new Image();
-            img.onload = resolve;
-            img.onerror = resolve; // Don't fail on missing images
+            img.onload = () => {
+              clearTimeout(timeout);
+              resolve(asset);
+            };
+            img.onerror = () => {
+              clearTimeout(timeout);
+              resolve(asset);
+            };
             img.src = asset;
           }
         });
