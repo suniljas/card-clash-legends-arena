@@ -163,6 +163,39 @@ export default {
 					'100%': {
 						transform: 'translateX(100%)'
 					}
+				},
+				'card-tilt': {
+					'0%': {
+						transform: 'perspective(1000px) rotateX(0deg) rotateY(0deg)'
+					},
+					'25%': {
+						transform: 'perspective(1000px) rotateX(2deg) rotateY(2deg)'
+					},
+					'75%': {
+						transform: 'perspective(1000px) rotateX(-2deg) rotateY(-2deg)'
+					},
+					'100%': {
+						transform: 'perspective(1000px) rotateX(0deg) rotateY(0deg)'
+					}
+				},
+				'divine-pulse': {
+					'0%, 100%': {
+						filter: 'drop-shadow(0 0 30px hsl(var(--primary) / 0.8)) drop-shadow(0 0 60px hsl(var(--accent) / 0.6))'
+					},
+					'50%': {
+						filter: 'drop-shadow(0 0 50px hsl(var(--primary) / 1)) drop-shadow(0 0 100px hsl(var(--accent) / 0.8))'
+					}
+				},
+				'foil-rainbow': {
+					'0%': {
+						backgroundPosition: '0% 50%'
+					},
+					'50%': {
+						backgroundPosition: '100% 50%'
+					},
+					'100%': {
+						backgroundPosition: '0% 50%'
+					}
 				}
 			},
 			animation: {
@@ -174,7 +207,10 @@ export default {
 				'pulse-glow': 'pulse-glow 2s ease-in-out infinite',
 				'card-flip': 'card-flip 0.6s ease-in-out',
 				'float': 'float 3s ease-in-out infinite',
-				'shimmer': 'shimmer 2s ease-in-out infinite'
+				'shimmer': 'shimmer 2s ease-in-out infinite',
+				'card-tilt': 'card-tilt 4s ease-in-out infinite',
+				'divine-pulse': 'divine-pulse 3s ease-in-out infinite',
+				'foil-rainbow': 'foil-rainbow 3s ease-in-out infinite'
 			}
 		}
 	},

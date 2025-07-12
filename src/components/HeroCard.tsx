@@ -29,18 +29,24 @@ export function HeroCard({
     large: 'w-48 h-64'
   };
 
-  const getRarityGlow = (rarity: Rarity) => {
+  const getRarityEffects = (rarity: Rarity) => {
+    const baseClasses = 'card-metallic transition-all duration-300';
+    
     switch (rarity) {
+      case Rarity.COMMON:
+        return `${baseClasses} rarity-common`;
+      case Rarity.UNCOMMON:
+        return `${baseClasses} rarity-uncommon`;
       case Rarity.RARE:
-        return 'shadow-[0_0_20px_hsl(var(--rare)/0.6)] animate-pulse-glow';
+        return `${baseClasses} rarity-rare foil-shine card-3d`;
       case Rarity.EPIC:
-        return 'shadow-[0_0_25px_hsl(var(--epic)/0.7)] animate-pulse-glow';
+        return `${baseClasses} rarity-epic foil-shine card-3d corner-gems`;
       case Rarity.LEGEND:
-        return 'shadow-[0_0_30px_hsl(var(--legend)/0.8)] animate-pulse-glow';
+        return `${baseClasses} rarity-legend foil-shine card-3d corner-gems animate-card-tilt`;
       case Rarity.ULTRA_LEGEND:
-        return 'shadow-[0_0_40px_hsl(var(--ultra-legend)/0.9)] animate-pulse-glow';
+        return `${baseClasses} rarity-ultra-legend foil-shine card-3d corner-gems animate-divine-pulse divine-glow`;
       default:
-        return '';
+        return baseClasses;
     }
   };
 
@@ -52,21 +58,25 @@ export function HeroCard({
   return (
     <Card 
       className={cn(
-        'relative cursor-pointer transition-all duration-300 overflow-hidden bg-gradient-to-br from-card to-muted',
+        'relative cursor-pointer overflow-hidden group gpu-accelerated',
         sizeClasses[size],
-        isSelected && 'ring-2 ring-primary scale-105',
-        getRarityGlow(hero.rarity),
-        'hover:scale-105 hover:shadow-lg'
+        getRarityEffects(hero.rarity),
+        isSelected && 'ring-4 ring-primary scale-110 z-20',
+        'hover:scale-110 hover:z-10 transform-gpu'
       )}
       onClick={handleClick}
     >
-      {/* Rarity Border */}
-      <div className={cn(
-        'absolute inset-0 p-1 rounded-lg',
-        `bg-${RARITY_COLORS[hero.rarity]}`
-      )}>
-        <div className="w-full h-full bg-card rounded-md" />
+      {/* Premium Rarity Frame */}
+      <div className="absolute inset-0 p-[2px] rounded-lg">
+        <div className={cn(
+          'w-full h-full rounded-md border-2',
+          `border-rarity-${hero.rarity.toLowerCase().replace('_', '-')}`,
+          hero.rarity === Rarity.ULTRA_LEGEND && 'animate-foil-rainbow'
+        )} />
       </div>
+      
+      {/* Metallic Background */}
+      <div className="absolute inset-[3px] bg-gradient-to-br from-card via-card/95 to-muted/50 rounded-md" />
 
       {/* Card Content */}
       <div className="relative z-10 p-3 h-full flex flex-col">
@@ -86,26 +96,42 @@ export function HeroCard({
           </div>
         </div>
 
-        {/* Hero Image */}
-        <div className="flex-1 bg-gradient-to-br from-muted to-muted/50 rounded-md mb-2 flex items-center justify-center overflow-hidden relative">
+        {/* Hero Image with Premium Effects */}
+        <div className="flex-1 bg-gradient-to-br from-muted to-muted/50 rounded-md mb-2 flex items-center justify-center overflow-hidden relative group">
           {hero.imageUrl ? (
             <img 
               src={hero.imageUrl} 
               alt={hero.name}
-              className="w-full h-full object-cover rounded-md"
-              style={{ imageRendering: 'crisp-edges' }}
+              className="w-full h-full object-cover rounded-md crisp-edges group-hover:scale-110 transition-transform duration-300"
             />
           ) : (
-            <div className="text-2xl">⚔️</div>
+            <div className={cn(
+              "text-2xl transition-all duration-300",
+              hero.rarity === Rarity.ULTRA_LEGEND && 'text-glow animate-float'
+            )}>⚔️</div>
           )}
-          {/* Holographic overlay for Ultra Legends */}
+          
+          {/* Advanced Holographic Overlays */}
+          {hero.rarity === Rarity.RARE && (
+            <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-rarity-rare/10 to-transparent opacity-60" />
+          )}
+          {hero.rarity === Rarity.EPIC && (
+            <div className="absolute inset-0 bg-gradient-to-br from-transparent via-rarity-epic/15 to-transparent animate-shimmer opacity-70" />
+          )}
+          {hero.rarity === Rarity.LEGEND && (
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-rarity-legend/20 via-accent/10 to-transparent animate-shimmer opacity-80" />
+          )}
           {hero.rarity === Rarity.ULTRA_LEGEND && (
-            <div className="absolute inset-0 bg-gradient-to-br from-transparent via-white/20 to-transparent animate-pulse opacity-50" />
+            <div className="absolute inset-0 holographic animate-divine-pulse opacity-90" />
           )}
         </div>
 
-        {/* Hero Name */}
-        <h3 className="font-bold text-sm text-center mb-2 text-foreground">
+        {/* Hero Name with Premium Typography */}
+        <h3 className={cn(
+          "font-bold text-sm text-center mb-2 text-foreground",
+          hero.rarity === Rarity.LEGEND && 'text-embossed text-rarity-legend',
+          hero.rarity === Rarity.ULTRA_LEGEND && 'text-glow text-rarity-ultra-legend text-shadow'
+        )}>
           {hero.name}
         </h3>
 
