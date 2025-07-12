@@ -206,12 +206,11 @@ export function MainMenu({ onNavigate, user, onLogout }: MainMenuProps) {
               <Card
                 key={item.id}
                 className={cn(
-                  'relative group cursor-pointer overflow-hidden transition-all duration-500',
+                  'menu-item-lor relative group overflow-hidden',
                   'bg-gradient-to-br from-slate-800/90 to-slate-700/90',
-                  'hover:scale-105 hover:-translate-y-2',
                   'border-2 border-slate-600/50 hover:border-slate-500/70',
                   'shadow-lg hover:shadow-2xl',
-                  'touch-target active:scale-95',
+                  'focus-lor',
                   item.borderColor,
                   item.glowColor
                 )}
@@ -257,24 +256,20 @@ export function MainMenu({ onNavigate, user, onLogout }: MainMenuProps) {
 
         {/* Enhanced Quick Actions */}
         <div className="mt-12 flex justify-center gap-6">
-          <Button
-            variant="outline"
-            size="lg"
-            className="touch-target transition-all duration-300 hover:scale-105 border-blue-400/50 text-blue-300 hover:bg-blue-500/20 hover:border-blue-400"
+          <button
+            className="btn-lor-primary focus-lor"
             onClick={() => onNavigate('tutorial')}
           >
-            <BookOpen className="w-5 h-5 mr-2" />
+            <BookOpen className="w-5 h-5 mr-2 inline" />
             Tutorial
-          </Button>
-          <Button
-            variant="outline"
-            size="lg"
-            className="touch-target transition-all duration-300 hover:scale-105 border-purple-400/50 text-purple-300 hover:bg-purple-500/20 hover:border-purple-400"
+          </button>
+          <button
+            className="btn-lor-secondary focus-lor"
             onClick={() => onNavigate('settings')}
           >
-            <Settings className="w-5 h-5 mr-2" />
+            <Settings className="w-5 h-5 mr-2 inline" />
             Settings
-          </Button>
+          </button>
         </div>
         
         {/* Footer */}

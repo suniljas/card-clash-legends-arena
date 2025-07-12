@@ -263,90 +263,318 @@
   /* Enhanced Button Styles */
   .btn-lor-primary {
     @apply bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700;
-    @apply text-white font-bold py-2 px-4 rounded-lg;
+    @apply text-white font-bold py-3 px-6 rounded-lg;
     @apply transition-all duration-300 ease-in-out;
     @apply shadow-lg hover:shadow-xl;
-    @apply transform hover:scale-105;
+    @apply transform hover:scale-105 active:scale-95;
+    @apply border border-blue-400/30;
+    @apply relative overflow-hidden;
+    @apply cursor-pointer;
+  }
+
+  .btn-lor-primary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+  }
+
+  .btn-lor-primary:hover::before {
+    left: 100%;
   }
 
   .btn-lor-secondary {
     @apply bg-gradient-to-r from-slate-600 to-slate-700 hover:from-slate-700 hover:to-slate-800;
-    @apply text-white font-bold py-2 px-4 rounded-lg;
+    @apply text-white font-bold py-3 px-6 rounded-lg;
     @apply transition-all duration-300 ease-in-out;
     @apply shadow-lg hover:shadow-xl;
-    @apply transform hover:scale-105;
+    @apply transform hover:scale-105 active:scale-95;
+    @apply border border-slate-400/30;
+    @apply relative overflow-hidden;
+    @apply cursor-pointer;
   }
 
-  /* Enhanced Input Styles */
+  .btn-lor-secondary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transition: left 0.5s;
+  }
+
+  .btn-lor-secondary:hover::before {
+    left: 100%;
+  }
+
+  .btn-lor-danger {
+    @apply bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800;
+    @apply text-white font-bold py-3 px-6 rounded-lg;
+    @apply transition-all duration-300 ease-in-out;
+    @apply shadow-lg hover:shadow-xl;
+    @apply transform hover:scale-105 active:scale-95;
+    @apply border border-red-400/30;
+    @apply relative overflow-hidden;
+    @apply cursor-pointer;
+  }
+
+  .btn-lor-success {
+    @apply bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800;
+    @apply text-white font-bold py-3 px-6 rounded-lg;
+    @apply transition-all duration-300 ease-in-out;
+    @apply shadow-lg hover:shadow-xl;
+    @apply transform hover:scale-105 active:scale-95;
+    @apply border border-green-400/30;
+    @apply relative overflow-hidden;
+    @apply cursor-pointer;
+  }
+
+  .btn-lor-warning {
+    @apply bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800;
+    @apply text-white font-bold py-3 px-6 rounded-lg;
+    @apply transition-all duration-300 ease-in-out;
+    @apply shadow-lg hover:shadow-xl;
+    @apply transform hover:scale-105 active:scale-95;
+    @apply border border-amber-400/30;
+    @apply relative overflow-hidden;
+    @apply cursor-pointer;
+  }
+
+  /* Enhanced Clickable Card Styles */
+  .clickable-card {
+    @apply cursor-pointer;
+    @apply transition-all duration-300 ease-out;
+    @apply transform hover:scale-105 hover:-translate-y-2;
+    @apply hover:shadow-2xl;
+    @apply active:scale-95;
+    @apply relative overflow-hidden;
+  }
+
+  .clickable-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+    transform: translateX(-100%);
+    transition: transform 0.6s ease-in-out;
+    pointer-events: none;
+  }
+
+  .clickable-card:hover::before {
+    transform: translateX(100%);
+  }
+
+  /* Enhanced Menu Item Styles */
+  .menu-item-lor {
+    @apply relative overflow-hidden;
+    @apply cursor-pointer;
+    @apply transition-all duration-300 ease-out;
+    @apply transform hover:scale-105 hover:-translate-y-1;
+    @apply hover:shadow-xl;
+    @apply active:scale-95;
+    @apply border border-transparent hover:border-white/20;
+  }
+
+  .menu-item-lor::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.05) 50%, transparent 70%);
+    transform: translateX(-100%);
+    transition: transform 0.8s ease-in-out;
+    pointer-events: none;
+  }
+
+  .menu-item-lor:hover::before {
+    transform: translateX(100%);
+  }
+
+  /* Enhanced Interactive Elements */
+  .interactive-element {
+    @apply cursor-pointer;
+    @apply transition-all duration-200 ease-in-out;
+    @apply hover:brightness-110;
+    @apply active:brightness-90;
+    @apply transform hover:scale-105;
+    @apply active:scale-95;
+  }
+
+  /* Enhanced Focus States */
+  .focus-lor {
+    @apply focus:outline-none;
+    @apply focus:ring-2;
+    @apply focus:ring-blue-500;
+    @apply focus:ring-offset-2;
+    @apply focus:ring-offset-slate-900;
+    @apply focus:scale-105;
+  }
+
+  /* Enhanced Loading States */
+  .loading-lor {
+    @apply relative overflow-hidden;
+    @apply cursor-wait;
+  }
+
+  .loading-lor::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    animation: loading-shimmer 1.5s infinite;
+  }
+
+  @keyframes loading-shimmer {
+    0% { left: -100%; }
+    100% { left: 100%; }
+  }
+
+  /* Enhanced Disabled States */
+  .disabled-lor {
+    @apply opacity-50;
+    @apply cursor-not-allowed;
+    @apply pointer-events-none;
+    @apply filter grayscale;
+  }
+
+  /* Enhanced Hover Effects for Cards */
+  .card-hover-lor {
+    @apply transition-all duration-300 ease-out;
+    @apply transform hover:scale-105 hover:-translate-y-2;
+    @apply hover:shadow-2xl;
+    @apply hover:brightness-110;
+    @apply active:scale-95;
+    @apply cursor-pointer;
+  }
+
+  /* Enhanced Selection States */
+  .selected-lor {
+    @apply ring-4;
+    @apply ring-blue-500;
+    @apply ring-offset-2;
+    @apply ring-offset-slate-900;
+    @apply scale-105;
+    @apply shadow-2xl;
+  }
+
+  /* Enhanced Badge Interactions */
+  .badge-interactive {
+    @apply cursor-pointer;
+    @apply transition-all duration-200 ease-in-out;
+    @apply hover:scale-110;
+    @apply hover:brightness-110;
+    @apply active:scale-95;
+  }
+
+  /* Enhanced Icon Interactions */
+  .icon-interactive {
+    @apply cursor-pointer;
+    @apply transition-all duration-200 ease-in-out;
+    @apply hover:scale-125;
+    @apply hover:text-blue-400;
+    @apply active:scale-100;
+  }
+
+  /* Enhanced Text Interactions */
+  .text-interactive {
+    @apply cursor-pointer;
+    @apply transition-all duration-200 ease-in-out;
+    @apply hover:text-blue-400;
+    @apply hover:underline;
+    @apply active:text-blue-600;
+  }
+
+  /* Enhanced Form Elements */
   .input-lor {
     @apply bg-slate-800 border border-slate-600 text-white;
-    @apply rounded-lg px-3 py-2;
+    @apply rounded-lg px-4 py-3;
     @apply focus:ring-2 focus:ring-blue-500 focus:border-transparent;
     @apply transition-all duration-200;
+    @apply hover:border-slate-500;
+    @apply focus:bg-slate-700;
   }
 
-  /* Enhanced Modal Styles */
+  .input-lor:focus {
+    @apply transform scale-105;
+    @apply shadow-lg;
+  }
+
+  /* Enhanced Modal Interactions */
   .modal-lor {
     @apply bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900;
     @apply border border-slate-600 rounded-xl;
     @apply shadow-2xl;
     @apply backdrop-blur-sm;
+    @apply transform transition-all duration-300 ease-out;
   }
 
-  /* Enhanced Loading Spinner */
-  .spinner-lor {
-    @apply w-8 h-8 border-4 border-slate-600 border-t-blue-500;
-    @apply rounded-full animate-spin;
+  .modal-lor:hover {
+    @apply shadow-3xl;
+    @apply border-slate-500;
   }
 
-  /* Enhanced Progress Bar */
+  /* Enhanced Toggle States */
+  .toggle-lor {
+    @apply cursor-pointer;
+    @apply transition-all duration-300 ease-in-out;
+    @apply transform hover:scale-110;
+    @apply active:scale-95;
+  }
+
+  .toggle-lor.active {
+    @apply scale-110;
+    @apply shadow-lg;
+  }
+
+  /* Enhanced Progress Indicators */
   .progress-lor {
     @apply bg-slate-700 rounded-full overflow-hidden;
+    @apply transition-all duration-300 ease-out;
+  }
+
+  .progress-lor:hover {
+    @apply bg-slate-600;
   }
 
   .progress-lor-fill {
     @apply h-full bg-gradient-to-r from-blue-500 to-purple-500;
     @apply transition-all duration-300 ease-out;
+    @apply shadow-sm;
   }
 
-  /* Enhanced Tooltip */
+  .progress-lor-fill:hover {
+    @apply shadow-md;
+  }
+
+  /* Enhanced Tooltip Interactions */
   .tooltip-lor {
     @apply bg-slate-800 border border-slate-600 text-white;
     @apply rounded-lg px-3 py-2 text-sm;
     @apply shadow-xl backdrop-blur-sm;
     @apply z-50;
+    @apply transition-all duration-200 ease-out;
+    @apply transform scale-95 opacity-0;
   }
 
-  /* Enhanced Badge Styles */
-  .badge-lor {
-    @apply bg-gradient-to-r from-slate-700 to-slate-600;
-    @apply text-white font-bold text-xs;
-    @apply px-2 py-1 rounded-full;
-    @apply border border-slate-500;
+  .tooltip-lor.show {
+    @apply scale-100 opacity-100;
   }
 
-  .badge-lor-rare {
-    @apply bg-gradient-to-r from-blue-600 to-blue-700;
-    @apply border-blue-400;
-  }
-
-  .badge-lor-epic {
-    @apply bg-gradient-to-r from-purple-600 to-purple-700;
-    @apply border-purple-400;
-  }
-
-  .badge-lor-legendary {
-    @apply bg-gradient-to-r from-amber-600 to-amber-700;
-    @apply border-amber-400;
-  }
-
-  /* Enhanced Card Grid */
-  .card-grid-lor {
-    @apply grid gap-4;
-    @apply grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4;
-  }
-
-  /* Enhanced Scrollbar */
+  /* Enhanced Scrollbar Interactions */
   .scrollbar-lor {
     scrollbar-width: thin;
     scrollbar-color: #475569 #1e293b;
@@ -364,10 +592,80 @@
   .scrollbar-lor::-webkit-scrollbar-thumb {
     background: #475569;
     border-radius: 4px;
+    transition: background 0.2s ease;
   }
 
   .scrollbar-lor::-webkit-scrollbar-thumb:hover {
     background: #64748b;
+  }
+
+  /* Enhanced Animation Classes */
+  .animate-bounce-gentle {
+    animation: bounce-gentle 2s ease-in-out infinite;
+  }
+
+  @keyframes bounce-gentle {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-5px);
+    }
+  }
+
+  .animate-pulse-slow {
+    animation: pulse-slow 3s ease-in-out infinite;
+  }
+
+  @keyframes pulse-slow {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.7;
+    }
+  }
+
+  /* Enhanced Glow Effects */
+  .glow-blue {
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+  }
+
+  .glow-purple {
+    box-shadow: 0 0 20px rgba(147, 51, 234, 0.5);
+  }
+
+  .glow-green {
+    box-shadow: 0 0 20px rgba(34, 197, 94, 0.5);
+  }
+
+  .glow-red {
+    box-shadow: 0 0 20px rgba(239, 68, 68, 0.5);
+  }
+
+  .glow-amber {
+    box-shadow: 0 0 20px rgba(245, 158, 11, 0.5);
+  }
+
+  /* Enhanced Hover Glow */
+  .hover-glow-blue:hover {
+    box-shadow: 0 0 30px rgba(59, 130, 246, 0.7);
+  }
+
+  .hover-glow-purple:hover {
+    box-shadow: 0 0 30px rgba(147, 51, 234, 0.7);
+  }
+
+  .hover-glow-green:hover {
+    box-shadow: 0 0 30px rgba(34, 197, 94, 0.7);
+  }
+
+  .hover-glow-red:hover {
+    box-shadow: 0 0 30px rgba(239, 68, 68, 0.7);
+  }
+
+  .hover-glow-amber:hover {
+    box-shadow: 0 0 30px rgba(245, 158, 11, 0.7);
   }
 }
 

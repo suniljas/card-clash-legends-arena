@@ -99,14 +99,16 @@ export function CardShowcase() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6 max-w-7xl mx-auto">
           {demoHeroes.map((hero) => (
             <div key={hero.id} className="flex justify-center">
-              <LORCardEnhanced
-                hero={hero}
-                size="medium"
-                isAnimated={true}
-                isHoverable={true}
-                showRarityGlow={true}
-                onClick={() => console.log(`Clicked on ${hero.name}`)}
-              />
+              <div className="clickable-card">
+                <LORCardEnhanced
+                  hero={hero}
+                  size="medium"
+                  isAnimated={true}
+                  isHoverable={true}
+                  showRarityGlow={true}
+                  onClick={() => console.log(`Clicked on ${hero.name}`)}
+                />
+              </div>
             </div>
           ))}
         </div>

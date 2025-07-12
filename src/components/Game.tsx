@@ -239,7 +239,7 @@ export function Game() {
               Compete in epic tournaments for exclusive rewards and glory.
             </p>
             <button 
-              className="mt-4 px-4 py-2 bg-primary text-primary-foreground rounded-lg"
+              className="btn-lor-primary focus-lor"
               onClick={() => setCurrentPage('menu')}
             >
               Back to Menu
@@ -253,7 +253,7 @@ export function Game() {
             <h1 className="text-2xl font-bold mb-4">⚙️ Settings</h1>
             <p className="text-muted-foreground mb-4">Game settings and preferences</p>
             <button 
-              className="mt-4 px-4 py-2 bg-primary text-primary-foreground rounded-lg"
+              className="btn-lor-secondary focus-lor"
               onClick={() => setCurrentPage('menu')}
             >
               Back to Menu
