@@ -1,5 +1,5 @@
 import { HeroCard as HeroCardType, Rarity } from '@/types/game';
-import { calculateHeroStats, RARITY_COLORS } from '@/data/heroes';
+import { calculateHeroStats } from '@/data/heroes';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
@@ -116,15 +116,14 @@ export function HeroCard({
     <Card 
       className={cn(
         'relative cursor-pointer overflow-hidden group card-premium card-3d',
-        'transition-all duration-500 ease-out',
+        'transition-all duration-500 ease-out transform-gpu will-change-transform',
         sizeClasses[size],
         effects.background,
         effects.border,
         effects.glow,
         effects.overlay,
         isSelected && 'ring-4 ring-primary scale-105',
-        isAnimated && 'hover:scale-105 hover:-translate-y-3',
-        'transform-gpu will-change-transform'
+        isAnimated && 'hover:scale-105 hover:-translate-y-3'
       )}
       onClick={handleClick}
     >
@@ -136,16 +135,18 @@ export function HeroCard({
       )}>
         <div className={cn('w-full h-full rounded-md', effects.background)} />
       </div>
+      
+      {/* Metallic Background */}
+      <div className="absolute inset-[3px] bg-gradient-to-br from-card via-card/95 to-muted/50 rounded-md" />
 
       {/* Card Content */}
       <div className="relative z-10 p-3 h-full flex flex-col">
-        {/* Header with premium badges */}
+        {/* Header */}
         <div className="flex justify-between items-start mb-2">
           <Badge 
             variant="outline" 
             className={cn(
-              'text-xs font-bold capitalize backdrop-blur-sm',
-              'shadow-lg text-shadow-sm',
+              'text-xs font-bold capitalize backdrop-blur-sm shadow-lg text-shadow-sm',
               effects.badgeStyle
             )}
           >
@@ -160,7 +161,7 @@ export function HeroCard({
           </div>
         </div>
 
-        {/* Hero Image with premium frame and effects */}
+        {/* Hero Image */}
         <div className={cn(
           'flex-1 rounded-md mb-2 overflow-hidden relative',
           'bg-gradient-to-br from-muted/80 to-muted/40',
@@ -176,25 +177,23 @@ export function HeroCard({
           ) : (
             <div className="w-full h-full flex items-center justify-center text-2xl">⚔️</div>
           )}
-          
-          {/* Enhanced holographic overlay for high rarity cards */}
+
+          {/* Holographic overlays */}
           {(hero.rarity === Rarity.LEGEND || hero.rarity === Rarity.ULTRA_LEGEND) && (
             <div className="absolute inset-0 bg-gradient-to-br from-transparent via-white/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
           )}
-          
-          {/* Advanced shimmer effect for ultra legends */}
           {hero.rarity === Rarity.ULTRA_LEGEND && (
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1500" />
           )}
 
-          {/* Rarity-specific frame overlay */}
+          {/* Rarity-specific frame */}
           <div className={cn(
             'absolute inset-0 rounded-md border-2 opacity-20',
             `border-rarity-${hero.rarity}`
           )} />
         </div>
 
-        {/* Hero Name with premium embossed effect */}
+        {/* Name */}
         <h3 className={cn(
           'font-bold text-sm text-center mb-2 text-shadow-sm',
           effects.textColor
@@ -202,7 +201,7 @@ export function HeroCard({
           {hero.name}
         </h3>
 
-        {/* Premium Stats Display */}
+        {/* Stats */}
         {showStats && (
           <div className="grid grid-cols-2 gap-1 text-xs">
             <div className="flex items-center gap-1 bg-background/30 px-2 py-1 rounded backdrop-blur-sm border border-primary/20">
@@ -224,7 +223,7 @@ export function HeroCard({
           </div>
         )}
 
-        {/* Premium Ability Display */}
+        {/* Ability */}
         {hero.abilityName && hero.level >= 3 && (
           <div className={cn(
             'mt-2 p-1 rounded-md border backdrop-blur-sm',
@@ -236,13 +235,12 @@ export function HeroCard({
         )}
       </div>
 
-      {/* Enhanced premium corner decorations */}
+      {/* Corners and Gems */}
       <div className="absolute top-1 left-1 w-3 h-3 border-l-2 border-t-2 border-accent opacity-70"></div>
       <div className="absolute top-1 right-1 w-3 h-3 border-r-2 border-t-2 border-accent opacity-70"></div>
       <div className="absolute bottom-1 left-1 w-3 h-3 border-l-2 border-b-2 border-accent opacity-70"></div>
       <div className="absolute bottom-1 right-1 w-3 h-3 border-r-2 border-b-2 border-accent opacity-70"></div>
 
-      {/* Rarity-specific corner gems */}
       {(hero.rarity === Rarity.RARE || hero.rarity === Rarity.EPIC || hero.rarity === Rarity.LEGEND || hero.rarity === Rarity.ULTRA_LEGEND) && (
         <div className={cn(
           'absolute top-2 right-2 w-2 h-2 rounded-full animate-pulse',

@@ -1,0 +1,102 @@
+{
+  "common": {
+    "play": "プレイ",
+    "back": "戻る",
+    "next": "次へ",
+    "previous": "前へ",
+    "save": "保存",
+    "cancel": "キャンセル",
+    "confirm": "確認",
+    "loading": "読み込み中...",
+    "error": "エラー",
+    "success": "成功",
+    "close": "閉じる",
+    "settings": "設定",
+    "language": "言語"
+  },
+  "game": {
+    "title": "カードクラッシュ：レジェンドアリーナ",
+    "welcome": "カードクラッシュへようこそ",
+    "campaign": "キャンペーン",
+    "collection": "コレクション",
+    "pvp_arena": "PvPアリーナ",
+    "shop": "ショップ",
+    "achievements": "実績",
+    "leaderboards": "リーダーボード",
+    "tutorial": "チュートリアル",
+    "deck_builder": "デッキビルダー"
+  },
+  "battle": {
+    "your_turn": "あなたのターン",
+    "opponent_turn": "相手のターン",
+    "victory": "勝利！",
+    "defeat": "敗北",
+    "health": "体力",
+    "attack": "攻撃",
+    "defense": "防御",
+    "mana": "マナ",
+    "play_card": "カードをプレイ",
+    "end_turn": "ターン終了",
+    "battle_start": "バトル開始！"
+  },
+  "cards": {
+    "common": "コモン",
+    "uncommon": "アンコモン",
+    "rare": "レア",
+    "epic": "エピック",
+    "legendary": "レジェンダリー",
+    "ultra_legendary": "ウルトラレジェンダリー",
+    "owned": "所有済み",
+    "not_owned": "未所有",
+    "card_details": "カード詳細"
+  },
+  "shop": {
+    "buy_pack": "パック購入",
+    "gems": "ジェム",
+    "coins": "コイン",
+    "purchase": "購入",
+    "buy_gems": "ジェム購入",
+    "starter_pack": "スターターパック",
+    "premium_pack": "プレミアムパック",
+    "legend_pack": "レジェンドパック"
+  },
+  "achievements": {
+    "title": "実績",
+    "unlocked": "解除済み",
+    "locked": "ロック中",
+    "progress": "進行状況",
+    "reward": "報酬",
+    "first_victory": "初勝利",
+    "card_collector": "カードコレクター",
+    "arena_champion": "アリーナチャンピオン",
+    "legend_hunter": "レジェンドハンター"
+  },
+  "leaderboards": {
+    "title": "リーダーボード",
+    "global": "グローバル",
+    "friends": "フレンド",
+    "weekly": "週間",
+    "all_time": "全期間",
+    "rank": "ランク",
+    "player": "プレイヤー",
+    "score": "スコア",
+    "battles_won": "勝利数",
+    "cards_collected": "収集カード数",
+    "arena_points": "アリーナポイント"
+  },
+  "notifications": {
+    "daily_reward": "デイリー報酬が利用可能です！",
+    "pvp_challenge": "新しいPvPチャレンジを受信しました",
+    "achievement_unlocked": "実績解除！",
+    "event_started": "特別イベントが開始されました",
+    "low_energy": "エネルギーが回復しました、戻ってプレイしましょう！"
+  },
+  "errors": {
+    "network_error": "ネットワーク接続に失敗しました",
+    "save_failed": "ゲームの保存に失敗しました",
+    "load_failed": "ゲームの読み込みに失敗しました",
+    "purchase_failed": "購入に失敗しました",
+    "battle_error": "バトルエラーが発生しました",
+    "unknown_error": "不明なエラーが発生しました"
+  }
+}

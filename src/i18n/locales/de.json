@@ -1,0 +1,102 @@
+{
+  "common": {
+    "play": "Spielen",
+    "back": "Zurück",
+    "next": "Weiter",
+    "previous": "Vorherige",
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "confirm": "Bestätigen",
+    "loading": "Laden...",
+    "error": "Fehler",
+    "success": "Erfolg",
+    "close": "Schließen",
+    "settings": "Einstellungen",
+    "language": "Sprache"
+  },
+  "game": {
+    "title": "Card Clash: Legenden Arena",
+    "welcome": "Willkommen bei Card Clash",
+    "campaign": "Kampagne",
+    "collection": "Sammlung",
+    "pvp_arena": "PvP Arena",
+    "shop": "Shop",
+    "achievements": "Erfolge",
+    "leaderboards": "Bestenlisten",
+    "tutorial": "Tutorial",
+    "deck_builder": "Deck-Builder"
+  },
+  "battle": {
+    "your_turn": "Ihr Zug",
+    "opponent_turn": "Gegnerzug",
+    "victory": "Sieg!",
+    "defeat": "Niederlage",
+    "health": "Gesundheit",
+    "attack": "Angriff",
+    "defense": "Verteidigung",
+    "mana": "Mana",
+    "play_card": "Karte Spielen",
+    "end_turn": "Zug Beenden",
+    "battle_start": "Kampf Beginnt!"
+  },
+  "cards": {
+    "common": "Gewöhnlich",
+    "uncommon": "Ungewöhnlich",
+    "rare": "Selten",
+    "epic": "Episch",
+    "legendary": "Legendär",
+    "ultra_legendary": "Ultra Legendär",
+    "owned": "Besessen",
+    "not_owned": "Nicht Besessen",
+    "card_details": "Kartendetails"
+  },
+  "shop": {
+    "buy_pack": "Paket Kaufen",
+    "gems": "Edelsteine",
+    "coins": "Münzen",
+    "purchase": "Kaufen",
+    "buy_gems": "Edelsteine Kaufen",
+    "starter_pack": "Starter-Paket",
+    "premium_pack": "Premium-Paket",
+    "legend_pack": "Legenden-Paket"
+  },
+  "achievements": {
+    "title": "Erfolge",
+    "unlocked": "Freigeschaltet",
+    "locked": "Gesperrt",
+    "progress": "Fortschritt",
+    "reward": "Belohnung",
+    "first_victory": "Erster Sieg",
+    "card_collector": "Kartensammler",
+    "arena_champion": "Arena-Champion",
+    "legend_hunter": "Legenden-Jäger"
+  },
+  "leaderboards": {
+    "title": "Bestenlisten",
+    "global": "Global",
+    "friends": "Freunde",
+    "weekly": "Wöchentlich",
+    "all_time": "Alle Zeiten",
+    "rank": "Rang",
+    "player": "Spieler",
+    "score": "Punktzahl",
+    "battles_won": "Gewonnene Kämpfe",
+    "cards_collected": "Gesammelte Karten",
+    "arena_points": "Arena-Punkte"
+  },
+  "notifications": {
+    "daily_reward": "Tägliche Belohnung verfügbar!",
+    "pvp_challenge": "Neue PvP-Herausforderung erhalten",
+    "achievement_unlocked": "Erfolg freigeschaltet!",
+    "event_started": "Besonderes Event hat begonnen",
+    "low_energy": "Energie wiederhergestellt, komm zurück und spiele!"
+  },
+  "errors": {
+    "network_error": "Netzwerkverbindung fehlgeschlagen",
+    "save_failed": "Spiel speichern fehlgeschlagen",
+    "load_failed": "Spiel laden fehlgeschlagen",
+    "purchase_failed": "Kauf fehlgeschlagen",
+    "battle_error": "Kampffehler aufgetreten",
+    "unknown_error": "Ein unbekannter Fehler ist aufgetreten"
+  }
+}

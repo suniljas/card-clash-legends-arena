@@ -4,7 +4,7 @@ import { useErrorHandler } from '@/hooks/useErrorHandler';
 import { GemPurchase } from './GemPurchase';
 import { FirebaseAuth } from './FirebaseAuth';
 import { FirebaseGemPurchase } from './FirebaseGemPurchase';
-import { GameHeader } from './GameHeader';
+import { NewGameHeader } from './NewGameHeader';
 import { MainMenu } from './MainMenu';
 import { Collection } from './Collection';
 import { DeckBuilder } from './DeckBuilder';
@@ -15,8 +15,12 @@ import { Tutorial } from './Tutorial';
 import { BattleSystem } from './BattleSystem';
 import { Marketplace } from './Marketplace';
 import { EventCenter } from './EventCenter';
+import { Achievements } from './Achievements';
+import { Leaderboards } from './Leaderboards';
+import { AchievementNotification } from './AchievementNotification';
 import { PerformanceMonitor } from './PerformanceMonitor';
 import { NetworkStatusIndicator } from './NetworkStatusIndicator';
+import { ACHIEVEMENTS_DATABASE } from '@/data/achievements';
 
 type GamePage = 
   | 'menu' 
@@ -32,7 +36,9 @@ type GamePage =
   | 'events'
   | 'settings'
   | 'gem-purchase'
-  | 'auth';
+  | 'auth'
+  | 'achievements'
+  | 'leaderboards';
 
 export function Game() {
   const [currentPage, setCurrentPage] = useState<GamePage>('auth');
@@ -239,7 +245,21 @@ export function Game() {
           </div>
         );
       
-        default:
+      case 'achievements':
+        return (
+          <Achievements
+            onNavigate={(page: string) => setCurrentPage(page as GamePage)}
+          />
+        );
+      
+      case 'leaderboards':
+        return (
+          <Leaderboards
+            onNavigate={(page: string) => setCurrentPage(page as GamePage)}
+          />
+        );
+      
+      default:
         return <MainMenu 
           onNavigate={(page) => {
             if (page === 'gem-purchase') {
@@ -268,9 +288,21 @@ export function Game() {
 
   return (
     <div className="min-h-screen bg-background">
-      <GameHeader stats={gameState.gameStats} />
+      <NewGameHeader />
       {renderCurrentPage()}
       <PerformanceMonitor />
+      
+      {/* Achievement Notifications */}
+      {gameState.newAchievements.map((achievementId) => {
+        const achievement = ACHIEVEMENTS_DATABASE.find(a => a.id === achievementId);
+        return achievement ? (
+          <AchievementNotification
+            key={achievementId}
+            achievement={{ ...achievement, unlocked: true }}
+            onDismiss={() => gameState.dismissAchievement(achievementId)}
+          />
+        ) : null;
+      })}
     </div>
   );
 }

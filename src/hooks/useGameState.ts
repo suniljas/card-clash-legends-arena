@@ -1,6 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { HeroCard, PlayerDeck, GameStats, Rarity } from '@/types/game';
 import { HERO_DATABASE } from '@/data/heroes';
+import { cloudSaveService, CloudSaveData } from '@/services/cloudSave';
+import { achievementsService } from '@/services/achievements';
+import { LeaderboardCategory } from '@/types/achievements';
+import { auth } from '@/config/firebase';
+import { onAuthStateChanged } from 'firebase/auth';
+import { analyticsService } from '@/services/analytics';
+import { crashReportingService } from '@/services/crashReporting';
+import { pushNotificationService } from '@/services/pushNotifications';
 
 const STORAGE_KEYS = {
   COLLECTION: 'card-clash-collection',
@@ -20,14 +28,18 @@ export function useGameState() {
     coins: 1000,
     gems: 50
   });
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSyncing, setIsSyncing] = useState(false);
+  const [newAchievements, setNewAchievements] = useState<string[]>([]);
 
   // Calculate max deck size based on campaign progress
   const getMaxDeckSize = (campaignLevel: number): number => {
     return Math.min(3 + Math.floor((campaignLevel - 1) / 5), 8);
   };
 
-  // Load game state from localStorage
-  useEffect(() => {
+  // Load local data initially, then sync with cloud when auth changes
+  const loadLocalData = useCallback(() => {
     try {
       const savedCollection = localStorage.getItem(STORAGE_KEYS.COLLECTION);
       const savedDeck = localStorage.getItem(STORAGE_KEYS.DECK);
@@ -63,6 +75,77 @@ export function useGameState() {
     }
   }, []);
 
+  // Sync with cloud save when user authenticates
+  const syncWithCloud = useCallback(async () => {
+    if (!isAuthenticated) return;
+    
+    setIsSyncing(true);
+    try {
+      const cloudData = await cloudSaveService.loadFromCloud();
+      
+      if (cloudData) {
+        // Merge local and cloud data
+        const localData = { collection, currentDeck, gameStats };
+        const mergedData = cloudSaveService.mergeLocalAndCloudData(localData, cloudData);
+        
+        setCollection(mergedData.collection);
+        setCurrentDeck(mergedData.currentDeck);
+        setGameStats(mergedData.gameStats);
+        
+        // Save merged data back to cloud
+        await cloudSaveService.saveToCloud({
+          collection: mergedData.collection,
+          currentDeck: mergedData.currentDeck,
+          gameStats: mergedData.gameStats
+        });
+      } else {
+        // No cloud data exists, save current local data to cloud
+        await cloudSaveService.saveToCloud({ collection, currentDeck, gameStats });
+      }
+    } catch (error) {
+      console.error('Error syncing with cloud:', error);
+    } finally {
+      setIsSyncing(false);
+    }
+  }, [isAuthenticated, collection, currentDeck, gameStats]);
+
+  // Auth state listener
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      setIsAuthenticated(!!user);
+      
+      if (user) {
+        // Set up analytics and crash reporting
+        analyticsService.setUserId(user.uid);
+        analyticsService.setUserProperties({
+          level: gameStats.campaignProgress,
+          total_cards: gameStats.totalCards,
+          vip_status: gameStats.gems > 1000
+        });
+        crashReportingService.setUserId(user.uid);
+        
+        // Set up push notifications
+        await pushNotificationService.subscribe(user.uid);
+      }
+      
+      setIsLoading(false);
+    });
+
+    return unsubscribe;
+  }, [gameStats]);
+
+  // Load local data on mount
+  useEffect(() => {
+    loadLocalData();
+  }, [loadLocalData]);
+
+  // Sync with cloud when user logs in
+  useEffect(() => {
+    if (isAuthenticated && !isLoading) {
+      syncWithCloud();
+    }
+  }, [isAuthenticated, isLoading, syncWithCloud]);
+
   // Update deck max size when campaign progress changes
   useEffect(() => {
     const newMaxSize = getMaxDeckSize(gameStats.campaignProgress);
@@ -71,7 +154,7 @@ export function useGameState() {
     }
   }, [gameStats.campaignProgress]);
 
-  // Save to localStorage when state changes
+  // Save to localStorage when state changes (for offline support)
   useEffect(() => {
     localStorage.setItem(STORAGE_KEYS.COLLECTION, JSON.stringify(collection));
   }, [collection]);
@@ -84,10 +167,31 @@ export function useGameState() {
     localStorage.setItem(STORAGE_KEYS.STATS, JSON.stringify(gameStats));
   }, [gameStats]);
 
-  const addCardToCollection = (card: HeroCard) => {
+  // Save to cloud when authenticated and state changes
+  useEffect(() => {
+    if (isAuthenticated && !isSyncing && !isLoading) {
+      const timeoutId = setTimeout(async () => {
+        try {
+          await cloudSaveService.saveToCloud({ collection, currentDeck, gameStats });
+        } catch (error) {
+          console.error('Error saving to cloud:', error);
+        }
+      }, 1000); // Debounce cloud saves
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [collection, currentDeck, gameStats, isAuthenticated, isSyncing, isLoading]);
+
+  const addCardToCollection = async (card: HeroCard) => {
     const newCard = { ...card, id: `${card.id}-${Date.now()}-${Math.random()}` };
     setCollection(prev => [...prev, newCard]);
     setGameStats(prev => ({ ...prev, totalCards: prev.totalCards + 1 }));
+    
+    // Track analytics
+    analyticsService.trackCardPurchase(card.rarity, 0, 'earned');
+    
+    // Check for achievements
+    await checkAchievements();
   };
 
   const addCardToDeck = (card: HeroCard): boolean => {
@@ -157,8 +261,10 @@ export function useGameState() {
     setGameStats(prev => ({ ...prev, gems: prev.gems + amount }));
   };
 
-  const updateCampaignProgress = (level: number) => {
+  const updateCampaignProgress = async (level: number) => {
     setGameStats(prev => ({ ...prev, campaignProgress: Math.max(prev.campaignProgress, level) }));
+    await updateLeaderboards();
+    await checkAchievements();
   };
 
   const openCardPack = (): HeroCard[] => {
@@ -205,10 +311,49 @@ export function useGameState() {
     return Rarity.ULTRA_LEGEND;
   };
 
+  const checkAchievements = async () => {
+    if (!isAuthenticated) return;
+    
+    try {
+      const newlyUnlocked = await achievementsService.checkAchievements(gameStats, collection);
+      if (newlyUnlocked.length > 0) {
+        setNewAchievements(prev => [...prev, ...newlyUnlocked]);
+      }
+    } catch (error) {
+      console.error('Error checking achievements:', error);
+    }
+  };
+
+  const updateLeaderboards = async () => {
+    if (!isAuthenticated) return;
+    
+    try {
+      const username = auth.currentUser?.displayName || 'Anonymous';
+      
+      await Promise.all([
+        achievementsService.updateLeaderboard(LeaderboardCategory.PVP_WINS, gameStats.pvpWins, username),
+        achievementsService.updateLeaderboard(LeaderboardCategory.CAMPAIGN_PROGRESS, gameStats.campaignProgress, username),
+        achievementsService.updateLeaderboard(LeaderboardCategory.COLLECTION_SIZE, collection.length, username),
+        achievementsService.updateLeaderboard(LeaderboardCategory.TOTAL_BATTLES, gameStats.totalBattles, username),
+        achievementsService.updateLeaderboard(LeaderboardCategory.GEMS_EARNED, gameStats.gems, username)
+      ]);
+    } catch (error) {
+      console.error('Error updating leaderboards:', error);
+    }
+  };
+
+  const dismissAchievement = (achievementId: string) => {
+    setNewAchievements(prev => prev.filter(id => id !== achievementId));
+  };
+
   return {
     collection,
     currentDeck,
     gameStats,
+    isAuthenticated,
+    isLoading,
+    isSyncing,
+    newAchievements,
     addCardToCollection,
     addCardToDeck,
     removeCardFromDeck,
@@ -221,6 +366,8 @@ export function useGameState() {
     openCardPack,
     purchaseGems,
     updateCampaignProgress,
-    getMaxDeckSize
+    getMaxDeckSize,
+    syncWithCloud,
+    dismissAchievement
   };
 }

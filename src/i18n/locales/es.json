@@ -1,0 +1,102 @@
+{
+  "common": {
+    "play": "Jugar",
+    "back": "Atrás",
+    "next": "Siguiente",
+    "previous": "Anterior",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "confirm": "Confirmar",
+    "loading": "Cargando...",
+    "error": "Error",
+    "success": "Éxito",
+    "close": "Cerrar",
+    "settings": "Configuración",
+    "language": "Idioma"
+  },
+  "game": {
+    "title": "Card Clash: Arena de Leyendas",
+    "welcome": "Bienvenido a Card Clash",
+    "campaign": "Campaña",
+    "collection": "Colección",
+    "pvp_arena": "Arena PvP",
+    "shop": "Tienda",
+    "achievements": "Logros",
+    "leaderboards": "Clasificaciones",
+    "tutorial": "Tutorial",
+    "deck_builder": "Constructor de Mazos"
+  },
+  "battle": {
+    "your_turn": "Tu Turno",
+    "opponent_turn": "Turno del Oponente",
+    "victory": "¡Victoria!",
+    "defeat": "Derrota",
+    "health": "Salud",
+    "attack": "Ataque",
+    "defense": "Defensa",
+    "mana": "Maná",
+    "play_card": "Jugar Carta",
+    "end_turn": "Terminar Turno",
+    "battle_start": "¡Comienza la Batalla!"
+  },
+  "cards": {
+    "common": "Común",
+    "uncommon": "Poco Común",
+    "rare": "Raro",
+    "epic": "Épico",
+    "legendary": "Legendario",
+    "ultra_legendary": "Ultra Legendario",
+    "owned": "Poseído",
+    "not_owned": "No Poseído",
+    "card_details": "Detalles de la Carta"
+  },
+  "shop": {
+    "buy_pack": "Comprar Paquete",
+    "gems": "Gemas",
+    "coins": "Monedas",
+    "purchase": "Comprar",
+    "buy_gems": "Comprar Gemas",
+    "starter_pack": "Paquete Inicial",
+    "premium_pack": "Paquete Premium",
+    "legend_pack": "Paquete Legendario"
+  },
+  "achievements": {
+    "title": "Logros",
+    "unlocked": "Desbloqueado",
+    "locked": "Bloqueado",
+    "progress": "Progreso",
+    "reward": "Recompensa",
+    "first_victory": "Primera Victoria",
+    "card_collector": "Coleccionista de Cartas",
+    "arena_champion": "Campeón de Arena",
+    "legend_hunter": "Cazador de Leyendas"
+  },
+  "leaderboards": {
+    "title": "Clasificaciones",
+    "global": "Global",
+    "friends": "Amigos",
+    "weekly": "Semanal",
+    "all_time": "Todos los Tiempos",
+    "rank": "Rango",
+    "player": "Jugador",
+    "score": "Puntuación",
+    "battles_won": "Batallas Ganadas",
+    "cards_collected": "Cartas Coleccionadas",
+    "arena_points": "Puntos de Arena"
+  },
+  "notifications": {
+    "daily_reward": "¡Recompensa diaria disponible!",
+    "pvp_challenge": "Nuevo desafío PvP recibido",
+    "achievement_unlocked": "¡Logro desbloqueado!",
+    "event_started": "Ha comenzado un evento especial",
+    "low_energy": "Energía restaurada, ¡regresa y juega!"
+  },
+  "errors": {
+    "network_error": "Falló la conexión de red",
+    "save_failed": "Falló al guardar el juego",
+    "load_failed": "Falló al cargar el juego",
+    "purchase_failed": "Compra fallida",
+    "battle_error": "Ocurrió un error de batalla",
+    "unknown_error": "Ocurrió un error desconocido"
+  }
+}

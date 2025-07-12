@@ -1,0 +1,102 @@
+{
+  "common": {
+    "play": "Jouer",
+    "back": "Retour",
+    "next": "Suivant",
+    "previous": "Précédent",
+    "save": "Sauvegarder",
+    "cancel": "Annuler",
+    "confirm": "Confirmer",
+    "loading": "Chargement...",
+    "error": "Erreur",
+    "success": "Succès",
+    "close": "Fermer",
+    "settings": "Paramètres",
+    "language": "Langue"
+  },
+  "game": {
+    "title": "Card Clash: Arène des Légendes",
+    "welcome": "Bienvenue dans Card Clash",
+    "campaign": "Campagne",
+    "collection": "Collection",
+    "pvp_arena": "Arène JcJ",
+    "shop": "Boutique",
+    "achievements": "Succès",
+    "leaderboards": "Classements",
+    "tutorial": "Tutoriel",
+    "deck_builder": "Constructeur de Deck"
+  },
+  "battle": {
+    "your_turn": "Votre Tour",
+    "opponent_turn": "Tour de l'Adversaire",
+    "victory": "Victoire !",
+    "defeat": "Défaite",
+    "health": "Santé",
+    "attack": "Attaque",
+    "defense": "Défense",
+    "mana": "Mana",
+    "play_card": "Jouer une Carte",
+    "end_turn": "Terminer le Tour",
+    "battle_start": "Début du Combat !"
+  },
+  "cards": {
+    "common": "Commun",
+    "uncommon": "Peu Commun",
+    "rare": "Rare",
+    "epic": "Épique",
+    "legendary": "Légendaire",
+    "ultra_legendary": "Ultra Légendaire",
+    "owned": "Possédé",
+    "not_owned": "Non Possédé",
+    "card_details": "Détails de la Carte"
+  },
+  "shop": {
+    "buy_pack": "Acheter un Paquet",
+    "gems": "Gemmes",
+    "coins": "Pièces",
+    "purchase": "Acheter",
+    "buy_gems": "Acheter des Gemmes",
+    "starter_pack": "Paquet de Démarrage",
+    "premium_pack": "Paquet Premium",
+    "legend_pack": "Paquet Légendaire"
+  },
+  "achievements": {
+    "title": "Succès",
+    "unlocked": "Débloqué",
+    "locked": "Verrouillé",
+    "progress": "Progression",
+    "reward": "Récompense",
+    "first_victory": "Première Victoire",
+    "card_collector": "Collectionneur de Cartes",
+    "arena_champion": "Champion d'Arène",
+    "legend_hunter": "Chasseur de Légendes"
+  },
+  "leaderboards": {
+    "title": "Classements",
+    "global": "Global",
+    "friends": "Amis",
+    "weekly": "Hebdomadaire",
+    "all_time": "Tous les Temps",
+    "rank": "Rang",
+    "player": "Joueur",
+    "score": "Score",
+    "battles_won": "Batailles Gagnées",
+    "cards_collected": "Cartes Collectées",
+    "arena_points": "Points d'Arène"
+  },
+  "notifications": {
+    "daily_reward": "Récompense quotidienne disponible !",
+    "pvp_challenge": "Nouveau défi JcJ reçu",
+    "achievement_unlocked": "Succès débloqué !",
+    "event_started": "Un événement spécial a commencé",
+    "low_energy": "Énergie restaurée, revenez jouer !"
+  },
+  "errors": {
+    "network_error": "Échec de la connexion réseau",
+    "save_failed": "Échec de la sauvegarde du jeu",
+    "load_failed": "Échec du chargement du jeu",
+    "purchase_failed": "Échec de l'achat",
+    "battle_error": "Une erreur de combat s'est produite",
+    "unknown_error": "Une erreur inconnue s'est produite"
+  }
+}
