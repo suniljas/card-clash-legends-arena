@@ -18,7 +18,7 @@ import { EventCenter } from './EventCenter';
 import { Achievements } from './Achievements';
 import { Leaderboards } from './Leaderboards';
 import { AchievementNotification } from './AchievementNotification';
-import { PerformanceMonitor } from './PerformanceMonitor';
+
 import { NetworkStatusIndicator } from './NetworkStatusIndicator';
 import { ACHIEVEMENTS_DATABASE } from '@/data/achievements';
 
@@ -290,7 +290,7 @@ export function Game() {
     <div className="min-h-screen bg-background">
       <NewGameHeader />
       {renderCurrentPage()}
-      <PerformanceMonitor />
+      
       
       {/* Achievement Notifications */}
       {gameState.newAchievements.map((achievementId) => {
