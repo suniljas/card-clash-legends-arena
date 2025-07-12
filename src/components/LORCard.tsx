@@ -4,7 +4,7 @@ import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import { useGameAudio } from '@/hooks/useAudio';
-import { Shield, Sword, Star, Crown, Gem } from 'lucide-react';
+import { Shield, Sword, Star, Crown, Gem, Zap } from 'lucide-react';
 
 interface LORCardProps {
   hero: HeroCardType;
@@ -44,7 +44,12 @@ export function LORCard({
         bgOverlay: 'bg-gradient-to-b from-slate-900/90 to-slate-800/90',
         nameFrame: 'bg-slate-700/80 border-slate-400/50',
         cornerGem: 'bg-slate-400',
-        rarityIcon: <Star className="w-3 h-3" />
+        rarityIcon: <Star className="w-3 h-3" />,
+        manaGradient: 'from-blue-500 to-blue-700',
+        attackGradient: 'from-red-500 to-red-700',
+        healthGradient: 'from-green-500 to-green-700',
+        borderWidth: 'border-2',
+        cornerSize: 'w-2 h-2'
       },
       [Rarity.UNCOMMON]: {
         borderGradient: 'from-green-400 via-emerald-300 to-green-400',
@@ -54,7 +59,12 @@ export function LORCard({
         bgOverlay: 'bg-gradient-to-b from-green-900/90 to-emerald-800/90',
         nameFrame: 'bg-green-700/80 border-green-400/50',
         cornerGem: 'bg-green-400',
-        rarityIcon: <Star className="w-3 h-3" />
+        rarityIcon: <Star className="w-3 h-3" />,
+        manaGradient: 'from-blue-500 to-blue-700',
+        attackGradient: 'from-red-500 to-red-700',
+        healthGradient: 'from-green-500 to-green-700',
+        borderWidth: 'border-2',
+        cornerSize: 'w-2 h-2'
       },
       [Rarity.RARE]: {
         borderGradient: 'from-blue-400 via-cyan-300 to-blue-400',
@@ -64,7 +74,12 @@ export function LORCard({
         bgOverlay: 'bg-gradient-to-b from-blue-900/90 to-cyan-800/90',
         nameFrame: 'bg-blue-700/80 border-blue-400/50',
         cornerGem: 'bg-blue-400 animate-pulse',
-        rarityIcon: <Gem className="w-3 h-3" />
+        rarityIcon: <Gem className="w-3 h-3" />,
+        manaGradient: 'from-blue-500 to-blue-700',
+        attackGradient: 'from-red-500 to-red-700',
+        healthGradient: 'from-green-500 to-green-700',
+        borderWidth: 'border-2',
+        cornerSize: 'w-2.5 h-2.5'
       },
       [Rarity.EPIC]: {
         borderGradient: 'from-purple-400 via-violet-300 to-purple-400',
@@ -74,7 +89,12 @@ export function LORCard({
         bgOverlay: 'bg-gradient-to-b from-purple-900/90 to-violet-800/90',
         nameFrame: 'bg-purple-700/80 border-purple-400/50',
         cornerGem: 'bg-purple-400 animate-pulse',
-        rarityIcon: <Crown className="w-3 h-3" />
+        rarityIcon: <Crown className="w-3 h-3" />,
+        manaGradient: 'from-blue-500 to-blue-700',
+        attackGradient: 'from-red-500 to-red-700',
+        healthGradient: 'from-green-500 to-green-700',
+        borderWidth: 'border-3',
+        cornerSize: 'w-3 h-3'
       },
       [Rarity.LEGEND]: {
         borderGradient: 'from-amber-400 via-yellow-300 to-amber-400',
@@ -84,7 +104,12 @@ export function LORCard({
         bgOverlay: 'bg-gradient-to-b from-amber-900/90 to-yellow-800/90',
         nameFrame: 'bg-amber-700/80 border-amber-400/50',
         cornerGem: 'bg-amber-400 animate-pulse shadow-amber-400/50 shadow-lg',
-        rarityIcon: <Crown className="w-4 h-4" />
+        rarityIcon: <Crown className="w-4 h-4" />,
+        manaGradient: 'from-blue-500 to-blue-700',
+        attackGradient: 'from-red-500 to-red-700',
+        healthGradient: 'from-green-500 to-green-700',
+        borderWidth: 'border-3',
+        cornerSize: 'w-3 h-3'
       },
       [Rarity.ULTRA_LEGEND]: {
         borderGradient: 'from-pink-400 via-rose-300 to-pink-400',
@@ -94,7 +119,12 @@ export function LORCard({
         bgOverlay: 'bg-gradient-to-b from-pink-900/90 to-rose-800/90',
         nameFrame: 'bg-pink-700/80 border-pink-400/50',
         cornerGem: 'bg-pink-400 animate-pulse shadow-pink-400/70 shadow-xl',
-        rarityIcon: <Crown className="w-4 h-4" />
+        rarityIcon: <Crown className="w-4 h-4" />,
+        manaGradient: 'from-blue-500 to-blue-700',
+        attackGradient: 'from-red-500 to-red-700',
+        healthGradient: 'from-green-500 to-green-700',
+        borderWidth: 'border-4',
+        cornerSize: 'w-3.5 h-3.5'
       }
     };
     return configs[rarity];
@@ -121,46 +151,54 @@ export function LORCard({
         sizeClasses[size],
         rarityConfig.glowColor,
         isSelected && 'ring-4 ring-primary scale-105',
-        isAnimated && 'hover:scale-105 hover:-translate-y-2'
+        isAnimated && 'hover:scale-105 hover:-translate-y-2',
+        'card-premium'
       )}
       onClick={handleClick}
     >
-      {/* Outer Metallic Border Frame */}
+      {/* Enhanced Outer Metallic Border Frame */}
       <div className={cn(
-        'absolute inset-0 p-[3px] rounded-lg',
-        `bg-gradient-to-br ${rarityConfig.borderGradient}`
+        'absolute inset-0 p-[4px] rounded-lg',
+        `bg-gradient-to-br ${rarityConfig.borderGradient}`,
+        'shadow-lg'
       )}>
         <div className="w-full h-full bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 rounded-md" />
       </div>
 
-      {/* Inner Ornate Border */}
+      {/* Enhanced Inner Ornate Border */}
       <div className={cn(
-        'absolute inset-[6px] border-2 rounded-md',
+        'absolute inset-[8px] rounded-md',
+        rarityConfig.borderWidth,
         rarityConfig.frameColor,
-        'bg-gradient-to-b from-slate-900/50 to-slate-800/50'
+        'bg-gradient-to-b from-slate-900/50 to-slate-800/50',
+        'shadow-inner'
       )} />
 
       {/* Card Content */}
       <div className="relative z-10 h-full flex flex-col">
         
         {/* Top Section: Mana Cost & Rarity */}
-        <div className="flex justify-between items-start p-2">
-          {/* Mana Cost Circle (LOR Style) */}
+        <div className="flex justify-between items-start p-3">
+          {/* Enhanced Mana Cost Circle (LOR Style) */}
           <div className={cn(
-            'w-8 h-8 rounded-full flex items-center justify-center',
-            'bg-gradient-to-br from-blue-500 to-blue-700',
+            'w-9 h-9 rounded-full flex items-center justify-center',
+            `bg-gradient-to-br ${rarityConfig.manaGradient}`,
             'border-2 border-blue-300 shadow-lg',
-            'text-white font-bold text-sm'
+            'text-white font-bold text-sm',
+            'relative overflow-hidden'
           )}>
+            {/* Mana orb inner glow */}
+            <div className="absolute inset-1 rounded-full bg-white/20" />
             {calculatedManaCost}
           </div>
 
-          {/* Rarity Badge */}
+          {/* Enhanced Rarity Badge */}
           <div className={cn(
-            'flex items-center gap-1 px-2 py-1 rounded-full',
+            'flex items-center gap-1 px-3 py-1.5 rounded-full',
             'backdrop-blur-sm border',
             rarityConfig.nameFrame,
-            rarityConfig.textColor
+            rarityConfig.textColor,
+            'shadow-md'
           )}>
             {rarityConfig.rarityIcon}
             <span className="text-xs font-bold uppercase tracking-wide">
@@ -169,8 +207,8 @@ export function LORCard({
           </div>
         </div>
 
-        {/* Hero Portrait */}
-        <div className="flex-1 mx-2 mb-2 rounded-md overflow-hidden relative border border-slate-600">
+        {/* Enhanced Hero Portrait */}
+        <div className="flex-1 mx-3 mb-3 rounded-md overflow-hidden relative border-2 border-slate-600 shadow-inner">
           {hero.imageUrl ? (
             <img 
               src={hero.imageUrl} 
@@ -183,27 +221,40 @@ export function LORCard({
             </div>
           )}
 
-          {/* Holographic Overlay for high rarities */}
+          {/* Enhanced Holographic Overlay for high rarities */}
           {(hero.rarity === Rarity.LEGEND || hero.rarity === Rarity.ULTRA_LEGEND) && (
-            <>
+            <div>
               <div className="absolute inset-0 bg-gradient-to-br from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1500" />
-            </>
+              <div className="absolute inset-0 bg-gradient-to-br from-transparent via-white/10 to-transparent animate-pulse" />
+            </div>
           )}
 
-          {/* Level indicator */}
+          {/* Enhanced Level indicator */}
           <div className={cn(
             'absolute top-2 right-2 px-2 py-1 rounded-full text-xs font-bold',
-            'bg-slate-900/80 border border-slate-500 text-slate-100'
+            'bg-slate-900/90 border border-slate-500 text-slate-100',
+            'shadow-lg backdrop-blur-sm'
           )}>
             LV {hero.level}
           </div>
+
+          {/* Experience bar for high level cards */}
+          {hero.level > 1 && (
+            <div className="absolute bottom-2 left-2 right-2 h-1 bg-slate-800/80 rounded-full overflow-hidden">
+              <div 
+                className="h-full bg-gradient-to-r from-blue-500 to-purple-500 rounded-full transition-all duration-300"
+                style={{ width: `${(hero.experience / hero.experienceToNext) * 100}%` }}
+              />
+            </div>
+          )}
         </div>
 
-        {/* Hero Name Frame (LOR Style) */}
+        {/* Enhanced Hero Name Frame (LOR Style) */}
         <div className={cn(
-          'mx-2 mb-2 p-2 rounded-md border',
-          rarityConfig.nameFrame
+          'mx-3 mb-3 p-2 rounded-md border',
+          rarityConfig.nameFrame,
+          'shadow-md'
         )}>
           <h3 className={cn(
             'font-bold text-center text-sm tracking-wide text-shadow',
@@ -213,10 +264,13 @@ export function LORCard({
           </h3>
         </div>
 
-        {/* Ability Text (if available) */}
+        {/* Enhanced Ability Text (if available) */}
         {hero.abilityName && hero.level >= 3 && (
-          <div className="mx-2 mb-2 p-2 rounded-md bg-slate-900/60 border border-slate-600">
-            <div className="text-amber-300 text-xs font-bold mb-1">{hero.abilityName}</div>
+          <div className="mx-3 mb-3 p-2 rounded-md bg-slate-900/80 border border-slate-600 shadow-md">
+            <div className="text-amber-300 text-xs font-bold mb-1 flex items-center gap-1">
+              <Zap className="w-3 h-3" />
+              {hero.abilityName}
+            </div>
             {hero.abilityDescription && (
               <div className="text-slate-300 text-xs leading-tight">
                 {hero.abilityDescription}
@@ -225,51 +279,73 @@ export function LORCard({
           </div>
         )}
 
-        {/* Bottom Section: Attack & Health (LOR Style) */}
-        <div className="flex justify-between items-end p-2">
-          {/* Attack (bottom left) */}
+        {/* Enhanced Bottom Section: Attack & Health (LOR Style) */}
+        <div className="flex justify-between items-end p-3">
+          {/* Enhanced Attack (bottom left) */}
           <div className={cn(
-            'w-8 h-8 rounded-full flex items-center justify-center',
-            'bg-gradient-to-br from-red-500 to-red-700',
+            'w-9 h-9 rounded-full flex items-center justify-center',
+            `bg-gradient-to-br ${rarityConfig.attackGradient}`,
             'border-2 border-red-300 shadow-lg',
-            'text-white font-bold text-sm'
+            'text-white font-bold text-sm',
+            'relative overflow-hidden'
           )}>
+            {/* Attack orb inner glow */}
+            <div className="absolute inset-1 rounded-full bg-white/20" />
             {stats.attack}
           </div>
 
-          {/* Health (bottom right) */}
+          {/* Enhanced Health (bottom right) */}
           <div className={cn(
-            'w-8 h-8 rounded-full flex items-center justify-center',
-            'bg-gradient-to-br from-green-500 to-green-700',
+            'w-9 h-9 rounded-full flex items-center justify-center',
+            `bg-gradient-to-br ${rarityConfig.healthGradient}`,
             'border-2 border-green-300 shadow-lg',
-            'text-white font-bold text-sm'
+            'text-white font-bold text-sm',
+            'relative overflow-hidden'
           )}>
+            {/* Health orb inner glow */}
+            <div className="absolute inset-1 rounded-full bg-white/20" />
             {stats.hp}
           </div>
         </div>
       </div>
 
-      {/* Corner Decorative Elements */}
+      {/* Enhanced Corner Decorative Elements */}
       <div className={cn(
-        'absolute top-1 left-1 w-3 h-3 rounded-full',
-        rarityConfig.cornerGem
+        'absolute top-2 left-2 rounded-full',
+        rarityConfig.cornerSize,
+        rarityConfig.cornerGem,
+        'shadow-md'
       )} />
       <div className={cn(
-        'absolute top-1 right-1 w-3 h-3 rounded-full',
-        rarityConfig.cornerGem
+        'absolute top-2 right-2 rounded-full',
+        rarityConfig.cornerSize,
+        rarityConfig.cornerGem,
+        'shadow-md'
       )} />
       <div className={cn(
-        'absolute bottom-1 left-1 w-3 h-3 rounded-full',
-        rarityConfig.cornerGem
+        'absolute bottom-2 left-2 rounded-full',
+        rarityConfig.cornerSize,
+        rarityConfig.cornerGem,
+        'shadow-md'
       )} />
       <div className={cn(
-        'absolute bottom-1 right-1 w-3 h-3 rounded-full',
-        rarityConfig.cornerGem
+        'absolute bottom-2 right-2 rounded-full',
+        rarityConfig.cornerSize,
+        rarityConfig.cornerGem,
+        'shadow-md'
       )} />
 
-      {/* Ultra Legendary special effects */}
+      {/* Enhanced Ultra Legendary special effects */}
       {hero.rarity === Rarity.ULTRA_LEGEND && (
-        <div className="absolute inset-0 bg-gradient-conic from-pink-500/20 via-transparent to-pink-500/20 animate-spin duration-[3000ms] pointer-events-none" />
+        <div>
+          <div className="absolute inset-0 bg-gradient-conic from-pink-500/20 via-transparent to-pink-500/20 animate-spin duration-[3000ms] pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-br from-pink-500/10 via-transparent to-purple-500/10 animate-pulse pointer-events-none" />
+        </div>
+      )}
+
+      {/* Enhanced Legendary effects */}
+      {hero.rarity === Rarity.LEGEND && (
+        <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 via-transparent to-yellow-500/5 animate-pulse pointer-events-none" />
       )}
     </Card>
   );
