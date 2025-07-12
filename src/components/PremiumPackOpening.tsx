@@ -5,17 +5,22 @@ import { Card } from '@/components/ui/card';
 import { PremiumCard } from './PremiumCard';
 import { useGameAudio } from '@/hooks/useAudio';
 import { cn } from '@/lib/utils';
+import { motion, AnimatePresence } from 'framer-motion';
+import Confetti from 'react-confetti';
 
 interface PremiumPackOpeningProps {
   packType: 'beginner' | 'legendary' | 'event';
   cards: HeroCard[];
   onComplete: () => void;
+  enableMusic?: boolean;
+  onAllRevealed?: () => void;
 }
 
-export function PremiumPackOpening({ packType, cards, onComplete }: PremiumPackOpeningProps) {
+export function PremiumPackOpening({ packType, cards, onComplete, enableMusic = true, onAllRevealed }: PremiumPackOpeningProps) {
   const [isOpening, setIsOpening] = useState(false);
   const [revealedCards, setRevealedCards] = useState<number[]>([]);
-  const { playPackOpen, playLegendaryDrop } = useGameAudio();
+  const [showConfetti, setShowConfetti] = useState(false);
+  const { playPackOpen, playLegendaryDrop, playVictory } = useGameAudio();
 
   const packStyles = {
     beginner: {
@@ -38,26 +43,39 @@ export function PremiumPackOpening({ packType, cards, onComplete }: PremiumPackO
   const handleOpenPack = () => {
     setIsOpening(true);
     playPackOpen();
-    
-    // Add dramatic pause before revealing cards
-    setTimeout(() => {
-      // Reveal cards one by one with smooth, staggered timing
-      cards.forEach((card, index) => {
-        setTimeout(() => {
-          if (card.rarity === Rarity.LEGEND || card.rarity === Rarity.ULTRA_LEGEND) {
-            playLegendaryDrop();
-          }
-          setRevealedCards(prev => [...prev, index]);
-        }, index * 700 + 800); // Smooth staggered reveal with better timing
-      });
-    }, 1200); // Dramatic pause after pack opening sound
+    if (enableMusic) playVictory();
+    // Reveal cards one by one with dramatic timing
+    cards.forEach((card, index) => {
+      setTimeout(() => {
+        if (card.rarity === Rarity.LEGEND || card.rarity === Rarity.ULTRA_LEGEND) {
+          playLegendaryDrop();
+          setShowConfetti(true);
+          setTimeout(() => setShowConfetti(false), 2000);
+        }
+        setRevealedCards(prev => [...prev, index]);
+        if (index === cards.length - 1 && onAllRevealed) onAllRevealed();
+      }, (index + 1) * 900);
+    });
   };
 
   const packStyle = packStyles[packType];
 
   return (
-    <div className="fixed inset-0 bg-background/95 backdrop-blur-lg z-50 flex items-center justify-center p-4">
-      <div className="w-full max-w-4xl">
+    <div className="fixed inset-0 bg-background/95 backdrop-blur-lg z-50 flex items-center justify-center p-4 overflow-hidden">
+      {/* Dynamic swirling background */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="absolute inset-0 pointer-events-none"
+      >
+        <motion.div
+          className="absolute w-[120vw] h-[120vw] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-to-br from-primary/20 via-accent/10 to-secondary/20 blur-3xl animate-spin-slow"
+          style={{ zIndex: 1 }}
+        />
+      </motion.div>
+      {showConfetti && <Confetti width={window.innerWidth} height={window.innerHeight} numberOfPieces={200} recycle={false} />} 
+      <div className="w-full max-w-4xl relative z-10">
         {!isOpening ? (
           // Pack Sealed State
           <div className="text-center">
@@ -71,7 +89,6 @@ export function PremiumPackOpening({ packType, cards, onComplete }: PremiumPackO
             )}>
               {/* Premium Pack Design */}
               <div className="absolute inset-0 bg-gradient-to-br from-transparent via-white/10 to-transparent" />
-              
               {/* Pack Content */}
               <div className="relative z-10 h-full flex flex-col items-center justify-center p-6">
                 <div className="text-6xl mb-4">📦</div>
@@ -84,14 +101,12 @@ export function PremiumPackOpening({ packType, cards, onComplete }: PremiumPackO
                   {packType === 'event' && '1 Ultra Legend + 2 Random'}
                 </p>
               </div>
-
               {/* Premium Corner Decorations */}
               <div className="absolute top-2 left-2 w-4 h-4 border-l-2 border-t-2 border-accent opacity-70"></div>
               <div className="absolute top-2 right-2 w-4 h-4 border-r-2 border-t-2 border-accent opacity-70"></div>
               <div className="absolute bottom-2 left-2 w-4 h-4 border-l-2 border-b-2 border-accent opacity-70"></div>
               <div className="absolute bottom-2 right-2 w-4 h-4 border-r-2 border-b-2 border-accent opacity-70"></div>
             </Card>
-
             <Button
               onClick={handleOpenPack}
               size="lg"
@@ -106,32 +121,33 @@ export function PremiumPackOpening({ packType, cards, onComplete }: PremiumPackO
             <h2 className="text-3xl font-bold text-center mb-8 bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent">
               ✨ Pack Opened! ✨
             </h2>
-            
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
               {cards.map((card, index) => (
-                <div
-                  key={card.id}
-                  className={cn(
-                    'transform transition-all duration-1200 ease-out',
-                    revealedCards.includes(index) 
-                      ? 'scale-100 opacity-100 translate-y-0 animate-card-reveal' 
-                      : 'scale-75 opacity-0 translate-y-12 rotate-6'
-                  )}
-                  style={{
-                    transitionDelay: revealedCards.includes(index) ? `${index * 100}ms` : '0ms'
-                  }}
-                >
-                  {revealedCards.includes(index) && (
-                    <PremiumCard
-                      hero={card}
-                      size="medium"
-                      isAnimated={true}
-                    />
-                  )}
-                </div>
+                <AnimatePresence key={card.id}>
+                  <motion.div
+                    initial={{ scale: 0.5, opacity: 0, y: 80, rotateY: 90 }}
+                    animate={revealedCards.includes(index)
+                      ? { scale: 1, opacity: 1, y: 0, rotateY: 0 }
+                      : {}}
+                    transition={{ duration: 0.8, delay: index * 0.2 }}
+                    className={cn(
+                      'transform transition-all duration-1000',
+                      revealedCards.includes(index)
+                        ? 'scale-100 opacity-100 translate-y-0 card-reveal'
+                        : 'scale-50 opacity-0 translate-y-8'
+                    )}
+                  >
+                    {revealedCards.includes(index) && (
+                      <PremiumCard
+                        hero={card}
+                        size="medium"
+                        isAnimated={true}
+                      />
+                    )}
+                  </motion.div>
+                </AnimatePresence>
               ))}
             </div>
-
             {revealedCards.length === cards.length && (
               <div className="text-center animate-fade-in">
                 <Button

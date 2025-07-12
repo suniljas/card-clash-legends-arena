@@ -109,3 +109,13 @@ export interface GameEvent {
   };
   isActive: boolean;
 }
+
+export interface Settings {
+  musicVolume: number;
+  soundVolume: number;
+  haptics: boolean;
+  language: string;
+  accountProvider: 'google' | 'facebook' | 'none';
+  isMusicMuted: boolean;
+  isSoundMuted: boolean;
+}

@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { HeroCard, PlayerDeck, GameStats, Rarity } from '@/types/game';
+import { HeroCard, PlayerDeck, GameStats, Rarity, Settings } from '@/types/game';
 import { HERO_DATABASE } from '@/data/heroes';
 import { cloudSaveService, CloudSaveData } from '@/services/cloudSave';
 import { achievementsService } from '@/services/achievements';
@@ -14,6 +14,16 @@ const STORAGE_KEYS = {
   COLLECTION: 'card-clash-collection',
   DECK: 'card-clash-deck',
   STATS: 'card-clash-stats'
+};
+
+const DEFAULT_SETTINGS: Settings = {
+  musicVolume: 0.7,
+  soundVolume: 0.7,
+  haptics: true,
+  language: 'en',
+  accountProvider: 'none',
+  isMusicMuted: false,
+  isSoundMuted: false,
 };
 
 export function useGameState() {
@@ -32,6 +42,18 @@ export function useGameState() {
   const [isLoading, setIsLoading] = useState(true);
   const [isSyncing, setIsSyncing] = useState(false);
   const [newAchievements, setNewAchievements] = useState<string[]>([]);
+  const [settings, setSettings] = useState<Settings>(() => {
+    const stored = localStorage.getItem('settings');
+    return stored ? JSON.parse(stored) : DEFAULT_SETTINGS;
+  });
+
+  const updateSettings = (newSettings: Partial<Settings>) => {
+    setSettings((prev) => {
+      const updated = { ...prev, ...newSettings };
+      localStorage.setItem('settings', JSON.stringify(updated));
+      return updated;
+    });
+  };
 
   // Calculate max deck size based on campaign progress
   const getMaxDeckSize = (campaignLevel: number): number => {
@@ -405,6 +427,8 @@ export function useGameState() {
     updateCampaignProgress,
     getMaxDeckSize,
     syncWithCloud,
-    dismissAchievement
+    dismissAchievement,
+    settings,
+    updateSettings,
   };
 }
