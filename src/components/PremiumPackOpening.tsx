@@ -39,15 +39,18 @@ export function PremiumPackOpening({ packType, cards, onComplete }: PremiumPackO
     setIsOpening(true);
     playPackOpen();
     
-    // Reveal cards one by one with dramatic timing
-    cards.forEach((card, index) => {
-      setTimeout(() => {
-        if (card.rarity === Rarity.LEGEND || card.rarity === Rarity.ULTRA_LEGEND) {
-          playLegendaryDrop();
-        }
-        setRevealedCards(prev => [...prev, index]);
-      }, (index + 1) * 800);
-    });
+    // Add dramatic pause before revealing cards
+    setTimeout(() => {
+      // Reveal cards one by one with smooth, staggered timing
+      cards.forEach((card, index) => {
+        setTimeout(() => {
+          if (card.rarity === Rarity.LEGEND || card.rarity === Rarity.ULTRA_LEGEND) {
+            playLegendaryDrop();
+          }
+          setRevealedCards(prev => [...prev, index]);
+        }, index * 700 + 800); // Smooth staggered reveal with better timing
+      });
+    }, 1200); // Dramatic pause after pack opening sound
   };
 
   const packStyle = packStyles[packType];
@@ -109,11 +112,14 @@ export function PremiumPackOpening({ packType, cards, onComplete }: PremiumPackO
                 <div
                   key={card.id}
                   className={cn(
-                    'transform transition-all duration-1000',
+                    'transform transition-all duration-1200 ease-out',
                     revealedCards.includes(index) 
-                      ? 'scale-100 opacity-100 translate-y-0 card-reveal' 
-                      : 'scale-50 opacity-0 translate-y-8'
+                      ? 'scale-100 opacity-100 translate-y-0 animate-card-reveal' 
+                      : 'scale-75 opacity-0 translate-y-12 rotate-6'
                   )}
+                  style={{
+                    transitionDelay: revealedCards.includes(index) ? `${index * 100}ms` : '0ms'
+                  }}
                 >
                   {revealedCards.includes(index) && (
                     <PremiumCard

@@ -214,6 +214,20 @@ export default {
             transform: "translateY(-8px) scale(1.02)",
           },
         },
+        "card-reveal": {
+          "0%": {
+            transform: "scale(0.8) rotateY(-180deg) translateY(20px)",
+            opacity: "0"
+          },
+          "60%": {
+            transform: "scale(1.05) rotateY(0deg) translateY(-10px)",
+            opacity: "1"
+          },
+          "100%": {
+            transform: "scale(1) rotateY(0deg) translateY(0px)",
+            opacity: "1"
+          }
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -231,6 +245,7 @@ export default {
         "divine-pulse": "divine-pulse 3s ease-in-out infinite",
         "foil-rainbow": "foil-rainbow 3s ease-in-out infinite",
         "card-hover": "card-hover 0.3s ease-out",
+        "card-reveal": "card-reveal 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
       },
     },
   },

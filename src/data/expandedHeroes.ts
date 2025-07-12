@@ -10,6 +10,18 @@ import epicSorceress from '@/assets/cards/epic-sorceress.png';
 import legendGriffin from '@/assets/cards/legend-griffin.png';
 import ultraLegendTitan from '@/assets/cards/ultra-legend-titan.png';
 
+// Import new premium card images
+import fierceMage from '@/assets/cards/fierce-mage.jpg';
+import masterShaman from '@/assets/cards/master-shaman.jpg';
+import strongSorcerer from '@/assets/cards/strong-sorcerer.jpg';
+import swiftPriest from '@/assets/cards/swift-priest.jpg';
+import fierceWarrior from '@/assets/cards/fierce-warrior.jpg';
+import ironGuard from '@/assets/cards/iron-guard.jpg';
+import forestRanger from '@/assets/cards/forest-ranger.jpg';
+import goldenPaladin from '@/assets/cards/golden-paladin.jpg';
+import shadowBlade from '@/assets/cards/shadow-blade.jpg';
+import ancientDragon from '@/assets/cards/ancient-dragon.jpg';
+
 export const EXPANDED_HERO_DATABASE: HeroCard[] = [
   // Common Heroes (50 cards)
   {
@@ -23,7 +35,7 @@ export const EXPANDED_HERO_DATABASE: HeroCard[] = [
     experienceToNext: 100,
     abilityName: 'Shield Bash',
     abilityDescription: 'Stuns enemy for 1 turn',
-    imageUrl: commonKnight,
+    imageUrl: ironGuard,
     unlocked: true
   },
   {
@@ -37,6 +49,7 @@ export const EXPANDED_HERO_DATABASE: HeroCard[] = [
     experienceToNext: 100,
     abilityName: 'Nature Shot',
     abilityDescription: 'Piercing attack that hits multiple enemies',
+    imageUrl: forestRanger,
     unlocked: true
   },
   {
@@ -104,6 +117,7 @@ export const EXPANDED_HERO_DATABASE: HeroCard[] = [
     experienceToNext: 150,
     abilityName: 'Stealth Strike',
     abilityDescription: 'Invisible attack with critical chance',
+    imageUrl: shadowBlade,
     unlocked: false
   },
   {
@@ -158,7 +172,7 @@ export const EXPANDED_HERO_DATABASE: HeroCard[] = [
     experienceToNext: 200,
     abilityName: 'Sacred Light',
     abilityDescription: 'Heals all allies and damages enemies',
-    imageUrl: rareMage,
+    imageUrl: goldenPaladin,
     unlocked: false
   },
   {
@@ -293,7 +307,7 @@ export const EXPANDED_HERO_DATABASE: HeroCard[] = [
     experienceToNext: 500,
     abilityName: 'Ancient Wrath',
     abilityDescription: 'Devastating fire that grows stronger',
-    imageUrl: legendDragon,
+    imageUrl: ancientDragon,
     unlocked: false
   },
   {
@@ -366,6 +380,46 @@ export const EXPANDED_HERO_DATABASE: HeroCard[] = [
   }
 ];
 
+// Helper function to assign premium card images based on hero names
+const getCardImageForHero = (heroName: string, rarity: Rarity): string | undefined => {
+  const lowerName = heroName.toLowerCase();
+  
+  // Direct name mappings
+  if (lowerName.includes('fierce') && lowerName.includes('mage')) return fierceMage;
+  if (lowerName.includes('master') && lowerName.includes('shaman')) return masterShaman;
+  if (lowerName.includes('strong') && lowerName.includes('sorcerer')) return strongSorcerer;
+  if (lowerName.includes('swift') && lowerName.includes('priest')) return swiftPriest;
+  if (lowerName.includes('fierce') && lowerName.includes('warrior')) return fierceWarrior;
+  
+  // Fallback mappings by class type and rarity
+  if (lowerName.includes('guard') || lowerName.includes('templar')) return ironGuard;
+  if (lowerName.includes('ranger') || lowerName.includes('archer')) return forestRanger;
+  if (lowerName.includes('blade') || lowerName.includes('assassin')) return shadowBlade;
+  if (lowerName.includes('paladin')) return goldenPaladin;
+  if (lowerName.includes('dragon')) return ancientDragon;
+  
+  // Rarity-based fallbacks
+  switch (rarity) {
+    case Rarity.COMMON:
+      return lowerName.includes('priest') ? swiftPriest :
+             lowerName.includes('warrior') ? fierceWarrior :
+             lowerName.includes('mage') ? fierceMage : ironGuard;
+    case Rarity.UNCOMMON:
+      return lowerName.includes('blade') ? shadowBlade :
+             lowerName.includes('templar') ? ironGuard : uncommonWarrior;
+    case Rarity.RARE:
+      return lowerName.includes('paladin') ? goldenPaladin : rareMage;
+    case Rarity.EPIC:
+      return epicSorceress;
+    case Rarity.LEGEND:
+      return lowerName.includes('dragon') ? ancientDragon : legendGriffin;
+    case Rarity.ULTRA_LEGEND:
+      return ultraLegendPhoenix;
+    default:
+      return undefined;
+  }
+};
+
 // Generate additional heroes to reach 150 total
 const generateAdditionalHeroes = (): HeroCard[] => {
   const additionalHeroes: HeroCard[] = [];
@@ -405,9 +459,12 @@ const generateAdditionalHeroes = (): HeroCard[] => {
       const classType = classTypes[Math.floor(Math.random() * classTypes.length)];
       const stats = baseStats[rarityEnum];
       
+      const heroName = `${namePrefix} ${classType}`;
+      const cardImage = getCardImageForHero(heroName, rarityEnum);
+      
       additionalHeroes.push({
         id: `${rarityEnum}-${namePrefix.toLowerCase()}-${classType.toLowerCase()}-${i + 1}`,
-        name: `${namePrefix} ${classType}`,
+        name: heroName,
         rarity: rarityEnum,
         baseAttack: Math.floor(Math.random() * (stats.attack[1] - stats.attack[0]) + stats.attack[0]),
         baseHP: Math.floor(Math.random() * (stats.hp[1] - stats.hp[0]) + stats.hp[0]),
@@ -420,6 +477,7 @@ const generateAdditionalHeroes = (): HeroCard[] => {
                           rarityEnum === Rarity.UNCOMMON ? 150 : 100,
         abilityName: `${namePrefix} Power`,
         abilityDescription: `A powerful ${rarityEnum} ability`,
+        imageUrl: cardImage,
         unlocked: rarityEnum === Rarity.COMMON
       });
     }
