@@ -18,6 +18,7 @@ import { EventCenter } from './EventCenter';
 import { Achievements } from './Achievements';
 import { Leaderboards } from './Leaderboards';
 import { AchievementNotification } from './AchievementNotification';
+import { CardShowcase } from './CardShowcase';
 
 import { NetworkStatusIndicator } from './NetworkStatusIndicator';
 import { ACHIEVEMENTS_DATABASE } from '@/data/achievements';
@@ -38,7 +39,8 @@ type GamePage =
   | 'gem-purchase'
   | 'auth'
   | 'achievements'
-  | 'leaderboards';
+  | 'leaderboards'
+  | 'showcase';
 
 export function Game() {
   const [currentPage, setCurrentPage] = useState<GamePage>('auth');
@@ -271,6 +273,11 @@ export function Game() {
           <Leaderboards
             onNavigate={(page: string) => setCurrentPage(page as GamePage)}
           />
+        );
+      
+      case 'showcase':
+        return (
+          <CardShowcase />
         );
       
       default:

@@ -2,889 +2,452 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
-
-@layer base {
-  :root {
-    /* Game Background */
-    --background: 220 20% 8%;
-    --foreground: 210 40% 98%;
-
-    /* Card System */
-    --card: 220 15% 12%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 220 15% 12%;
-    --popover-foreground: 210 40% 98%;
-
-    /* Game Primary (Magic Blue) */
-    --primary: 240 100% 65%;
-    --primary-foreground: 220 20% 8%;
-
-    /* Game Secondary (Purple) */
-    --secondary: 280 80% 50%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 220 15% 15%;
-    --muted-foreground: 215 20% 65%;
-
-    /* Game Accent (Gold) */
-    --accent: 45 100% 60%;
-    --accent-foreground: 220 20% 8%;
-
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 220 15% 20%;
-    --input: 220 15% 15%;
-    --ring: 240 100% 65%;
-
-    --radius: 0.75rem;
-
-    /* Game-specific colors */
-    --common: 120 15% 50%;
-    --uncommon: 180 50% 60%;
-    --rare: 240 70% 65%;
-    --epic: 280 80% 70%;
-    --legend: 45 100% 60%;
-    --ultra-legend: 320 100% 75%;
-
-    /* Health and attack colors */
-    --health: 0 80% 60%;
-    --attack: 30 100% 55%;
-    --experience: 270 100% 70%;
-
-    /* Game gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(240 100% 65%), hsl(280 80% 50%));
-    --gradient-card: linear-gradient(145deg, hsl(220 15% 12%), hsl(220 15% 18%));
-    --gradient-rare: linear-gradient(135deg, hsl(240 70% 65%), hsl(280 80% 70%));
-    --gradient-legend: linear-gradient(135deg, hsl(45 100% 60%), hsl(30 100% 55%));
-    --gradient-epic: linear-gradient(135deg, hsl(280 80% 70%), hsl(320 90% 75%));
-    --gradient-ultra-legend: linear-gradient(135deg, hsl(320 100% 75%), hsl(240 100% 80%), hsl(45 100% 60%));
-
-    /* Premium metallic gradients */
-    --gradient-gold: linear-gradient(135deg, hsl(45 100% 60%), hsl(35 100% 50%), hsl(45 100% 70%));
-    --gradient-silver: linear-gradient(135deg, hsl(0 0% 80%), hsl(0 0% 60%), hsl(0 0% 90%));
-    --gradient-platinum: linear-gradient(135deg, hsl(0 0% 85%), hsl(240 10% 75%), hsl(0 0% 95%));
-
-    /* Shadows */
-    --shadow-card: 0 4px 20px hsl(220 20% 5% / 0.5);
-    --shadow-rare: 0 0 30px hsl(240 70% 65% / 0.3);
-    --shadow-legend: 0 0 40px hsl(45 100% 60% / 0.4);
-    --shadow-premium: 0 8px 32px hsl(220 20% 5% / 0.8), 0 0 0 1px hsl(45 100% 60% / 0.3);
-
-  /* Android optimizations */
-  --touch-target: 48px;
-  --transition-smooth: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  
-  /* Typography improvements for mobile */
-  --font-size-xs: 0.75rem;
-  --font-size-sm: 0.875rem;
-  --font-size-base: 1rem;
-  --font-size-lg: 1.125rem;
-  --font-size-xl: 1.25rem;
-  --font-size-2xl: 1.5rem;
-  --font-size-3xl: 1.875rem;
-  
-  /* Spacing for better touch targets */
-  --spacing-touch: 12px;
-  --spacing-comfortable: 16px;
-  --spacing-relaxed: 24px;
-
-  /* Analytics and performance colors */
-  --performance-good: 120 100% 50%;
-  --performance-warning: 45 100% 50%;
-  --performance-critical: 0 100% 50%;
-  
-  /* Game specific UI tokens */
-  --game-coins: var(--accent);
-  --game-gems: var(--secondary);
-
-  /* Animation durations for performance modes */
-  --animation-duration: 0.3s;
-  --transition-duration: 0.3s;
-
-    --sidebar-background: 0 0% 98%;
-
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+/* Enhanced Card Animations and Effects */
+@layer components {
+  .card-premium-enhanced {
+    @apply relative overflow-hidden;
+    background: linear-gradient(135deg, #1e293b 0%, #334155 50%, #0f172a 100%);
   }
 
-  .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
-  }
-}
-
-@layer base {
-  * {
-    @apply border-border;
+  .card-premium-enhanced::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+    transform: translateX(-100%);
+    transition: transform 0.6s ease-in-out;
+    pointer-events: none;
   }
 
-  body {
-    @apply bg-background text-foreground;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    -webkit-tap-highlight-color: transparent;
-    /* Prevent text selection on mobile */
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    user-select: none;
+  .card-premium-enhanced:hover::before {
+    transform: translateX(100%);
   }
 
-  /* Android touch optimizations */
-  .touch-target {
-    min-height: var(--touch-target);
-    min-width: var(--touch-target);
-    @apply flex items-center justify-center;
+  /* Divine Glow Effect for Ultra Legendary Cards */
+  .divine-glow {
+    animation: divine-glow 3s ease-in-out infinite;
   }
 
-  /* Smooth transitions for mobile */
-  .transition-smooth {
-    transition: var(--transition-smooth);
+  @keyframes divine-glow {
+    0%, 100% {
+      box-shadow: 0 0 20px rgba(236, 72, 153, 0.3);
+    }
+    50% {
+      box-shadow: 0 0 40px rgba(236, 72, 153, 0.6), 0 0 60px rgba(236, 72, 153, 0.3);
+    }
   }
 
-  /* Prevent text selection on interactive elements */
-  button, .touch-target {
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    user-select: none;
-  }
-
-  /* Typography improvements for readability */
-  .text-mobile-xs { font-size: var(--font-size-xs); }
-  .text-mobile-sm { font-size: var(--font-size-sm); }
-  .text-mobile-base { font-size: var(--font-size-base); }
-  .text-mobile-lg { font-size: var(--font-size-lg); }
-  .text-mobile-xl { font-size: var(--font-size-xl); }
-  .text-mobile-2xl { font-size: var(--font-size-2xl); }
-  .text-mobile-3xl { font-size: var(--font-size-3xl); }
-
-  /* Enhanced contrast for accessibility */
-  .contrast-enhanced {
-    filter: contrast(1.2) brightness(1.1);
-  }
-
-  /* Text shadows for better readability */
-  .text-shadow-sm {
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
-  }
-
-  .text-shadow {
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9);
-  }
-
-  /* Rarity color classes */
-  .text-rarity-common { color: hsl(var(--common)); }
-  .text-rarity-uncommon { color: hsl(var(--uncommon)); }
-  .text-rarity-rare { color: hsl(var(--rare)); }
-  .text-rarity-epic { color: hsl(var(--epic)); }
-  .text-rarity-legend { color: hsl(var(--legend)); }
-  .text-rarity-ultra-legend { color: hsl(var(--ultra-legend)); }
-
-  .border-rarity-common { border-color: hsl(var(--common)); }
-  .border-rarity-uncommon { border-color: hsl(var(--uncommon)); }
-  .border-rarity-rare { border-color: hsl(var(--rare)); }
-  .border-rarity-epic { border-color: hsl(var(--epic)); }
-  .border-rarity-legend { border-color: hsl(var(--legend)); }
-  .border-rarity-ultra-legend { border-color: hsl(var(--ultra-legend)); }
-
-  .bg-rarity-common { background-color: hsl(var(--common)); }
-  .bg-rarity-uncommon { background-color: hsl(var(--uncommon)); }
-  .bg-rarity-rare { background-color: hsl(var(--rare)); }
-  .bg-rarity-epic { background-color: hsl(var(--epic)); }
-  .bg-rarity-legend { background-color: hsl(var(--legend)); }
-  .bg-rarity-ultra-legend { background-color: hsl(var(--ultra-legend)); }
-
-  /* Enhanced pulse glow animation */
+  /* Enhanced Pulse Glow */
   .animate-pulse-glow {
-    animation: pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    animation: pulse-glow 2s ease-in-out infinite;
   }
 
   @keyframes pulse-glow {
     0%, 100% {
-      opacity: 1;
-      filter: brightness(1) drop-shadow(0 0 5px currentColor);
+      filter: brightness(1) drop-shadow(0 0 10px rgba(59, 130, 246, 0.3));
     }
     50% {
-      opacity: 0.8;
-      filter: brightness(1.2) drop-shadow(0 0 15px currentColor);
+      filter: brightness(1.1) drop-shadow(0 0 20px rgba(59, 130, 246, 0.6));
     }
   }
 
-  /* Divine glow for ultra legendaries */
-  .divine-glow {
-    animation: divine-pulse 3s ease-in-out infinite;
-    filter: drop-shadow(0 0 20px hsl(var(--ultra-legend)));
+  /* Floating Animation for Particles */
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
   }
 
-  @keyframes divine-pulse {
+  @keyframes float {
     0%, 100% {
-      filter: drop-shadow(0 0 20px hsl(var(--ultra-legend))) brightness(1);
+      transform: translateY(0px);
     }
     50% {
-      filter: drop-shadow(0 0 30px hsl(var(--ultra-legend))) brightness(1.3);
+      transform: translateY(-10px);
     }
   }
 
-  /* Rarity-specific card styles */
-  .rarity-common { 
-    box-shadow: 0 4px 12px hsl(var(--common) / 0.3);
-  }
-  
-  .rarity-uncommon { 
-    box-shadow: 0 4px 16px hsl(var(--uncommon) / 0.4);
-  }
-  
-  .rarity-rare { 
-    box-shadow: 0 6px 20px hsl(var(--rare) / 0.5);
-    animation: pulse-glow 3s infinite;
-  }
-  
-  .rarity-epic { 
-    box-shadow: 0 8px 24px hsl(var(--epic) / 0.6);
-    animation: pulse-glow 2.5s infinite;
-  }
-  
-  .rarity-legend { 
-    box-shadow: 0 10px 30px hsl(var(--legend) / 0.7);
-    animation: pulse-glow 2s infinite;
-  }
-  
-  .rarity-ultra-legend { 
-    box-shadow: 0 12px 40px hsl(var(--ultra-legend) / 0.8);
-    animation: divine-pulse 3s infinite;
-  }
-
-  /* Enhanced metallic card effect */
-  .card-metallic {
-    position: relative;
-    background: linear-gradient(145deg, hsl(220 15% 12%), hsl(220 15% 18%));
-    border: 2px solid hsl(220 15% 20%);
-    box-shadow: 
-      0 4px 20px hsl(220 20% 5% / 0.5),
-      inset 0 1px 0 hsl(220 15% 25%),
-      inset 0 -1px 0 hsl(220 15% 8%);
-  }
-
-  .card-metallic::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      135deg,
-      transparent 0%,
-      hsl(0 0% 100% / 0.1) 25%,
-      transparent 50%,
-      hsl(0 0% 100% / 0.05) 75%,
-      transparent 100%
-    );
-    border-radius: inherit;
-    pointer-events: none;
-  }
-
-  .card-metallic:hover::before {
-    background: linear-gradient(
-      135deg,
-      transparent 0%,
-      hsl(0 0% 100% / 0.2) 25%,
-      transparent 50%,
-      hsl(0 0% 100% / 0.1) 75%,
-      transparent 100%
-    );
-  }
-
-  /* Enhanced foil shine effect */
-  .foil-shine {
+  /* Shimmer Effect */
+  .shimmer {
     position: relative;
     overflow: hidden;
   }
 
-  .foil-shine::before {
+  .shimmer::after {
     content: '';
     position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
     background: linear-gradient(
-      45deg,
-      transparent 30%,
-      hsl(0 0% 100% / 0.3) 50%,
-      transparent 70%
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent
     );
-    transform: rotate(45deg) translateX(-100%);
-    animation: foil-shimmer 3s ease-in-out infinite;
+    animation: shimmer 2s infinite;
   }
 
-  @keyframes foil-shimmer {
-    0% { transform: rotate(45deg) translateX(-100%); }
-    50% { transform: rotate(45deg) translateX(100%); }
-    100% { transform: rotate(45deg) translateX(-100%); }
+  @keyframes shimmer {
+    0% {
+      left: -100%;
+    }
+    100% {
+      left: 100%;
+    }
   }
 
-  /* Enhanced 3D card effect */
-  .card-3d {
-    transform-style: preserve-3d;
-    transition: transform 0.3s ease;
-  }
-
-  .card-3d:hover {
-    transform: rotateY(10deg) rotateX(5deg) translateZ(10px);
-  }
-
-  /* Premium button styles */
-  .btn-premium {
-    background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)));
-    border: 2px solid hsl(var(--primary));
-    box-shadow: 0 4px 15px hsl(var(--primary) / 0.3);
-    transition: all 0.3s ease;
-  }
-
-  .btn-premium:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px hsl(var(--primary) / 0.4);
-  }
-
-  /* Enhanced corner gems */
-  .corner-gems::before,
-  .corner-gems::after {
-    content: '';
-    position: absolute;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, hsl(var(--accent)), hsl(var(--accent) / 0.7));
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-  }
-
-  .corner-gems::before {
-    top: 8px;
-    left: 8px;
-  }
-
-  .corner-gems::after {
-    bottom: 8px;
-    right: 8px;
-  }
-
-  /* Enhanced text effects */
-  .text-embossed {
-    text-shadow: 
-      0 1px 0 hsl(0 0% 100% / 0.3),
-      0 -1px 0 hsl(0 0% 0% / 0.3);
-  }
-
-  .text-glow {
-    text-shadow: 
-      0 0 5px currentColor,
-      0 0 10px currentColor,
-      0 0 15px currentColor;
-  }
-
+  /* Enhanced Text Shadow */
   .text-shadow {
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
   }
 
-  /* LOR-style border frames */
-  .lor-border-frame {
+  /* Card Hover Effects */
+  .card-hover-lift {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .card-hover-lift:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Rarity-specific animations */
+  .rarity-common {
+    @apply shadow-slate-400/20;
+  }
+
+  .rarity-uncommon {
+    @apply shadow-green-400/30;
+  }
+
+  .rarity-rare {
+    @apply shadow-blue-400/40 animate-pulse;
+  }
+
+  .rarity-epic {
+    @apply shadow-purple-400/50 animate-pulse;
+  }
+
+  .rarity-legend {
+    @apply shadow-amber-400/60 animate-pulse;
+  }
+
+  .rarity-ultra-legend {
+    @apply shadow-pink-400/70 animate-pulse divine-glow;
+  }
+
+  /* Enhanced Orb Effects */
+  .orb-glow {
     position: relative;
-    background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)));
-    padding: 3px;
-    border-radius: 0.75rem;
   }
 
-  .lor-inner-frame {
-    background: linear-gradient(145deg, hsl(220 15% 12%), hsl(220 15% 18%));
-    border-radius: 0.5rem;
-    height: 100%;
+  .orb-glow::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    background: conic-gradient(from 0deg, transparent, currentColor, transparent);
+    border-radius: 50%;
+    animation: orb-rotate 3s linear infinite;
+    opacity: 0.3;
   }
 
-  /* Mobile optimizations */
-  .mobile-card {
-    touch-action: manipulation;
-    -webkit-tap-highlight-color: transparent;
-    user-select: none;
-  }
-
-  .mobile-smooth-scroll {
-    -webkit-overflow-scrolling: touch;
-    overscroll-behavior: contain;
-  }
-
-  /* GPU acceleration */
-  .gpu-accelerated {
-    transform: translateZ(0);
-    will-change: transform;
-    backface-visibility: hidden;
-  }
-
-  /* Responsive design improvements */
-  @media (max-width: 768px) {
-    .touch-friendly {
-      min-height: 44px;
-      min-width: 44px;
+  @keyframes orb-rotate {
+    from {
+      transform: rotate(0deg);
     }
-
-    .card-mobile {
-      transform: scale(0.95);
-      transition: transform 0.2s ease;
+    to {
+      transform: rotate(360deg);
     }
   }
 
-  /* Enhanced holographic effect */
-  .holographic {
+  /* Card Border Glow */
+  .border-glow {
     position: relative;
-    overflow: hidden;
-    background: linear-gradient(
-      45deg,
-      hsl(var(--primary) / 0.8),
-      hsl(var(--secondary) / 0.8),
-      hsl(var(--accent) / 0.8),
-      hsl(var(--primary) / 0.8)
-    );
-    background-size: 400% 400%;
-    animation: holographic-shine 3s ease-in-out infinite;
   }
 
-  @keyframes holographic-shine {
-    0%, 100% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-  }
-
-  /* Enhanced premium card styles */
-  .card-premium {
-    position: relative;
-    background: linear-gradient(145deg, hsl(220 15% 12%), hsl(220 15% 18%));
-    border: 2px solid hsl(var(--primary));
-    box-shadow: 
-      0 8px 32px hsl(220 20% 5% / 0.8),
-      0 0 0 1px hsl(var(--primary) / 0.3),
-      inset 0 1px 0 hsl(220 15% 25%),
-      inset 0 -1px 0 hsl(220 15% 8%);
-    transition: all 0.3s ease;
-  }
-
-  .card-premium::before {
+  .border-glow::before {
     content: '';
     position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      135deg,
-      transparent 0%,
-      hsl(0 0% 100% / 0.1) 25%,
-      transparent 50%,
-      hsl(0 0% 100% / 0.05) 75%,
-      transparent 100%
-    );
+    inset: -2px;
+    background: linear-gradient(45deg, #3b82f6, #8b5cf6, #ec4899, #3b82f6);
     border-radius: inherit;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-
-  .card-premium:hover::before {
-    opacity: 1;
-  }
-
-  .card-premium:hover {
-    transform: translateY(-4px) scale(1.02);
-    box-shadow: 
-      0 12px 40px hsl(220 20% 5% / 0.9),
-      0 0 0 1px hsl(var(--primary) / 0.5),
-      inset 0 1px 0 hsl(220 15% 25%),
-      inset 0 -1px 0 hsl(220 15% 8%);
-  }
-
-  /* Enhanced foil effect */
-  .foil-effect {
-    position: relative;
-    overflow: hidden;
-  }
-
-  .foil-effect::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: linear-gradient(
-      45deg,
-      transparent 30%,
-      hsl(0 0% 100% / 0.4) 50%,
-      transparent 70%
-    );
-    transform: rotate(45deg) translateX(-100%);
-    animation: foil-shine 4s ease-in-out infinite;
-  }
-
-  @keyframes foil-shine {
-    0% { transform: rotate(45deg) translateX(-100%); }
-    50% { transform: rotate(45deg) translateX(100%); }
-    100% { transform: rotate(45deg) translateX(-100%); }
-  }
-
-  /* Enhanced holographic effect */
-  .holographic {
-    position: relative;
-    overflow: hidden;
-  }
-
-  .holographic::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      45deg,
-      hsl(var(--primary) / 0.3),
-      hsl(var(--secondary) / 0.3),
-      hsl(var(--accent) / 0.3),
-      hsl(var(--primary) / 0.3)
-    );
     background-size: 400% 400%;
-    animation: holographic-shine 3s ease-in-out infinite;
-    pointer-events: none;
+    animation: border-glow-animation 3s ease infinite;
+    z-index: -1;
   }
 
-  @keyframes holographic-shine {
-    0%, 100% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
+  @keyframes border-glow-animation {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
   }
 
-  /* Enhanced 3D card effect */
-  .card-3d {
-    transform-style: preserve-3d;
-    transition: transform 0.3s ease;
-  }
-
-  .card-3d:hover {
-    transform: rotateY(10deg) rotateX(5deg) translateZ(10px);
-  }
-
-  /* Particle effects for ultra legendaries */
-  .particle-effect {
+  /* Enhanced Selection Effects */
+  .selection-ring {
     position: relative;
-    overflow: hidden;
   }
 
-  .particle-effect::before {
+  .selection-ring::after {
     content: '';
     position: absolute;
-    inset: 0;
-    background-image: 
-      radial-gradient(circle at 20% 20%, hsl(var(--accent) / 0.3) 2px, transparent 2px),
-      radial-gradient(circle at 80% 80%, hsl(var(--primary) / 0.3) 2px, transparent 2px),
-      radial-gradient(circle at 40% 60%, hsl(var(--secondary) / 0.3) 2px, transparent 2px);
-    background-size: 50px 50px, 40px 40px, 60px 60px;
-    animation: particle-float 6s ease-in-out infinite;
-    pointer-events: none;
-  }
-
-  @keyframes particle-float {
-    0%, 100% { transform: translateY(0px) rotate(0deg); }
-    50% { transform: translateY(-10px) rotate(180deg); }
-  }
-
-  /* Enhanced divine glow */
-  .divine-glow {
-    position: relative;
-    animation: divine-pulse 3s ease-in-out infinite;
-  }
-
-  .divine-glow::after {
-    content: '';
-    position: absolute;
-    inset: -10px;
-    background: radial-gradient(
-      circle,
-      hsl(var(--ultra-legend) / 0.3) 0%,
-      transparent 70%
-    );
+    inset: -4px;
+    border: 2px solid #3b82f6;
     border-radius: inherit;
-    animation: divine-pulse 3s ease-in-out infinite;
+    animation: selection-pulse 2s ease-in-out infinite;
     pointer-events: none;
   }
 
-  @keyframes divine-pulse {
+  @keyframes selection-pulse {
     0%, 100% {
       opacity: 0.5;
       transform: scale(1);
     }
     50% {
       opacity: 1;
-      transform: scale(1.1);
+      transform: scale(1.05);
     }
   }
 
-  /* Card reveal animation */
-  .card-reveal {
-    animation: card-reveal 0.6s ease-out;
+  /* Particle System */
+  .particle-container {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
   }
 
-  @keyframes card-reveal {
-    0% {
+  .particle {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: currentColor;
+    border-radius: 50%;
+    animation: particle-float 4s ease-in-out infinite;
+  }
+
+  @keyframes particle-float {
+    0%, 100% {
+      transform: translateY(0) translateX(0);
       opacity: 0;
-      transform: scale(0.8) rotateY(90deg);
     }
-    50% {
-      opacity: 0.5;
-      transform: scale(0.9) rotateY(45deg);
+    25% {
+      opacity: 1;
+    }
+    75% {
+      opacity: 1;
     }
     100% {
-      opacity: 1;
-      transform: scale(1) rotateY(0deg);
+      transform: translateY(-20px) translateX(10px);
+      opacity: 0;
     }
   }
 
-  /* Enhanced text effects */
-  .text-glow {
-    text-shadow: 
-      0 0 5px currentColor,
-      0 0 10px currentColor,
-      0 0 15px currentColor;
+  /* Enhanced Background Gradients */
+  .bg-gradient-lor {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 25%, #334155 50%, #475569 75%, #64748b 100%);
   }
 
-  .text-emboss {
-    text-shadow: 
-      0 1px 0 hsl(0 0% 100% / 0.3),
-      0 -1px 0 hsl(0 0% 0% / 0.3);
+  .bg-gradient-lor-reverse {
+    background: linear-gradient(135deg, #64748b 0%, #475569 25%, #334155 50%, #1e293b 75%, #0f172a 100%);
   }
 
-  /* Loading shimmer effect */
-  .loading-shimmer {
-    background: linear-gradient(
-      90deg,
-      transparent 0%,
-      hsl(0 0% 100% / 0.1) 50%,
-      transparent 100%
-    );
-    background-size: 200% 100%;
-    animation: shimmer 1.5s infinite;
+  /* Enhanced Button Styles */
+  .btn-lor-primary {
+    @apply bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700;
+    @apply text-white font-bold py-2 px-4 rounded-lg;
+    @apply transition-all duration-300 ease-in-out;
+    @apply shadow-lg hover:shadow-xl;
+    @apply transform hover:scale-105;
   }
 
-  @keyframes shimmer {
-    0% { background-position: -200% 0; }
-    100% { background-position: 200% 0; }
+  .btn-lor-secondary {
+    @apply bg-gradient-to-r from-slate-600 to-slate-700 hover:from-slate-700 hover:to-slate-800;
+    @apply text-white font-bold py-2 px-4 rounded-lg;
+    @apply transition-all duration-300 ease-in-out;
+    @apply shadow-lg hover:shadow-xl;
+    @apply transform hover:scale-105;
   }
 
-  /* High DPI display optimizations */
-  @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-    .crisp-edges {
-      image-rendering: -webkit-optimize-contrast;
-      image-rendering: crisp-edges;
-    }
+  /* Enhanced Input Styles */
+  .input-lor {
+    @apply bg-slate-800 border border-slate-600 text-white;
+    @apply rounded-lg px-3 py-2;
+    @apply focus:ring-2 focus:ring-blue-500 focus:border-transparent;
+    @apply transition-all duration-200;
   }
 
-  /* Reduced motion preferences */
-  @media (prefers-reduced-motion: reduce) {
-    .transition-smooth {
-      transition: none;
-    }
-
-    .animate-spin,
-    .animate-pulse,
-    .animate-pulse-glow,
-    .animate-bounce {
-      animation: none;
-    }
+  /* Enhanced Modal Styles */
+  .modal-lor {
+    @apply bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900;
+    @apply border border-slate-600 rounded-xl;
+    @apply shadow-2xl;
+    @apply backdrop-blur-sm;
   }
 
-  /* Focus ring for accessibility */
-  .focus-ring:focus {
-    outline: 2px solid hsl(var(--ring));
-    outline-offset: 2px;
+  /* Enhanced Loading Spinner */
+  .spinner-lor {
+    @apply w-8 h-8 border-4 border-slate-600 border-t-blue-500;
+    @apply rounded-full animate-spin;
   }
 
-  /* Connection status indicators */
-  .connection-poor {
-    background-color: hsl(var(--destructive));
+  /* Enhanced Progress Bar */
+  .progress-lor {
+    @apply bg-slate-700 rounded-full overflow-hidden;
   }
 
-  .connection-good {
-    background-color: hsl(var(--performance-good));
+  .progress-lor-fill {
+    @apply h-full bg-gradient-to-r from-blue-500 to-purple-500;
+    @apply transition-all duration-300 ease-out;
   }
 
-  /* Performance mode optimizations */
-  .performance-low .animate-pulse-glow,
-  .performance-low .animate-pulse,
-  .performance-low .animate-spin {
-    animation-duration: 0.1s;
+  /* Enhanced Tooltip */
+  .tooltip-lor {
+    @apply bg-slate-800 border border-slate-600 text-white;
+    @apply rounded-lg px-3 py-2 text-sm;
+    @apply shadow-xl backdrop-blur-sm;
+    @apply z-50;
   }
 
-  .performance-medium .animate-pulse-glow,
-  .performance-medium .animate-pulse,
-  .performance-medium .animate-spin {
-    animation-duration: 0.2s;
+  /* Enhanced Badge Styles */
+  .badge-lor {
+    @apply bg-gradient-to-r from-slate-700 to-slate-600;
+    @apply text-white font-bold text-xs;
+    @apply px-2 py-1 rounded-full;
+    @apply border border-slate-500;
   }
 
-  /* High contrast mode support */
-  @media (prefers-contrast: high) {
-    :root {
-      --border: 0 0% 0%;
-      --muted: 0 0% 50%;
-      --muted-foreground: 0 0% 100%;
-    }
+  .badge-lor-rare {
+    @apply bg-gradient-to-r from-blue-600 to-blue-700;
+    @apply border-blue-400;
   }
 
-  /* GPU acceleration for smooth animations */
-  .gpu-accelerated {
-    transform: translateZ(0);
-    will-change: transform;
+  .badge-lor-epic {
+    @apply bg-gradient-to-r from-purple-600 to-purple-700;
+    @apply border-purple-400;
+  }
+
+  .badge-lor-legendary {
+    @apply bg-gradient-to-r from-amber-600 to-amber-700;
+    @apply border-amber-400;
+  }
+
+  /* Enhanced Card Grid */
+  .card-grid-lor {
+    @apply grid gap-4;
+    @apply grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4;
+  }
+
+  /* Enhanced Scrollbar */
+  .scrollbar-lor {
+    scrollbar-width: thin;
+    scrollbar-color: #475569 #1e293b;
+  }
+
+  .scrollbar-lor::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .scrollbar-lor::-webkit-scrollbar-track {
+    background: #1e293b;
+    border-radius: 4px;
+  }
+
+  .scrollbar-lor::-webkit-scrollbar-thumb {
+    background: #475569;
+    border-radius: 4px;
+  }
+
+  .scrollbar-lor::-webkit-scrollbar-thumb:hover {
+    background: #64748b;
+  }
+}
+
+/* Base styles */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900;
+    @apply text-white;
+    @apply min-h-screen;
+    @apply font-sans;
+  }
+
+  /* Enhanced focus styles */
+  *:focus {
+    @apply outline-none ring-2 ring-blue-500 ring-offset-2 ring-offset-slate-900;
+  }
+
+  /* Enhanced selection styles */
+  ::selection {
+    @apply bg-blue-500 text-white;
+  }
+
+  ::-moz-selection {
+    @apply bg-blue-500 text-white;
+  }
+}
+
+/* Utility classes */
+@layer utilities {
+  .text-gradient {
+    @apply bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent;
+  }
+
+  .text-gradient-gold {
+    @apply bg-gradient-to-r from-yellow-400 to-amber-400 bg-clip-text text-transparent;
+  }
+
+  .text-gradient-legendary {
+    @apply bg-gradient-to-r from-amber-400 via-yellow-400 to-orange-400 bg-clip-text text-transparent;
+  }
+
+  .backdrop-blur-custom {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+
+  .transform-3d {
+    transform-style: preserve-3d;
+  }
+
+  .rotate-y-180 {
+    transform: rotateY(180deg);
+  }
+
+  .flip-card {
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+  }
+
+  .flip-card:hover {
+    transform: rotateY(180deg);
+  }
+
+  .flip-card-front,
+  .flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
     backface-visibility: hidden;
   }
 
-  /* Mobile game optimizations */
-  .mobile-optimized-game {
-    min-height: 100vh;
-    width: 100%;
-    background: hsl(var(--background));
-    overflow-x: hidden;
-    position: relative;
-  }
-
-  .mobile-optimized-game.offline-mode {
-    opacity: 0.8;
-  }
-
-  .mobile-optimized-game.performance-low {
-    --animation-duration: 0.1s;
-    --transition-duration: 0.1s;
-  }
-
-  .mobile-optimized-game.performance-medium {
-    --animation-duration: 0.2s;
-    --transition-duration: 0.2s;
-  }
-
-  /* App background state */
-  .app-background {
-    animation-play-state: paused;
-  }
-
-  .app-background * {
-    animation-play-state: paused;
-  }
-
-  /* Enhanced touch targets for mobile */
-  @media (max-width: 768px) {
-    .touch-target {
-      min-height: 44px;
-      min-width: 44px;
-    }
-
-    .mobile-card {
-      transform: scale(0.98);
-      transition: transform 0.2s ease;
-    }
-
-    .mobile-card:active {
-      transform: scale(0.95);
-    }
-  }
-
-  /* Google Play Store ready optimizations */
-  .store-ready {
-    /* Ensure proper viewport handling */
-    min-height: 100vh;
-    min-width: 100vw;
-    overflow-x: hidden;
-  }
-
-  /* Enhanced accessibility */
-  @media (prefers-reduced-motion: reduce) {
-    * {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
-    }
-  }
-
-  /* Battery optimization */
-  .battery-optimized {
-    /* Reduce animations when battery is low */
-    animation-duration: 0.1s !important;
-    transition-duration: 0.1s !important;
-  }
-
-  /* Enhanced card grid for mobile */
-  .card-grid-mobile {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-    gap: 12px;
-    padding: 16px;
-  }
-
-  @media (min-width: 768px) {
-    .card-grid-mobile {
-      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-      gap: 16px;
-      padding: 24px;
-    }
-  }
-
-  /* Enhanced loading states */
-  .loading-state {
-    background: linear-gradient(90deg, hsl(var(--muted)) 25%, hsl(var(--muted) / 0.5) 50%, hsl(var(--muted)) 75%);
-    background-size: 200% 100%;
-    animation: loading-shimmer 1.5s infinite;
-  }
-
-  /* Enhanced error states */
-  .error-state {
-    background: linear-gradient(135deg, hsl(var(--destructive) / 0.1), hsl(var(--destructive) / 0.05));
-    border: 1px solid hsl(var(--destructive) / 0.3);
-  }
-
-  /* Enhanced success states */
-  .success-state {
-    background: linear-gradient(135deg, hsl(var(--performance-good) / 0.1), hsl(var(--performance-good) / 0.05));
-    border: 1px solid hsl(var(--performance-good) / 0.3);
+  .flip-card-back {
+    transform: rotateY(180deg);
   }
 }

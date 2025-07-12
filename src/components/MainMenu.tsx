@@ -116,6 +116,16 @@ export function MainMenu({ onNavigate, user, onLogout }: MainMenuProps) {
       borderColor: 'border-yellow-400/30',
       glowColor: 'shadow-yellow-500/20',
       rarity: 'legend'
+    },
+    {
+      id: 'showcase',
+      title: 'Card Showcase',
+      description: 'View enhanced cards',
+      icon: Star,
+      gradient: 'from-pink-500 to-pink-700',
+      borderColor: 'border-pink-400/30',
+      glowColor: 'shadow-pink-500/20',
+      rarity: 'ultra-legend'
     }
   ];
 
