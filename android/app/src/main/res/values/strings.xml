@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">card-clash-legends-arena</string>
-    <string name="title_activity_main">card-clash-legends-arena</string>
+    <string name="app_name">Card Clash: Legends Arena</string>
+    <string name="title_activity_main">Card Clash: Legends Arena</string>
     <string name="package_name">com.suniljas.cardclash</string>
     <string name="custom_url_scheme">com.suniljas.cardclash</string>
 </resources>
