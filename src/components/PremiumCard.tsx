@@ -82,7 +82,7 @@ export function PremiumCard({
         effects.glow = 'shadow-2xl shadow-rarity-legend/60 animate-pulse-glow';
         effects.border = 'border-2 border-rarity-legend animate-pulse';
         effects.background = 'bg-gradient-to-br from-card via-rarity-legend/15 to-rarity-legend/30';
-        effects.overlay = 'before:absolute before:inset-0 before:bg-gradient-to-br before:from-transparent before:via-rarity-legend/25 before:to-transparent before:animate-pulse after:absolute after:inset-0 after:bg-gradient-conic after:from-rarity-legend/25 after:via-transparent after:to-rarity-legend/25 after:animate-spin after:duration-[3s]';
+        effects.overlay = 'before:absolute before:inset-0 before:bg-gradient-to-br before:from-transparent before:via-rarity-legend/25 before:to-transparent before:animate-pulse after:absolute after:inset-0 after:bg-gradient-conic after:from-rarity-legend/25 after:via-transparent after:to-rarity-legend/25 after:animate-spin after:duration-[3000ms]';
         effects.frame = 'bg-gradient-to-br from-rarity-legend/40 to-transparent foil-effect holographic';
         effects.textColor = 'text-rarity-legend';
         effects.badgeStyle = 'bg-rarity-legend/40 border-rarity-legend text-rarity-legend divine-glow';
@@ -91,7 +91,7 @@ export function PremiumCard({
         effects.glow = 'shadow-2xl shadow-rarity-ultra-legend/70 animate-pulse-glow divine-glow';
         effects.border = 'border-2 border-rarity-ultra-legend animate-pulse';
         effects.background = 'bg-gradient-to-br from-card via-rarity-ultra-legend/20 to-rarity-ultra-legend/35';
-        effects.overlay = 'before:absolute before:inset-0 before:bg-gradient-to-br before:from-transparent before:via-rarity-ultra-legend/30 before:to-transparent before:animate-pulse after:absolute after:inset-0 after:bg-gradient-conic after:from-rarity-ultra-legend/35 after:via-rarity-legend/25 after:to-rarity-ultra-legend/35 after:animate-spin after:duration-[2s]';
+        effects.overlay = 'before:absolute before:inset-0 before:bg-gradient-to-br before:from-transparent before:via-rarity-ultra-legend/30 before:to-transparent before:animate-pulse after:absolute after:inset-0 after:bg-gradient-conic after:from-rarity-ultra-legend/35 after:via-rarity-legend/25 after:to-rarity-ultra-legend/35 after:animate-spin after:duration-[2000ms]';
         effects.frame = 'bg-gradient-to-br from-rarity-ultra-legend/45 to-transparent foil-effect holographic particle-effect';
         effects.textColor = 'text-rarity-ultra-legend text-glow';
         effects.badgeStyle = 'bg-rarity-ultra-legend/45 border-rarity-ultra-legend text-rarity-ultra-legend divine-glow';
