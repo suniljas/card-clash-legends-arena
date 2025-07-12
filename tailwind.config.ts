@@ -163,6 +163,46 @@ export default {
 					'100%': {
 						transform: 'translateX(100%)'
 					}
+				},
+				'card-tilt': {
+					'0%': {
+						transform: 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0px)'
+					},
+					'100%': {
+						transform: 'perspective(1000px) rotateX(5deg) rotateY(5deg) translateZ(10px)'
+					}
+				},
+				'foil-shine': {
+					'0%, 100%': {
+						backgroundPosition: '0% 50%'
+					},
+					'50%': {
+						backgroundPosition: '100% 50%'
+					}
+				},
+				'holographic-shine': {
+					'0%, 100%': {
+						backgroundPosition: '0% 50%'
+					},
+					'50%': {
+						backgroundPosition: '100% 50%'
+					}
+				},
+				'divine-pulse': {
+					'0%, 100%': {
+						filter: 'drop-shadow(0 0 30px hsl(var(--primary) / 0.8)) drop-shadow(0 0 60px hsl(var(--accent) / 0.6)) drop-shadow(0 0 90px hsl(var(--secondary) / 0.4))'
+					},
+					'50%': {
+						filter: 'drop-shadow(0 0 50px hsl(var(--primary) / 1)) drop-shadow(0 0 100px hsl(var(--accent) / 0.8)) drop-shadow(0 0 150px hsl(var(--secondary) / 0.6))'
+					}
+				},
+				'card-hover': {
+					'0%': {
+						transform: 'translateY(0px) scale(1)'
+					},
+					'100%': {
+						transform: 'translateY(-8px) scale(1.02)'
+					}
 				}
 			},
 			animation: {
@@ -174,7 +214,12 @@ export default {
 				'pulse-glow': 'pulse-glow 2s ease-in-out infinite',
 				'card-flip': 'card-flip 0.6s ease-in-out',
 				'float': 'float 3s ease-in-out infinite',
-				'shimmer': 'shimmer 2s ease-in-out infinite'
+				'shimmer': 'shimmer 2s ease-in-out infinite',
+				'card-tilt': 'card-tilt 0.3s ease-out',
+				'foil-shine': 'foil-shine 4s ease-in-out infinite',
+				'holographic-shine': 'holographic-shine 3s ease-in-out infinite',
+				'divine-pulse': 'divine-pulse 3s ease-in-out infinite',
+				'card-hover': 'card-hover 0.3s ease-out'
 			}
 		}
 	},

@@ -203,6 +203,28 @@ All colors MUST be HSL.
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
   }
 
+  /* Rarity color classes */
+  .text-rarity-common { color: hsl(var(--common)); }
+  .text-rarity-uncommon { color: hsl(var(--uncommon)); }
+  .text-rarity-rare { color: hsl(var(--rare)); }
+  .text-rarity-epic { color: hsl(var(--epic)); }
+  .text-rarity-legend { color: hsl(var(--legend)); }
+  .text-rarity-ultra-legend { color: hsl(var(--ultra-legend)); }
+
+  .border-rarity-common { border-color: hsl(var(--common)); }
+  .border-rarity-uncommon { border-color: hsl(var(--uncommon)); }
+  .border-rarity-rare { border-color: hsl(var(--rare)); }
+  .border-rarity-epic { border-color: hsl(var(--epic)); }
+  .border-rarity-legend { border-color: hsl(var(--legend)); }
+  .border-rarity-ultra-legend { border-color: hsl(var(--ultra-legend)); }
+
+  .bg-rarity-common { background-color: hsl(var(--common)); }
+  .bg-rarity-uncommon { background-color: hsl(var(--uncommon)); }
+  .bg-rarity-rare { background-color: hsl(var(--rare)); }
+  .bg-rarity-epic { background-color: hsl(var(--epic)); }
+  .bg-rarity-legend { background-color: hsl(var(--legend)); }
+  .bg-rarity-ultra-legend { background-color: hsl(var(--ultra-legend)); }
+
   /* Premium pulse glow animation */
   .animate-pulse-glow {
     animation: pulse-glow 2s ease-in-out infinite alternate;
@@ -266,6 +288,53 @@ All colors MUST be HSL.
   @keyframes holographic-shine {
     0%, 100% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
+  }
+
+  /* Premium card effects */
+  .card-premium {
+    background: linear-gradient(145deg, hsl(var(--card)), hsl(var(--muted)));
+    box-shadow: 
+      0 8px 32px hsl(var(--background) / 0.8),
+      inset 0 1px 0 hsl(var(--primary) / 0.1),
+      inset 0 -1px 0 hsl(var(--muted) / 0.3);
+    border: 1px solid hsl(var(--border) / 0.5);
+  }
+
+  .card-premium:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 
+      0 12px 40px hsl(var(--background) / 0.9),
+      inset 0 1px 0 hsl(var(--primary) / 0.2),
+      inset 0 -1px 0 hsl(var(--muted) / 0.4);
+  }
+
+  /* Metallic foil effect */
+  .foil-effect {
+    background: linear-gradient(
+      45deg,
+      hsl(var(--accent) / 0.1) 0%,
+      hsl(var(--primary) / 0.2) 25%,
+      hsl(var(--accent) / 0.1) 50%,
+      hsl(var(--primary) / 0.2) 75%,
+      hsl(var(--accent) / 0.1) 100%
+    );
+    background-size: 200% 200%;
+    animation: foil-shine 4s ease-in-out infinite;
+  }
+
+  @keyframes foil-shine {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  /* 3D card tilt effect */
+  .card-3d {
+    transform-style: preserve-3d;
+    perspective: 1000px;
+  }
+
+  .card-3d:hover {
+    transform: rotateX(5deg) rotateY(5deg) translateZ(10px);
   }
 
   /* Loading states */
