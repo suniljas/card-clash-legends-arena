@@ -270,7 +270,7 @@ export function useGameState() {
   const openCardPack = (): HeroCard[] => {
     try {
       const packCards: HeroCard[] = [];
-      const numCards = 5; // 5 cards per pack
+      const numCards = 2; // 2 cards per pack
 
       for (let i = 0; i < numCards; i++) {
         const randomRarity = getRandomRarity();
@@ -297,6 +297,42 @@ export function useGameState() {
       return packCards;
     } catch (error) {
       console.error('Error opening card pack:', error);
+      return [];
+    }
+  };
+
+  const openWelcomePack = (): HeroCard[] => {
+    try {
+      const packCards: HeroCard[] = [];
+      
+      // Welcome pack: 1 guaranteed rare + 1 random common/uncommon
+      const rarities = [Rarity.RARE, Rarity.COMMON];
+      
+      for (let i = 0; i < 2; i++) {
+        const targetRarity = rarities[i];
+        const availableCards = HERO_DATABASE.filter(card => card.rarity === targetRarity);
+        
+        if (availableCards.length === 0) {
+          console.warn(`No cards available for rarity: ${targetRarity}`);
+          continue;
+        }
+        
+        const randomCard = availableCards[Math.floor(Math.random() * availableCards.length)];
+        
+        if (randomCard) {
+          const newCard = { 
+            ...randomCard, 
+            id: `${randomCard.id}-${Date.now()}-welcome-${i}`,
+            unlocked: true 
+          };
+          packCards.push(newCard);
+          addCardToCollection(newCard);
+        }
+      }
+
+      return packCards;
+    } catch (error) {
+      console.error('Error opening welcome pack:', error);
       return [];
     }
   };
@@ -364,6 +400,7 @@ export function useGameState() {
     addGems,
     spendGems,
     openCardPack,
+    openWelcomePack,
     purchaseGems,
     updateCampaignProgress,
     getMaxDeckSize,

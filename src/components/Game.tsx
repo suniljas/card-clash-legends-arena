@@ -67,6 +67,20 @@ export function Game() {
 
   const handleLogin = (userData: { email: string; name: string; provider: string; uid: string }) => {
     setUser(userData);
+    
+    // Check if user is new (no previous welcome pack)
+    const hasReceivedWelcomePack = localStorage.getItem('welcome-pack-received');
+    if (!hasReceivedWelcomePack) {
+      // Give welcome pack to new user
+      const welcomeCards = gameState.openWelcomePack();
+      localStorage.setItem('welcome-pack-received', 'true');
+      
+      // Show welcome message
+      setTimeout(() => {
+        alert(`🎉 Welcome to Card Clash! You received ${welcomeCards.length} starter cards!`);
+      }, 1000);
+    }
+    
     setCurrentPage('menu');
   };
 

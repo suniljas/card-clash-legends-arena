@@ -31,24 +31,24 @@ export function CardPackShop({
     {
       id: 'basic',
       name: 'Basic Pack',
-      description: '5 cards with common-rare chances',
-      cost: { coins: 500 },
+      description: '2 cards with common-rare chances',
+      cost: { coins: 300 },
       icon: Package,
       gradient: 'from-muted to-muted/70'
     },
     {
       id: 'premium',
       name: 'Premium Pack',
-      description: '5 cards with guaranteed rare+',
-      cost: { gems: 10 },
+      description: '2 cards with guaranteed rare+',
+      cost: { gems: 8 },
       icon: Sparkles,
       gradient: 'from-primary to-primary/70'
     },
     {
       id: 'legendary',
       name: 'Legendary Pack',
-      description: '5 cards with guaranteed epic+',
-      cost: { gems: 25 },
+      description: '2 cards with guaranteed epic+',
+      cost: { gems: 15 },
       icon: Gem,
       gradient: 'from-accent to-accent/70'
     }
@@ -104,7 +104,7 @@ export function CardPackShop({
           <p className="text-muted-foreground">You received these heroes:</p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 max-w-6xl mx-auto mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-4xl mx-auto mb-8">
           {revealedCards.map((card, index) => (
             <div
               key={card.id}
@@ -239,6 +239,7 @@ export function CardPackShop({
       <Card className="mt-8 p-4 max-w-2xl mx-auto">
         <h4 className="font-semibold mb-2">💡 Pack Opening Tips</h4>
         <ul className="text-sm text-muted-foreground space-y-1">
+          <li>• All packs now contain 2 cards for better value</li>
           <li>• Basic packs have a chance for rare heroes</li>
           <li>• Premium packs guarantee at least one rare+ hero</li>
           <li>• Legendary packs guarantee at least one epic+ hero</li>
