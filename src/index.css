@@ -409,6 +409,61 @@ All colors MUST be HSL.
       0 0 15px currentColor;
   }
 
+  .text-shadow {
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+  }
+
+  /* LOR-style card effects */
+  .lor-border-frame {
+    background: linear-gradient(145deg, 
+      hsl(var(--accent)), 
+      hsl(var(--primary)),
+      hsl(var(--accent))
+    );
+    padding: 3px;
+  }
+
+  .lor-inner-frame {
+    background: linear-gradient(145deg,
+      hsl(var(--card)),
+      hsl(var(--muted)),
+      hsl(var(--card))
+    );
+  }
+
+  /* Game-ready mobile optimizations */
+  .mobile-card {
+    touch-action: manipulation;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+
+  .mobile-smooth-scroll {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
+
+  /* Performance optimizations for mobile */
+  .gpu-accelerated {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+  }
+
+  /* Android-specific optimizations */
+  @media (max-width: 768px) {
+    .touch-friendly {
+      min-height: 48px;
+      min-width: 48px;
+    }
+    
+    .card-mobile {
+      transform: translateZ(0);
+      will-change: transform;
+    }
+  }
+
   /* Holographic effects */
   .holographic {
     background: linear-gradient(

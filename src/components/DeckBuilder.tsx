@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { HeroCard as HeroCardType, PlayerDeck } from '@/types/game';
-import { HeroCard } from './HeroCard';
+import { LORCard } from './LORCard';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ArrowLeft, Plus, X, Save, Shuffle } from 'lucide-react';
@@ -138,7 +138,7 @@ export function DeckBuilder({
                   <div key={index} className="aspect-[3/4]">
                     {card ? (
                       <div className="relative">
-                        <HeroCard 
+                        <LORCard 
                           hero={card} 
                           size="small"
                           showStats={false}
@@ -203,7 +203,7 @@ export function DeckBuilder({
               const isInDeck = currentDeck.cards.find(deckCard => deckCard.id === card.id);
               return (
                 <div key={card.id} className="relative">
-                  <HeroCard
+                  <LORCard
                     hero={card}
                     size="medium"
                     onClick={() => !isInDeck && handleAddCard(card)}
