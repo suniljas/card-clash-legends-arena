@@ -1,29 +1,46 @@
-import type { CapacitorConfig } from '@capacitor/cli';
+import { CapacitorConfig } from '@capacitor/core';
 
 const config: CapacitorConfig = {
-  appId: 'com.suniljas.cardclash',
-  appName: 'card-clash-legends-arena',
+  appId: 'app.lovable.994cfffa0d8e4a948c58725d5a05f780',
+  appName: 'Legends Card Clash Arena',
   webDir: 'dist',
   server: {
-    url: "http://192.168.0.109:8080", 
+    androidScheme: 'https',
+    url: "https://994cfffa-0d8e-4a94-8c58-725d5a05f780.lovableproject.com?forceHideBadge=true",
     cleartext: true
   },
   plugins: {
     SplashScreen: {
       launchShowDuration: 3000,
       launchAutoHide: true,
-      backgroundColor: "#1a1a1a",
+      backgroundColor: "#220a4d",
       androidSplashResourceName: "splash",
       androidScaleType: "CENTER_CROP",
-      showSpinner: false,
+      showSpinner: true,
       androidSpinnerStyle: "large",
       iosSpinnerStyle: "small",
       spinnerColor: "#999999",
       splashFullScreen: true,
-      splashImmersive: true,
-      layoutName: "launch_screen",
-      useDialog: true,
     },
+    StatusBar: {
+      style: 'DARK',
+      backgroundColor: '#220a4d',
+    },
+    Haptics: {},
+    App: {
+      preventOverlayDismissal: true,
+    },
+    Keyboard: {
+      resize: 'body',
+      style: 'DARK',
+      resizeOnFullScreen: true,
+    },
+  },
+  android: {
+    allowMixedContent: true,
+    backgroundColor: '#220a4d',
+    captureInput: true,
+    webContentsDebuggingEnabled: false,
   },
 };
 

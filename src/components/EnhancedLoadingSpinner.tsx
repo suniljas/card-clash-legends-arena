@@ -1,91 +1,86 @@
 import { cn } from '@/lib/utils';
+import { cva, type VariantProps } from 'class-variance-authority';
 
-interface EnhancedLoadingSpinnerProps {
-  size?: 'sm' | 'md' | 'lg' | 'xl';
+const spinnerVariants = cva(
+  "animate-spin rounded-full border-solid border-current border-r-transparent",
+  {
+    variants: {
+      size: {
+        sm: "w-4 h-4 border-2",
+        default: "w-6 h-6 border-2", 
+        lg: "w-8 h-8 border-2",
+        xl: "w-12 h-12 border-3",
+      },
+      variant: {
+        default: "text-primary",
+        secondary: "text-secondary",
+        muted: "text-muted-foreground",
+        card: "text-accent",
+        destructive: "text-destructive",
+      }
+    },
+    defaultVariants: {
+      size: "default",
+      variant: "default",
+    }
+  }
+);
+
+interface EnhancedLoadingSpinnerProps extends VariantProps<typeof spinnerVariants> {
   className?: string;
   text?: string;
-  variant?: 'default' | 'card' | 'overlay';
-  progress?: number; // 0-100 for progress indication
+  progress?: number;
+  showProgress?: boolean;
 }
 
 export function EnhancedLoadingSpinner({ 
-  size = 'md', 
   className, 
+  size, 
+  variant, 
   text,
-  variant = 'default',
-  progress
+  progress,
+  showProgress = false
 }: EnhancedLoadingSpinnerProps) {
-  const sizeClasses = {
-    sm: 'w-4 h-4',
-    md: 'w-8 h-8',
-    lg: 'w-12 h-12',
-    xl: 'w-16 h-16'
-  };
-
-  const containerClasses = {
-    default: 'flex flex-col items-center justify-center gap-3',
-    card: 'flex flex-col items-center justify-center gap-3 p-8 rounded-lg bg-card border',
-    overlay: 'fixed inset-0 z-50 flex flex-col items-center justify-center gap-3 bg-background/80 backdrop-blur-sm'
-  };
-
   return (
-    <div className={cn(containerClasses[variant], className)}>
-      {/* Spinner */}
-      <div className="relative">
-        <div className={cn(
-          'animate-spin rounded-full border-2 border-border border-t-primary',
-          sizeClasses[size]
-        )} />
-        
-        {/* Progress ring overlay */}
-        {progress !== undefined && (
-          <div className="absolute inset-0 flex items-center justify-center">
-            <svg 
-              className={cn(sizeClasses[size])} 
-              viewBox="0 0 24 24"
-            >
-              <circle
-                cx="12"
-                cy="12"
-                r="10"
-                fill="none"
-                stroke="hsl(var(--primary))"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeDasharray={`${progress * 0.628} 62.8`} // 62.8 = 2π * 10
-                transform="rotate(-90 12 12)"
-                className="transition-all duration-300"
-              />
-            </svg>
-          </div>
-        )}
-      </div>
-
-      {/* Loading text */}
-      {text && (
-        <div className="text-center">
-          <p className="text-sm text-muted-foreground animate-pulse">
-            {text}
-          </p>
-          {progress !== undefined && (
-            <p className="text-xs text-muted-foreground/70 mt-1">
-              {Math.round(progress)}%
-            </p>
-          )}
-        </div>
-      )}
-
-      {/* Loading dots animation */}
-      {!text && (
-        <div className="flex gap-1">
-          {[0, 1, 2].map((i) => (
-            <div
-              key={i}
-              className="w-1 h-1 bg-primary rounded-full animate-pulse"
-              style={{ animationDelay: `${i * 0.2}s` }}
+    <div className="flex flex-col items-center gap-3">
+      {/* Progress ring if progress is provided */}
+      {showProgress && progress !== undefined ? (
+        <div className="relative">
+          <svg className="w-16 h-16 transform -rotate-90" viewBox="0 0 64 64">
+            <circle
+              cx="32"
+              cy="32"
+              r="28"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="4"
+              className="text-muted-foreground/20"
             />
-          ))}
+            <circle
+              cx="32"
+              cy="32"
+              r="28"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="4"
+              strokeLinecap="round"
+              strokeDasharray={`${2 * Math.PI * 28}`}
+              strokeDashoffset={`${2 * Math.PI * 28 * (1 - progress / 100)}`}
+              className="text-primary transition-all duration-300 ease-out"
+            />
+          </svg>
+          <div className="absolute inset-0 flex items-center justify-center">
+            <span className="text-sm font-medium">{Math.round(progress)}%</span>
+          </div>
         </div>
+      ) : (
+        <div className={cn(spinnerVariants({ size, variant }), className)} />
+      )}
+      
+      {text && (
+        <p className="text-sm text-muted-foreground animate-pulse">
+          {text}
+        </p>
       )}
     </div>
   );

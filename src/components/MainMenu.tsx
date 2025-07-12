@@ -8,15 +8,20 @@ import {
   Settings,
   Trophy,
   Package,
-  Zap
+  Zap,
+  Gem,
+  LogOut,
+  User
 } from 'lucide-react';
 import premiumLogo from '@/assets/game-logo-premium.png';
 
 interface MainMenuProps {
   onNavigate: (page: string) => void;
+  user?: { email: string; name: string; provider: string } | null;
+  onLogout?: () => void;
 }
 
-export function MainMenu({ onNavigate }: MainMenuProps) {
+export function MainMenu({ onNavigate, user, onLogout }: MainMenuProps) {
   const menuItems = [
     {
       id: 'campaign',
@@ -52,6 +57,13 @@ export function MainMenu({ onNavigate }: MainMenuProps) {
       description: 'Open new card packs',
       icon: ShoppingBag,
       gradient: 'from-muted-foreground to-muted-foreground/70'
+    },
+    {
+      id: 'gem-purchase',
+      title: 'Buy Gems',
+      description: 'Purchase premium currency',
+      icon: Gem,
+      gradient: 'from-emerald-500 to-emerald-600'
     },
     {
       id: 'marketplace',
@@ -93,6 +105,22 @@ export function MainMenu({ onNavigate }: MainMenuProps) {
         <p className="text-muted-foreground text-lg">
           Choose your path to glory in the ultimate card battle arena
         </p>
+        
+        {user && (
+          <Card className="mt-4 p-3 max-w-sm mx-auto">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <User className="w-4 h-4 text-primary" />
+                <span className="font-medium">{user.name}</span>
+              </div>
+              {onLogout && (
+                <Button variant="ghost" size="sm" onClick={onLogout}>
+                  <LogOut className="w-4 h-4" />
+                </Button>
+              )}
+            </div>
+          </Card>
+        )}
       </div>
 
       {/* Menu Grid */}

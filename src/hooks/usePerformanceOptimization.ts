@@ -1,144 +1,130 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
-interface PerformanceMetrics {
-  fps: number;
-  memoryUsage: number;
-  renderTime: number;
-  isLowPerformanceDevice: boolean;
+interface PerformanceConfig {
+  enableAnimations: boolean;
+  maxParticles: number;
+  cardQuality: 'low' | 'medium' | 'high';
+  enableShadows: boolean;
+  enableBlur: boolean;
 }
 
 export function usePerformanceOptimization() {
-  const [metrics, setMetrics] = useState<PerformanceMetrics>({
-    fps: 60,
-    memoryUsage: 0,
-    renderTime: 0,
-    isLowPerformanceDevice: false
+  const [config, setConfig] = useState<PerformanceConfig>(() => {
+    // Default settings based on device capabilities
+    const isMobile = /Mobi|Android/i.test(navigator.userAgent);
+    const hasLowRAM = (navigator as any).deviceMemory && (navigator as any).deviceMemory < 4;
+    const isLowEnd = isMobile || hasLowRAM;
+
+    return {
+      enableAnimations: !isLowEnd,
+      maxParticles: isLowEnd ? 10 : 50,
+      cardQuality: isLowEnd ? 'medium' : 'high',
+      enableShadows: !isLowEnd,
+      enableBlur: !isLowEnd
+    };
   });
 
-  const [isReducedMotion, setIsReducedMotion] = useState(false);
-
+  // Monitor performance and auto-adjust
   useEffect(() => {
-    // Check for reduced motion preference
-    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-    setIsReducedMotion(mediaQuery.matches);
-
-    const handleChange = (e: MediaQueryListEvent) => {
-      setIsReducedMotion(e.matches);
-    };
-
-    mediaQuery.addEventListener('change', handleChange);
-    return () => mediaQuery.removeEventListener('change', handleChange);
-  }, []);
-
-  useEffect(() => {
-    // Performance monitoring
     let frameCount = 0;
     let lastTime = performance.now();
-    let animationId: number;
+    let lowFPSCount = 0;
 
-    const measurePerformance = () => {
-      const currentTime = performance.now();
+    const checkPerformance = () => {
       frameCount++;
-
+      const currentTime = performance.now();
+      
       if (currentTime - lastTime >= 1000) {
-        const fps = Math.round((frameCount * 1000) / (currentTime - lastTime));
+        const fps = (frameCount * 1000) / (currentTime - lastTime);
         
-        // Detect low performance device
-        const isLowPerformance = fps < 30 || 
-          (navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4) ||
-          ((navigator as any).deviceMemory && (navigator as any).deviceMemory < 4);
-
-        setMetrics(prev => ({
-          ...prev,
-          fps,
-          isLowPerformanceDevice: isLowPerformance,
-          renderTime: currentTime - lastTime
-        }));
-
+        if (fps < 30) {
+          lowFPSCount++;
+          
+          // Auto-reduce quality after 3 seconds of low FPS
+          if (lowFPSCount >= 3) {
+            setConfig(prev => ({
+              ...prev,
+              enableAnimations: false,
+              maxParticles: Math.max(5, prev.maxParticles - 10),
+              cardQuality: prev.cardQuality === 'high' ? 'medium' : 'low',
+              enableShadows: false,
+              enableBlur: false
+            }));
+            lowFPSCount = 0;
+          }
+        } else {
+          lowFPSCount = 0;
+        }
+        
         frameCount = 0;
         lastTime = currentTime;
       }
-
-      animationId = requestAnimationFrame(measurePerformance);
-    };
-
-    animationId = requestAnimationFrame(measurePerformance);
-
-    return () => {
-      if (animationId) {
-        cancelAnimationFrame(animationId);
-      }
-    };
-  }, []);
-
-  // Memory monitoring
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if ('memory' in performance) {
-        const memory = (performance as any).memory;
-        setMetrics(prev => ({
-          ...prev,
-          memoryUsage: Math.round((memory.usedJSHeapSize / memory.jsHeapSizeLimit) * 100)
-        }));
-      }
-    }, 5000);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  const optimizeForDevice = useCallback(() => {
-    if (metrics.isLowPerformanceDevice) {
-      // Disable heavy animations
-      document.documentElement.style.setProperty('--animation-duration', '0.1s');
-      document.documentElement.style.setProperty('--transition-duration', '0.1s');
       
-      // Reduce particles and effects
-      return {
-        enableParticles: false,
-        enableComplexAnimations: false,
-        maxParticles: 5,
-        reducedEffects: true
-      };
-    }
-
-    return {
-      enableParticles: true,
-      enableComplexAnimations: !isReducedMotion,
-      maxParticles: 50,
-      reducedEffects: isReducedMotion
+      requestAnimationFrame(checkPerformance);
     };
-  }, [metrics.isLowPerformanceDevice, isReducedMotion]);
 
-  const preloadImages = useCallback((imageUrls: string[]) => {
-    const promises = imageUrls.map(url => {
-      return new Promise((resolve, reject) => {
-        const img = new Image();
-        img.onload = resolve;
-        img.onerror = reject;
-        img.src = url;
-      });
+    const animationId = requestAnimationFrame(checkPerformance);
+    return () => cancelAnimationFrame(animationId);
+  }, []);
+
+  // Memoized performance optimizations
+  const shouldRenderParticles = useMemo(() => 
+    config.enableAnimations && config.maxParticles > 0, 
+    [config.enableAnimations, config.maxParticles]
+  );
+
+  const cardClassName = useMemo(() => {
+    const baseClass = 'transition-transform';
+    const qualityClass = config.cardQuality === 'high' ? 'crisp-edges' : '';
+    const shadowClass = config.enableShadows ? 'drop-shadow-lg' : '';
+    const animationClass = config.enableAnimations ? 'hover:scale-105' : '';
+    
+    return [baseClass, qualityClass, shadowClass, animationClass]
+      .filter(Boolean)
+      .join(' ');
+  }, [config]);
+
+  // Debounced image loading
+  const loadImage = useCallback((src: string): Promise<HTMLImageElement> => {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => resolve(img);
+      img.onerror = reject;
+      img.src = src;
     });
-
-    return Promise.allSettled(promises);
   }, []);
 
-  const debounce = useCallback((func: Function, wait: number) => {
-    let timeout: NodeJS.Timeout;
-    return function executedFunction(...args: any[]) {
-      const later = () => {
-        clearTimeout(timeout);
-        func(...args);
-      };
-      clearTimeout(timeout);
-      timeout = setTimeout(later, wait);
-    };
-  }, []);
+  // Lazy loading with intersection observer
+  const useLazyImage = useCallback((ref: React.RefObject<HTMLElement>, src: string) => {
+    useEffect(() => {
+      const element = ref.current;
+      if (!element) return;
+
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            loadImage(src).then(() => {
+              if (element instanceof HTMLImageElement) {
+                element.src = src;
+              }
+            });
+            observer.unobserve(element);
+          }
+        },
+        { threshold: 0.1 }
+      );
+
+      observer.observe(element);
+      return () => observer.disconnect();
+    }, [ref, src]);
+  }, [loadImage]);
 
   return {
-    metrics,
-    isReducedMotion,
-    optimizeForDevice,
-    preloadImages,
-    debounce
+    config,
+    setConfig,
+    shouldRenderParticles,
+    cardClassName,
+    loadImage,
+    useLazyImage
   };
 }

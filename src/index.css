@@ -93,6 +93,15 @@ All colors MUST be HSL.
   --spacing-comfortable: 16px;
   --spacing-relaxed: 24px;
 
+  /* Analytics and performance colors */
+  --performance-good: 120 100% 50%;
+  --performance-warning: 45 100% 50%;
+  --performance-critical: 0 100% 50%;
+  
+  /* Game specific UI tokens */
+  --game-coins: var(--accent);
+  --game-gems: var(--secondary);
+
     --sidebar-background: 0 0% 98%;
 
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -567,5 +576,28 @@ All colors MUST be HSL.
   
   .connection-good {
     background: linear-gradient(45deg, hsl(var(--common)), hsl(var(--common) / 0.8));
+  }
+
+  /* Accessibility improvements */
+  @media (prefers-reduced-motion: reduce) {
+    .animate-pulse-glow,
+    .divine-glow,
+    .holographic {
+      animation: none;
+    }
+  }
+
+  /* High contrast mode support */
+  @media (prefers-contrast: high) {
+    :root {
+      --border: 0 0% 20%;
+      --ring: 240 100% 70%;
+    }
+  }
+
+  /* Force GPU acceleration for better performance */
+  .gpu-accelerated {
+    transform: translateZ(0);
+    will-change: transform;
   }
 }
