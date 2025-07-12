@@ -1,0 +1,122 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background gradient -->
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1e293b;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#334155;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0f172a;stop-opacity:1" />
+    </linearGradient>
+    
+    <linearGradient id="cardGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#8b5cf6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ec4899;stop-opacity:1" />
+    </linearGradient>
+    
+    <linearGradient id="swordGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#fbbf24;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#f59e0b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#d97706;stop-opacity:1" />
+    </linearGradient>
+    
+    <linearGradient id="shieldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#10b981;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#059669;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#047857;stop-opacity:1" />
+    </linearGradient>
+    
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="8" result="coloredBlur"/>
+      <feMerge> 
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    
+    <filter id="innerGlow">
+      <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+      <feMerge> 
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="512" height="512" rx="128" fill="url(#bgGradient)"/>
+  
+  <!-- Card base -->
+  <rect x="96" y="96" width="320" height="320" rx="24" fill="url(#cardGradient)" filter="url(#glow)"/>
+  
+  <!-- Card inner border -->
+  <rect x="104" y="104" width="304" height="304" rx="20" fill="none" stroke="#ffffff" stroke-width="4" opacity="0.3"/>
+  
+  <!-- Card content area -->
+  <rect x="120" y="120" width="272" height="272" rx="16" fill="#1e293b" opacity="0.9"/>
+  
+  <!-- Top mana orb -->
+  <circle cx="160" cy="160" r="24" fill="url(#swordGradient)" filter="url(#innerGlow)"/>
+  <circle cx="160" cy="160" r="20" fill="none" stroke="#ffffff" stroke-width="2" opacity="0.8"/>
+  <text x="160" y="168" text-anchor="middle" fill="#ffffff" font-family="Arial, sans-serif" font-size="16" font-weight="bold">5</text>
+  
+  <!-- Bottom attack orb -->
+  <circle cx="160" cy="352" r="24" fill="url(#swordGradient)" filter="url(#innerGlow)"/>
+  <circle cx="160" cy="352" r="20" fill="none" stroke="#ffffff" stroke-width="2" opacity="0.8"/>
+  <text x="160" y="360" text-anchor="middle" fill="#ffffff" font-family="Arial, sans-serif" font-size="16" font-weight="bold">8</text>
+  
+  <!-- Bottom health orb -->
+  <circle cx="352" cy="352" r="24" fill="url(#shieldGradient)" filter="url(#innerGlow)"/>
+  <circle cx="352" cy="352" r="20" fill="none" stroke="#ffffff" stroke-width="2" opacity="0.8"/>
+  <text x="352" y="360" text-anchor="middle" fill="#ffffff" font-family="Arial, sans-serif" font-size="16" font-weight="bold">6</text>
+  
+  <!-- Hero portrait area -->
+  <rect x="136" y="200" width="240" height="120" rx="12" fill="#334155" opacity="0.8"/>
+  
+  <!-- Hero silhouette -->
+  <path d="M256 220 L276 280 L236 280 Z" fill="#64748b" opacity="0.6"/>
+  <circle cx="256" cy="200" r="20" fill="#64748b" opacity="0.6"/>
+  
+  <!-- Sword icon -->
+  <path d="M256 240 L256 320 M248 248 L264 248 M248 256 L264 256" stroke="#fbbf24" stroke-width="3" stroke-linecap="round"/>
+  <path d="M256 240 L252 236 L260 236 Z" fill="#fbbf24"/>
+  
+  <!-- Shield icon -->
+  <ellipse cx="256" cy="280" rx="16" ry="20" fill="none" stroke="#10b981" stroke-width="3"/>
+  <circle cx="256" cy="280" r="8" fill="#10b981"/>
+  
+  <!-- Rarity gem -->
+  <circle cx="352" cy="160" r="16" fill="#8b5cf6" filter="url(#innerGlow)"/>
+  <polygon points="352,152 356,160 352,168 348,160" fill="#ffffff" opacity="0.9"/>
+  
+  <!-- Decorative corner elements -->
+  <circle cx="136" cy="136" r="8" fill="#3b82f6" opacity="0.6"/>
+  <circle cx="376" cy="136" r="8" fill="#3b82f6" opacity="0.6"/>
+  <circle cx="136" cy="376" r="8" fill="#3b82f6" opacity="0.6"/>
+  <circle cx="376" cy="376" r="8" fill="#3b82f6" opacity="0.6"/>
+  
+  <!-- Card name area -->
+  <rect x="136" y="340" width="240" height="32" rx="8" fill="#475569" opacity="0.8"/>
+  <text x="256" y="360" text-anchor="middle" fill="#ffffff" font-family="Arial, sans-serif" font-size="12" font-weight="bold">HERO</text>
+  
+  <!-- Energy glow effects -->
+  <circle cx="256" cy="256" r="100" fill="none" stroke="#3b82f6" stroke-width="2" opacity="0.3">
+    <animate attributeName="r" values="100;120;100" dur="3s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.3;0.6;0.3" dur="3s" repeatCount="indefinite"/>
+  </circle>
+  
+  <!-- Floating particles -->
+  <circle cx="200" cy="180" r="2" fill="#ffffff" opacity="0.6">
+    <animate attributeName="cy" values="180;160;180" dur="4s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.6;0.2;0.6" dur="4s" repeatCount="indefinite"/>
+  </circle>
+  
+  <circle cx="312" cy="200" r="2" fill="#ffffff" opacity="0.6">
+    <animate attributeName="cy" values="200;180;200" dur="3.5s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.6;0.2;0.6" dur="3.5s" repeatCount="indefinite"/>
+  </circle>
+  
+  <circle cx="280" cy="320" r="2" fill="#ffffff" opacity="0.6">
+    <animate attributeName="cy" values="320;300;320" dur="4.5s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.6;0.2;0.6" dur="4.5s" repeatCount="indefinite"/>
+  </circle>
+</svg>

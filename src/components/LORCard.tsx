@@ -5,7 +5,7 @@ import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import { useGameAudio } from '@/hooks/useAudio';
-import { Shield, Sword, Star, Crown, Gem, Zap } from 'lucide-react';
+import { Shield, Sword, Star, Crown, Gem, Zap, Sparkles, Flame, Droplets, Wind } from 'lucide-react';
 
 interface LORCardProps {
   hero: HeroCardType;
@@ -15,6 +15,8 @@ interface LORCardProps {
   size?: 'small' | 'medium' | 'large';
   isAnimated?: boolean;
   manaCost?: number;
+  isHoverable?: boolean;
+  showRarityGlow?: boolean;
 }
 
 export function LORCard({ 
@@ -24,10 +26,13 @@ export function LORCard({
   showStats = true,
   size = 'medium',
   isAnimated = true,
-  manaCost
+  manaCost,
+  isHoverable = true,
+  showRarityGlow = true
 }: LORCardProps) {
   const stats = calculateHeroStats(hero);
   const { playCardPlay, playLegendaryDrop } = useGameAudio();
+  const [isHovered, setIsHovered] = React.useState(false);
   
   const sizeClasses = {
     small: 'w-32 h-44',
@@ -50,7 +55,10 @@ export function LORCard({
         attackGradient: 'from-red-500 to-red-700',
         healthGradient: 'from-green-500 to-green-700',
         borderWidth: 'border-2',
-        cornerSize: 'w-2 h-2'
+        cornerSize: 'w-2 h-2',
+        particleColor: 'bg-slate-400',
+        holographicIntensity: 0,
+        energyGlow: 'shadow-slate-400/10'
       },
       [Rarity.UNCOMMON]: {
         borderGradient: 'from-green-400 via-emerald-300 to-green-400',
@@ -65,7 +73,10 @@ export function LORCard({
         attackGradient: 'from-red-500 to-red-700',
         healthGradient: 'from-green-500 to-green-700',
         borderWidth: 'border-2',
-        cornerSize: 'w-2 h-2'
+        cornerSize: 'w-2 h-2',
+        particleColor: 'bg-green-400',
+        holographicIntensity: 0.1,
+        energyGlow: 'shadow-green-400/15'
       },
       [Rarity.RARE]: {
         borderGradient: 'from-blue-400 via-cyan-300 to-blue-400',
@@ -80,7 +91,10 @@ export function LORCard({
         attackGradient: 'from-red-500 to-red-700',
         healthGradient: 'from-green-500 to-green-700',
         borderWidth: 'border-2',
-        cornerSize: 'w-2.5 h-2.5'
+        cornerSize: 'w-2.5 h-2.5',
+        particleColor: 'bg-blue-400',
+        holographicIntensity: 0.2,
+        energyGlow: 'shadow-blue-400/25'
       },
       [Rarity.EPIC]: {
         borderGradient: 'from-purple-400 via-violet-300 to-purple-400',
@@ -95,7 +109,10 @@ export function LORCard({
         attackGradient: 'from-red-500 to-red-700',
         healthGradient: 'from-green-500 to-green-700',
         borderWidth: 'border-3',
-        cornerSize: 'w-3 h-3'
+        cornerSize: 'w-3 h-3',
+        particleColor: 'bg-purple-400',
+        holographicIntensity: 0.3,
+        energyGlow: 'shadow-purple-400/35'
       },
       [Rarity.LEGEND]: {
         borderGradient: 'from-amber-400 via-yellow-300 to-amber-400',
@@ -110,7 +127,10 @@ export function LORCard({
         attackGradient: 'from-red-500 to-red-700',
         healthGradient: 'from-green-500 to-green-700',
         borderWidth: 'border-3',
-        cornerSize: 'w-3 h-3'
+        cornerSize: 'w-3 h-3',
+        particleColor: 'bg-amber-400',
+        holographicIntensity: 0.5,
+        energyGlow: 'shadow-amber-400/45'
       },
       [Rarity.ULTRA_LEGEND]: {
         borderGradient: 'from-pink-400 via-rose-300 to-pink-400',
@@ -125,7 +145,10 @@ export function LORCard({
         attackGradient: 'from-red-500 to-red-700',
         healthGradient: 'from-green-500 to-green-700',
         borderWidth: 'border-4',
-        cornerSize: 'w-3.5 h-3.5'
+        cornerSize: 'w-3.5 h-3.5',
+        particleColor: 'bg-pink-400',
+        holographicIntensity: 0.8,
+        energyGlow: 'shadow-pink-400/60'
       }
     };
     return configs[rarity];
@@ -143,20 +166,52 @@ export function LORCard({
     onClick?.();
   };
 
+  const getElementIcon = (heroName: string) => {
+    const name = heroName.toLowerCase();
+    if (name.includes('fire') || name.includes('flame') || name.includes('burn')) {
+      return <Flame className="w-3 h-3 text-orange-400" />;
+    }
+    if (name.includes('water') || name.includes('ice') || name.includes('frost')) {
+      return <Droplets className="w-3 h-3 text-blue-400" />;
+    }
+    if (name.includes('wind') || name.includes('air') || name.includes('storm')) {
+      return <Wind className="w-3 h-3 text-cyan-400" />;
+    }
+    return <Sparkles className="w-3 h-3 text-yellow-400" />;
+  };
+
   return (
-    <Card 
+    <div 
       className={cn(
-        'relative cursor-pointer overflow-hidden group',
-        'transition-all duration-500 ease-out transform-gpu will-change-transform',
-        'bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900',
+        'relative group',
         sizeClasses[size],
-        rarityConfig.glowColor,
-        isSelected && 'ring-4 ring-primary scale-105',
-        isAnimated && 'hover:scale-105 hover:-translate-y-2',
-        'card-premium'
+        isHoverable && 'cursor-pointer'
       )}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
       onClick={handleClick}
     >
+      {/* Enhanced Energy Field Effect */}
+      {showRarityGlow && (
+        <div className={cn(
+          'absolute inset-0 rounded-lg transition-all duration-1000',
+          rarityConfig.energyGlow,
+          isHovered && 'animate-pulse'
+        )} />
+      )}
+
+      {/* Main Card Container */}
+      <Card 
+        className={cn(
+          'relative overflow-hidden transform-gpu will-change-transform',
+          'bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900',
+          rarityConfig.glowColor,
+          isSelected && 'ring-4 ring-primary scale-105',
+          isAnimated && isHoverable && 'hover:scale-105 hover:-translate-y-2',
+          'transition-all duration-500 ease-out',
+          'card-premium-enhanced'
+        )}
+      >
       {/* Enhanced Outer Metallic Border Frame */}
       <div className={cn(
         'absolute inset-0 p-[4px] rounded-lg',
@@ -238,6 +293,11 @@ export function LORCard({
             'shadow-lg backdrop-blur-sm'
           )}>
             LV {hero.level}
+          </div>
+
+          {/* Element indicator */}
+          <div className="absolute top-2 left-2 p-1 rounded-full bg-slate-900/90 border border-slate-500 shadow-lg backdrop-blur-sm">
+            {getElementIcon(hero.name)}
           </div>
 
           {/* Experience bar for high level cards */}
@@ -348,6 +408,12 @@ export function LORCard({
       {hero.rarity === Rarity.LEGEND && (
         <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 via-transparent to-yellow-500/5 animate-pulse pointer-events-none" />
       )}
+
+      {/* Enhanced Selection Ring */}
+      {isSelected && (
+        <div className="absolute inset-0 ring-4 ring-primary/80 ring-offset-2 ring-offset-slate-900 rounded-lg animate-pulse" />
+      )}
     </Card>
+    </div>
   );
 }
