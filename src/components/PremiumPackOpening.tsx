@@ -111,7 +111,7 @@ export function PremiumPackOpening({ packType, cards, onComplete }: PremiumPackO
                   className={cn(
                     'transform transition-all duration-1000',
                     revealedCards.includes(index) 
-                      ? 'scale-100 opacity-100 translate-y-0' 
+                      ? 'scale-100 opacity-100 translate-y-0 card-reveal' 
                       : 'scale-50 opacity-0 translate-y-8'
                   )}
                 >

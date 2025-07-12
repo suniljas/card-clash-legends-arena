@@ -298,6 +298,28 @@ All colors MUST be HSL.
       inset 0 1px 0 hsl(var(--primary) / 0.1),
       inset 0 -1px 0 hsl(var(--muted) / 0.3);
     border: 1px solid hsl(var(--border) / 0.5);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card-premium::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      hsl(var(--primary) / 0.1),
+      transparent
+    );
+    transition: left 0.5s ease;
+  }
+
+  .card-premium:hover::before {
+    left: 100%;
   }
 
   .card-premium:hover {
@@ -305,10 +327,11 @@ All colors MUST be HSL.
     box-shadow: 
       0 12px 40px hsl(var(--background) / 0.9),
       inset 0 1px 0 hsl(var(--primary) / 0.2),
-      inset 0 -1px 0 hsl(var(--muted) / 0.4);
+      inset 0 -1px 0 hsl(var(--muted) / 0.4),
+      0 0 20px hsl(var(--primary) / 0.3);
   }
 
-  /* Metallic foil effect */
+  /* Enhanced metallic foil effect */
   .foil-effect {
     background: linear-gradient(
       45deg,
@@ -320,6 +343,24 @@ All colors MUST be HSL.
     );
     background-size: 200% 200%;
     animation: foil-shine 4s ease-in-out infinite;
+    position: relative;
+  }
+
+  .foil-effect::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      135deg,
+      transparent 30%,
+      hsl(var(--accent) / 0.3) 50%,
+      transparent 70%
+    );
+    background-size: 150% 150%;
+    animation: foil-shine 3s ease-in-out infinite reverse;
   }
 
   @keyframes foil-shine {
@@ -327,14 +368,153 @@ All colors MUST be HSL.
     50% { background-position: 100% 50%; }
   }
 
-  /* 3D card tilt effect */
+  /* Enhanced holographic effects */
+  .holographic {
+    background: linear-gradient(
+      45deg,
+      transparent 30%,
+      hsl(var(--primary) / 0.1) 50%,
+      transparent 70%
+    );
+    background-size: 250% 250%;
+    animation: holographic-shine 3s ease-in-out infinite;
+    position: relative;
+  }
+
+  .holographic::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      -45deg,
+      transparent 40%,
+      hsl(var(--accent) / 0.2) 60%,
+      transparent 80%
+    );
+    background-size: 200% 200%;
+    animation: holographic-shine 2.5s ease-in-out infinite reverse;
+  }
+
+  @keyframes holographic-shine {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  /* 3D card tilt effect with enhanced depth */
   .card-3d {
     transform-style: preserve-3d;
     perspective: 1000px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
 
   .card-3d:hover {
     transform: rotateX(5deg) rotateY(5deg) translateZ(10px);
+    box-shadow: 
+      0 20px 40px hsl(var(--background) / 0.8),
+      0 0 0 1px hsl(var(--primary) / 0.2);
+  }
+
+  /* Particle effect for ultra rare cards */
+  .particle-effect {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .particle-effect::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(
+      circle,
+      hsl(var(--accent) / 0.1) 1px,
+      transparent 1px
+    );
+    background-size: 20px 20px;
+    animation: particle-float 8s linear infinite;
+    pointer-events: none;
+  }
+
+  @keyframes particle-float {
+    0% { transform: translateY(0px) rotate(0deg); }
+    100% { transform: translateY(-100px) rotate(360deg); }
+  }
+
+  /* Enhanced divine glow for legendary cards */
+  .divine-glow {
+    filter: drop-shadow(0 0 30px hsl(var(--primary) / 0.8))
+            drop-shadow(0 0 60px hsl(var(--accent) / 0.6))
+            drop-shadow(0 0 90px hsl(var(--secondary) / 0.4));
+    animation: divine-pulse 3s ease-in-out infinite;
+    position: relative;
+  }
+
+  .divine-glow::after {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    background: radial-gradient(
+      circle at center,
+      hsl(var(--primary) / 0.1) 0%,
+      transparent 70%
+    );
+    animation: divine-pulse 3s ease-in-out infinite reverse;
+    pointer-events: none;
+  }
+
+  @keyframes divine-pulse {
+    0%, 100% { 
+      filter: drop-shadow(0 0 30px hsl(var(--primary) / 0.8))
+              drop-shadow(0 0 60px hsl(var(--accent) / 0.6))
+              drop-shadow(0 0 90px hsl(var(--secondary) / 0.4));
+    }
+    50% { 
+      filter: drop-shadow(0 0 50px hsl(var(--primary) / 1))
+              drop-shadow(0 0 100px hsl(var(--accent) / 0.8))
+              drop-shadow(0 0 150px hsl(var(--secondary) / 0.6));
+    }
+  }
+
+  /* Card reveal animation */
+  .card-reveal {
+    animation: card-reveal 0.6s ease-out;
+  }
+
+  @keyframes card-reveal {
+    0% {
+      transform: scale(0.8) rotateY(90deg);
+      opacity: 0;
+    }
+    50% {
+      transform: scale(1.1) rotateY(45deg);
+      opacity: 0.7;
+    }
+    100% {
+      transform: scale(1) rotateY(0deg);
+      opacity: 1;
+    }
+  }
+
+  /* Enhanced text effects */
+  .text-glow {
+    text-shadow: 
+      0 0 10px currentColor,
+      0 0 20px currentColor,
+      0 0 30px currentColor;
+  }
+
+  .text-emboss {
+    text-shadow: 
+      1px 1px 0 hsl(var(--muted)),
+      -1px -1px 0 hsl(var(--primary) / 0.3);
   }
 
   /* Loading states */

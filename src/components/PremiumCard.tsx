@@ -92,8 +92,8 @@ export function PremiumCard({
         effects.border = 'border-2 border-rarity-ultra-legend animate-pulse';
         effects.background = 'bg-gradient-to-br from-card via-rarity-ultra-legend/20 to-rarity-ultra-legend/35';
         effects.overlay = 'before:absolute before:inset-0 before:bg-gradient-to-br before:from-transparent before:via-rarity-ultra-legend/30 before:to-transparent before:animate-pulse after:absolute after:inset-0 after:bg-gradient-conic after:from-rarity-ultra-legend/35 after:via-rarity-legend/25 after:to-rarity-ultra-legend/35 after:animate-spin after:duration-[2s]';
-        effects.frame = 'bg-gradient-to-br from-rarity-ultra-legend/45 to-transparent foil-effect holographic';
-        effects.textColor = 'text-rarity-ultra-legend';
+        effects.frame = 'bg-gradient-to-br from-rarity-ultra-legend/45 to-transparent foil-effect holographic particle-effect';
+        effects.textColor = 'text-rarity-ultra-legend text-glow';
         effects.badgeStyle = 'bg-rarity-ultra-legend/45 border-rarity-ultra-legend text-rarity-ultra-legend divine-glow';
         break;
     }
