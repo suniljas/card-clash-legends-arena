@@ -183,9 +183,10 @@ export function LORCard({
   return (
     <div 
       className={cn(
-        'relative group',
+        'clickable-card relative group',
         sizeClasses[size],
-        isHoverable && 'cursor-pointer'
+        isHoverable && 'cursor-pointer',
+        'focus-lor'
       )}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -203,13 +204,13 @@ export function LORCard({
       {/* Main Card Container */}
       <Card 
         className={cn(
-          'relative overflow-hidden transform-gpu will-change-transform',
+          'card-hover-lor relative overflow-hidden transform-gpu will-change-transform',
           'bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900',
           rarityConfig.glowColor,
-          isSelected && 'ring-4 ring-primary scale-105',
-          isAnimated && isHoverable && 'hover:scale-105 hover:-translate-y-2',
+          isSelected && 'selected-lor',
           'transition-all duration-500 ease-out',
-          'card-premium-enhanced'
+          'card-premium-enhanced',
+          'focus-lor'
         )}
       >
       {/* Enhanced Outer Metallic Border Frame */}
@@ -263,50 +264,99 @@ export function LORCard({
           </div>
         </div>
 
-        {/* Enhanced Hero Portrait */}
-        <div className="flex-1 mx-3 mb-3 rounded-md overflow-hidden relative border-2 border-slate-600 shadow-inner">
+        {/* Enhanced Hero Portrait - LoR Style */}
+        <div className="flex-1 mx-3 mb-3 rounded-md overflow-hidden relative">
           {hero.imageUrl ? (
-            <img 
-              src={hero.imageUrl} 
-              alt={hero.name}
-              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-            />
-          ) : (
-            <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-slate-700 to-slate-800 text-4xl">
-              ⚔️
-            </div>
-          )}
-
-          {/* Enhanced Holographic Overlay for high rarities */}
-          {(hero.rarity === Rarity.LEGEND || hero.rarity === Rarity.ULTRA_LEGEND) && (
-            <div>
-              <div className="absolute inset-0 bg-gradient-to-br from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1500" />
-              <div className="absolute inset-0 bg-gradient-to-br from-transparent via-white/10 to-transparent animate-pulse" />
-            </div>
-          )}
-
-          {/* Enhanced Level indicator */}
-          <div className={cn(
-            'absolute top-2 right-2 px-2 py-1 rounded-full text-xs font-bold',
-            'bg-slate-900/90 border border-slate-500 text-slate-100',
-            'shadow-lg backdrop-blur-sm'
-          )}>
-            LV {hero.level}
-          </div>
-
-          {/* Element indicator */}
-          <div className="absolute top-2 left-2 p-1 rounded-full bg-slate-900/90 border border-slate-500 shadow-lg backdrop-blur-sm">
-            {getElementIcon(hero.name)}
-          </div>
-
-          {/* Experience bar for high level cards */}
-          {hero.level > 1 && (
-            <div className="absolute bottom-2 left-2 right-2 h-1 bg-slate-800/80 rounded-full overflow-hidden">
-              <div 
-                className="h-full bg-gradient-to-r from-blue-500 to-purple-500 rounded-full transition-all duration-300"
-                style={{ width: `${(hero.experience / hero.experienceToNext) * 100}%` }}
+            <div className="relative w-full h-full">
+              {/* Hero image with LoR-style framing */}
+              <img 
+                src={hero.imageUrl} 
+                alt={hero.name}
+                className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-110"
+                style={{
+                  filter: 'brightness(1.1) contrast(1.1) saturate(1.2)',
+                  transformOrigin: 'center center'
+                }}
               />
+              
+              {/* LoR-style image overlay for depth */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/40" />
+              
+              {/* Subtle vignette effect */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-black/20" />
+              <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/30" />
+              
+              {/* Enhanced Holographic Overlay for high rarities */}
+              {(hero.rarity === Rarity.LEGEND || hero.rarity === Rarity.ULTRA_LEGEND) && (
+                <div className="absolute inset-0 pointer-events-none">
+                  <div className="absolute inset-0 bg-gradient-to-br from-transparent via-white/15 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-2000" />
+                  <div className="absolute inset-0 bg-gradient-to-br from-transparent via-white/8 to-transparent animate-pulse" />
+                </div>
+              )}
+
+              {/* Enhanced Level indicator - LoR style */}
+              <div className={cn(
+                'absolute top-2 right-2 px-2 py-1 rounded-full text-xs font-bold',
+                'bg-black/80 border border-white/20 text-white',
+                'shadow-lg backdrop-blur-sm',
+                'backdrop-blur-md'
+              )}>
+                LV {hero.level}
+              </div>
+
+              {/* Element indicator - LoR style */}
+              <div className="absolute top-2 left-2 p-1.5 rounded-full bg-black/80 border border-white/20 shadow-lg backdrop-blur-md">
+                {getElementIcon(hero.name)}
+              </div>
+
+              {/* Experience bar for high level cards - LoR style */}
+              {hero.level > 1 && (
+                <div className="absolute bottom-2 left-2 right-2 h-1.5 bg-black/60 rounded-full overflow-hidden backdrop-blur-sm">
+                  <div 
+                    className="h-full bg-gradient-to-r from-blue-400 to-purple-500 rounded-full transition-all duration-500 shadow-sm"
+                    style={{ width: `${(hero.experience / hero.experienceToNext) * 100}%` }}
+                  />
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-slate-700 to-slate-800 relative">
+              {/* Placeholder hero silhouette */}
+              <div className="relative w-full h-full flex items-center justify-center">
+                {/* Hero silhouette */}
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="w-16 h-16 bg-slate-600 rounded-full mb-8"></div>
+                  <div className="absolute bottom-8 w-12 h-20 bg-slate-600 rounded-t-full"></div>
+                </div>
+                
+                {/* Sword and shield icons */}
+                <div className="absolute left-1/4 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                  <div className="w-1 h-8 bg-amber-400 rounded-full"></div>
+                  <div className="absolute top-2 left-1/2 transform -translate-x-1/2 w-4 h-1 bg-amber-400 rounded-full"></div>
+                </div>
+                
+                <div className="absolute right-1/4 top-1/2 transform translate-x-1/2 -translate-y-1/2">
+                  <div className="w-6 h-8 border-2 border-green-400 rounded-full flex items-center justify-center">
+                    <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Level indicator for placeholder */}
+              <div className={cn(
+                'absolute top-2 right-2 px-2 py-1 rounded-full text-xs font-bold',
+                'bg-black/80 border border-white/20 text-white',
+                'shadow-lg backdrop-blur-sm'
+              )}>
+                LV {hero.level}
+              </div>
+
+              {/* Element indicator for placeholder */}
+              <div className="absolute top-2 left-2 p-1.5 rounded-full bg-black/80 border border-white/20 shadow-lg backdrop-blur-sm">
+                {getElementIcon(hero.name)}
+              </div>
             </div>
           )}
         </div>
