@@ -13,8 +13,7 @@ android {
         
         // Google Play Store metadata
         manifestPlaceholders = [
-            appName: "Card Clash: Legends Arena",
-            packageName: "com.suniljas.cardclash"
+            appName: "Card Clash: Legends Arena"
         ]
         
         aaptOptions {

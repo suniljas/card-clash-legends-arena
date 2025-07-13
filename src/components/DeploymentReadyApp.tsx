@@ -20,8 +20,6 @@ export function DeploymentReadyApp() {
         
         await Promise.race([assetsPromise, timeoutPromise]);
         
-        console.log('App initialized successfully');
-        
         // Show welcome message for new installs
         const isFirstLaunch = !localStorage.getItem('app-launched');
         if (isFirstLaunch) {
@@ -35,7 +33,6 @@ export function DeploymentReadyApp() {
         
         setIsLoading(false);
       } catch (error) {
-        console.error('App initialization failed:', error);
         // Always complete loading even if initialization fails
         setIsLoading(false);
       }
@@ -43,7 +40,6 @@ export function DeploymentReadyApp() {
 
     // Add a maximum loading timeout
     const maxLoadingTimeout = setTimeout(() => {
-      console.log('Loading timeout reached, proceeding with app launch');
       setIsLoading(false);
     }, 5000);
 
