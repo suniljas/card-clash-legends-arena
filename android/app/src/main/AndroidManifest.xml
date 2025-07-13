@@ -40,16 +40,6 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths"></meta-data>
         </provider>
-        
-        <!-- Google Play Store metadata -->
-        <meta-data
-            android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
-            
-        <!-- App category for Google Play Store -->
-        <meta-data
-            android:name="com.google.android.gms.games.APP_ID"
-            android:value="@string/app_name" />
     </application>
 
     <!-- Permissions -->
