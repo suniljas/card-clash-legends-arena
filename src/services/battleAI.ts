@@ -186,7 +186,7 @@ export class BattleAI {
   ): string {
     const damage = attacker.baseAttack + (attacker.level * 10);
     
-    if (target.currentHP <= damage) {
+    if ((target.currentHP || target.baseHP) <= damage) {
       return `${attacker.name} targets ${target.name} for a finishing blow!`;
     }
     

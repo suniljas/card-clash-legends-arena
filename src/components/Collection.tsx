@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { HeroCard as HeroCardType, Rarity } from '@/types/game';
-import { LORCard } from './LORCard';
+import { LORCardEnhanced } from './LORCardEnhanced';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -102,7 +102,7 @@ export function Collection({ collection, onBack, onCardSelect }: CollectionProps
       {/* Collection Grid */}
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
         {filteredCollection.map((card) => (
-          <LORCard
+          <LORCardEnhanced
             key={card.id}
             hero={card}
             size="medium"
@@ -111,6 +111,8 @@ export function Collection({ collection, onBack, onCardSelect }: CollectionProps
               setSelectedCard(card);
               onCardSelect?.(card);
             }}
+            showRarityGlow={true}
+            isHoverable={true}
           />
         ))}
       </div>

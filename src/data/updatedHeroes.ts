@@ -1,8 +1,9 @@
 import { HeroCard, Rarity, EditionType } from '@/types/game';
 import { EPIC_HEROES_DATABASE } from './epicHeroes';
+import { NEW_EPIC_HEROES_DATABASE } from './newHeroes';
 
-// Updated hero database that replaces the old one
-export const HERO_DATABASE: HeroCard[] = EPIC_HEROES_DATABASE;
+// Updated hero database that includes both existing and new heroes
+export const HERO_DATABASE: HeroCard[] = [...EPIC_HEROES_DATABASE, ...NEW_EPIC_HEROES_DATABASE];
 
 export const RARITY_DROP_RATES = {
   [Rarity.COMMON]: 0.4,      // 4 heroes (40%)

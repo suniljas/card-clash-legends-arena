@@ -22,6 +22,7 @@ export interface HeroCard {
   edition: EditionType;
   baseAttack: number;
   baseHP: number;
+  currentHP?: number; // Added for battle tracking
   level: number;
   experience: number;
   experienceToNext: number;
