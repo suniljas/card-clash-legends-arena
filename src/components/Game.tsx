@@ -18,7 +18,7 @@ import { EventCenter } from './EventCenter';
 import { Achievements } from './Achievements';
 import { Leaderboards } from './Leaderboards';
 import { AchievementNotification } from './AchievementNotification';
-import { CardShowcase } from './CardShowcase';
+// Card Showcase removed as per requirements
 
 import { NetworkStatusIndicator } from './NetworkStatusIndicator';
 import { ACHIEVEMENTS_DATABASE } from '@/data/achievements';
@@ -277,7 +277,10 @@ export function Game() {
       
       case 'showcase':
         return (
-          <CardShowcase />
+          <div className="text-center p-8">
+            <h1>Card Showcase Removed</h1>
+            <p>This feature has been removed per requirements</p>
+          </div>
         );
       
       default:

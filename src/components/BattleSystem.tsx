@@ -5,7 +5,8 @@ import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { HeroCard as HeroCardType, BattleResult } from '@/types/game';
 import { HeroCard } from './HeroCard';
-import { Sword, Shield, Heart, Zap, Timer, ArrowLeft } from 'lucide-react';
+import { BattleAI } from '@/services/battleAI';
+import { Sword, Shield, Heart, Zap, Timer, ArrowLeft, Brain } from 'lucide-react';
 
 interface BattleSystemProps {
   playerDeck: HeroCardType[];
@@ -23,6 +24,7 @@ interface BattleState {
   battleLog: string[];
   turnTimer: number;
   phase: 'setup' | 'battle' | 'complete';
+  aiThinking: boolean;
 }
 
 export function BattleSystem({ playerDeck, enemyDeck, onBattleComplete, onBack }: BattleSystemProps) {
@@ -38,9 +40,10 @@ export function BattleSystem({ playerDeck, enemyDeck, onBattleComplete, onBack }
     currentTurn: 'player',
     selectedPlayerCard: null,
     selectedEnemyCard: null,
-    battleLog: ['Battle begins!'],
+    battleLog: ['⚔️ Enhanced Battle begins! Enemy AI will use advanced tactics.'],
     turnTimer: 30,
-    phase: 'setup'
+    phase: 'setup',
+    aiThinking: false
   });
 
   // Turn timer effect
@@ -54,7 +57,7 @@ export function BattleSystem({ playerDeck, enemyDeck, onBattleComplete, onBack }
           if (prev.currentTurn === 'player') {
             autoPlayPlayerTurn(prev);
           } else {
-            autoPlayEnemyTurn(prev);
+            executeAITurn(prev);
           }
           return { ...prev, turnTimer: 30 };
         }
@@ -64,6 +67,39 @@ export function BattleSystem({ playerDeck, enemyDeck, onBattleComplete, onBack }
 
     return () => clearInterval(timer);
   }, [battleState.phase, battleState.currentTurn]);
+
+  // AI turn execution
+  useEffect(() => {
+    if (battleState.currentTurn === 'enemy' && battleState.phase === 'battle' && !battleState.aiThinking) {
+      executeAITurn(battleState);
+    }
+  }, [battleState.currentTurn, battleState.phase]);
+
+  const executeAITurn = (state: BattleState) => {
+    setBattleState(prev => ({ ...prev, aiThinking: true }));
+
+    // AI thinking delay for realism
+    setTimeout(() => {
+      try {
+        const aiDecision = BattleAI.makeStrategicDecision(state.enemyCards, state.playerCards);
+        
+        setBattleState(prev => {
+          const newLog = [...prev.battleLog, `🧠 AI Decision: ${aiDecision.reasoning}`];
+          return { ...prev, battleLog: newLog, aiThinking: false };
+        });
+
+        // Execute AI attack after brief delay
+        setTimeout(() => {
+          executeEnemyAttack(aiDecision.attackerIndex, aiDecision.targetIndex);
+        }, 1000);
+
+      } catch (error) {
+        // Fallback to random attack
+        autoPlayEnemyTurn(state);
+        setBattleState(prev => ({ ...prev, aiThinking: false }));
+      }
+    }, 1500);
+  };
 
   const autoPlayPlayerTurn = (state: BattleState) => {
     const alivePlayerCards = state.playerCards.filter(card => card.currentHP > 0);
@@ -99,7 +135,7 @@ export function BattleSystem({ playerDeck, enemyDeck, onBattleComplete, onBack }
     setBattleState(prev => ({ 
       ...prev, 
       phase: 'battle',
-      battleLog: [...prev.battleLog, 'Battle phase begins! Choose your first attacker.']
+      battleLog: [...prev.battleLog, '🎯 Battle phase begins! Choose your first attacker.']
     }));
   };
 
@@ -119,7 +155,7 @@ export function BattleSystem({ playerDeck, enemyDeck, onBattleComplete, onBack }
         currentHP: Math.max(0, target.currentHP - damage)
       };
 
-      const logMessage = `${attacker.name} attacks ${target.name} for ${damage} damage!`;
+      const logMessage = `⚔️ ${attacker.name} attacks ${target.name} for ${damage} damage!`;
       const newBattleLog = [...prev.battleLog, logMessage];
 
       // Check for battle end
@@ -165,7 +201,7 @@ export function BattleSystem({ playerDeck, enemyDeck, onBattleComplete, onBack }
         currentHP: Math.max(0, target.currentHP - damage)
       };
 
-      const logMessage = `${attacker.name} attacks ${target.name} for ${damage} damage!`;
+      const logMessage = `🤖 ${attacker.name} strategically attacks ${target.name} for ${damage} damage!`;
       const newBattleLog = [...prev.battleLog, logMessage];
 
       // Check for battle end
@@ -190,7 +226,8 @@ export function BattleSystem({ playerDeck, enemyDeck, onBattleComplete, onBack }
         selectedPlayerCard: null,
         selectedEnemyCard: null,
         battleLog: newBattleLog,
-        turnTimer: 30
+        turnTimer: 30,
+        aiThinking: false
       };
     });
   };
@@ -222,7 +259,7 @@ export function BattleSystem({ playerDeck, enemyDeck, onBattleComplete, onBack }
               <ArrowLeft className="w-5 h-5 mr-2" />
               Back
             </Button>
-            <h1 className="text-3xl font-bold">Battle Arena</h1>
+            <h1 className="text-3xl font-bold">Enhanced Battle Arena</h1>
           </div>
 
           <div className="grid md:grid-cols-2 gap-8 mb-8">
@@ -247,8 +284,8 @@ export function BattleSystem({ playerDeck, enemyDeck, onBattleComplete, onBack }
             {/* Enemy Team */}
             <Card className="p-6 bg-gradient-to-br from-destructive/10 to-card">
               <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
-                <Sword className="w-5 h-5 text-destructive" />
-                Enemy Team
+                <Brain className="w-5 h-5 text-destructive" />
+                AI Enemy Team
               </h2>
               <div className="grid grid-cols-2 gap-3">
                 {battleState.enemyCards.map((card, index) => (
@@ -263,6 +300,18 @@ export function BattleSystem({ playerDeck, enemyDeck, onBattleComplete, onBack }
             </Card>
           </div>
 
+          {/* Enhanced AI Info */}
+          <Card className="p-4 mb-6 bg-gradient-to-r from-orange-500/10 to-red-500/10">
+            <h3 className="font-semibold mb-2 flex items-center gap-2">
+              <Brain className="w-4 h-4" />
+              Advanced AI Battle System
+            </h3>
+            <p className="text-sm text-muted-foreground">
+              This enhanced AI uses strategic planning: prioritizes finishing moves, targets high-threat enemies, 
+              considers type advantages, and preserves weak units. Prepare for a challenging battle!
+            </p>
+          </Card>
+
           <div className="text-center">
             <Button 
               onClick={startBattle} 
@@ -270,7 +319,7 @@ export function BattleSystem({ playerDeck, enemyDeck, onBattleComplete, onBack }
               className="touch-target bg-gradient-to-r from-primary to-secondary hover:from-primary/80 hover:to-secondary/80"
             >
               <Zap className="w-5 h-5 mr-2" />
-              Start Battle!
+              Start Enhanced Battle!
             </Button>
           </div>
         </div>
@@ -288,13 +337,19 @@ export function BattleSystem({ playerDeck, enemyDeck, onBattleComplete, onBack }
               <ArrowLeft className="w-5 h-5 mr-2" />
               Back
             </Button>
-            <h1 className="text-2xl font-bold">Battle in Progress</h1>
+            <h1 className="text-2xl font-bold">Enhanced Battle in Progress</h1>
           </div>
           
           <div className="flex items-center gap-4">
             <Badge variant={battleState.currentTurn === 'player' ? 'default' : 'secondary'}>
-              {battleState.currentTurn === 'player' ? 'Your Turn' : 'Enemy Turn'}
+              {battleState.currentTurn === 'player' ? 'Your Turn' : 'AI Turn'}
             </Badge>
+            {battleState.aiThinking && (
+              <Badge variant="outline" className="animate-pulse">
+                <Brain className="w-3 h-3 mr-1" />
+                AI Thinking...
+              </Badge>
+            )}
             <div className="flex items-center gap-2">
               <Timer className="w-4 h-4" />
               <span className="font-mono text-lg">{battleState.turnTimer}s</span>
@@ -313,8 +368,8 @@ export function BattleSystem({ playerDeck, enemyDeck, onBattleComplete, onBack }
           {/* Enemy Cards */}
           <Card className="p-4 bg-gradient-to-br from-destructive/10 to-card">
             <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-              <Sword className="w-4 h-4 text-destructive" />
-              Enemy Team
+              <Brain className="w-4 h-4 text-destructive" />
+              AI Enemy Team
             </h3>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
               {battleState.enemyCards.map((card, index) => (
@@ -385,7 +440,7 @@ export function BattleSystem({ playerDeck, enemyDeck, onBattleComplete, onBack }
 
         {/* Battle Log */}
         <Card className="p-4">
-          <h3 className="text-lg font-semibold mb-3">Battle Log</h3>
+          <h3 className="text-lg font-semibold mb-3">Enhanced Battle Log</h3>
           <div className="h-32 overflow-y-auto bg-muted/30 rounded p-3">
             {battleState.battleLog.map((log, index) => (
               <div key={index} className="text-sm mb-1 last:mb-0">
@@ -402,6 +457,15 @@ export function BattleSystem({ playerDeck, enemyDeck, onBattleComplete, onBack }
               {battleState.selectedPlayerCard === null 
                 ? "Select one of your heroes to attack with" 
                 : "Now select an enemy to attack"}
+            </p>
+          </Card>
+        )}
+
+        {battleState.currentTurn === 'enemy' && (
+          <Card className="mt-4 p-4 bg-orange-500/10">
+            <p className="text-center font-medium flex items-center justify-center gap-2">
+              <Brain className="w-4 h-4" />
+              {battleState.aiThinking ? "AI is analyzing the battlefield..." : "AI is planning its next strategic move..."}
             </p>
           </Card>
         )}

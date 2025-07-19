@@ -2,15 +2,24 @@ export enum Rarity {
   COMMON = 'common',
   UNCOMMON = 'uncommon',
   RARE = 'rare',
+  VERY_RARE = 'very-rare',
   EPIC = 'epic',
   LEGEND = 'legend',
   ULTRA_LEGEND = 'ultra-legend'
+}
+
+export enum EditionType {
+  NORMAL = 'normal',
+  PREMIUM = 'premium',
+  SPECIAL = 'special',
+  LIMITED = 'limited'
 }
 
 export interface HeroCard {
   id: string;
   name: string;
   rarity: Rarity;
+  edition: EditionType;
   baseAttack: number;
   baseHP: number;
   level: number;
@@ -85,9 +94,28 @@ export interface MarketListing {
   id: string;
   card: HeroCard;
   price: number;
-  currency: 'coins' | 'gems';
+  currency: 'gems';
   seller: string;
   timeRemaining: number;
+  listedAt: Date;
+}
+
+export interface CampaignParticipant {
+  id: string;
+  playerId: string;
+  playerName: string;
+  completedAt: Date;
+  cardsEarned: HeroCard[];
+  coinsEarned: number;
+}
+
+export interface CampaignInstance {
+  id: string;
+  levelId: number;
+  participants: CampaignParticipant[];
+  maxParticipants: number;
+  status: 'active' | 'completed';
+  createdAt: Date;
 }
 
 export interface GameEvent {

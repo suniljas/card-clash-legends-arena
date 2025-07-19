@@ -1,86 +1,37 @@
 import { useState } from 'react';
-import { HeroCard as HeroCardType, Rarity } from '@/types/game';
+import { HeroCard as HeroCardType, EditionType } from '@/types/game';
 import { HeroCard } from './HeroCard';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { ArrowLeft, Search, Coins, Gem, Users, Clock } from 'lucide-react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { ArrowLeft, Search, Gem, Users, Clock, Filter } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { MarketplaceSystem } from '@/services/marketplaceSystem';
 
 interface MarketplaceProps {
   collection: HeroCardType[];
   gameStats: any;
   onBack: () => void;
-  onTradeCard: (cardId: string, price: number, currency: 'coins' | 'gems') => void;
-  onBuyCard: (listing: MarketListing) => void;
+  onTradeCard: (cardId: string, price: number, currency: 'gems') => void;
+  onBuyCard: (card: HeroCardType, price: number) => void;
 }
-
-interface MarketListing {
-  id: string;
-  card: HeroCardType;
-  price: number;
-  currency: 'coins' | 'gems';
-  seller: string;
-  timeRemaining: number;
-}
-
-// Mock marketplace data
-const MOCK_LISTINGS: MarketListing[] = [
-  {
-    id: '1',
-    card: {
-      id: 'dragon-knight-marketplace',
-      name: 'Dragon Knight',
-      rarity: Rarity.EPIC,
-      baseAttack: 250,
-      baseHP: 300,
-      level: 2,
-      experience: 150,
-      experienceToNext: 300,
-      abilityName: 'Dragon Breath',
-      abilityDescription: 'Massive fire damage to all enemies',
-      unlocked: true
-    },
-    price: 500,
-    currency: 'gems',
-    seller: 'DragonMaster',
-    timeRemaining: 82800 // 23 hours
-  },
-  {
-    id: '2',
-    card: {
-      id: 'crystal-wizard-marketplace',
-      name: 'Crystal Wizard',
-      rarity: Rarity.RARE,
-      baseAttack: 200,
-      baseHP: 180,
-      level: 3,
-      experience: 200,
-      experienceToNext: 200,
-      abilityName: 'Crystal Blast',
-      abilityDescription: 'Damages all enemies for 150% attack',
-      unlocked: true
-    },
-    price: 1200,
-    currency: 'coins',
-    seller: 'MagePlayer',
-    timeRemaining: 43200 // 12 hours
-  }
-];
 
 export function Marketplace({ collection, gameStats, onBack, onTradeCard, onBuyCard }: MarketplaceProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCard, setSelectedCard] = useState<HeroCardType | null>(null);
   const [tradePrice, setTradePrice] = useState('');
-  const [tradeCurrency, setTradeCurrency] = useState<'coins' | 'gems'>('coins');
-  const [activeListings] = useState<MarketListing[]>(MOCK_LISTINGS);
+  const [editionFilter, setEditionFilter] = useState<EditionType | 'all'>('all');
+  const [activeListings, setActiveListings] = useState(MarketplaceSystem.getActiveListings());
   const { toast } = useToast();
 
-  const filteredListings = activeListings.filter(listing =>
-    listing.card.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredListings = activeListings.filter(listing => {
+    const matchesSearch = listing.card.name.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesEdition = editionFilter === 'all' || listing.card.edition === editionFilter;
+    return matchesSearch && matchesEdition;
+  });
 
   const tradableCards = collection.filter(card => 
     card && card.level > 1 && // Only tradable if leveled up
@@ -107,40 +58,61 @@ export function Marketplace({ collection, gameStats, onBack, onTradeCard, onBuyC
       return;
     }
 
-    onTradeCard(selectedCard.id, price, tradeCurrency);
+    // List card using marketplace system
+    MarketplaceSystem.listCard(selectedCard, price, 'You');
+    onTradeCard(selectedCard.id, price, 'gems');
+    
+    // Refresh listings
+    setActiveListings(MarketplaceSystem.getActiveListings());
+    
     toast({
       title: "Card Listed!",
-      description: `${selectedCard.name} listed for ${price} ${tradeCurrency}`,
+      description: `${selectedCard.name} (${selectedCard.edition}) listed for ${price} gems`,
     });
     setSelectedCard(null);
     setTradePrice('');
   };
 
-  const handleBuyCard = (listing: MarketListing) => {
-    const canAfford = listing.currency === 'coins' 
-      ? gameStats.coins >= listing.price 
-      : gameStats.gems >= listing.price;
-
-    if (!canAfford) {
+  const handleBuyCard = (listingId: string, listing: any) => {
+    if (gameStats.gems < listing.price) {
       toast({
-        title: "Insufficient Funds",
-        description: `You need ${listing.price} ${listing.currency}`,
+        title: "Insufficient Gems",
+        description: `You need ${listing.price} gems`,
         variant: "destructive"
       });
       return;
     }
 
-    onBuyCard(listing);
-    toast({
-      title: "Purchase Successful!",
-      description: `You bought ${listing.card.name} for ${listing.price} ${listing.currency}`,
-    });
+    const purchasedCard = MarketplaceSystem.buyCard(listingId, 'You');
+    
+    if (purchasedCard) {
+      onBuyCard(purchasedCard, listing.price);
+      setActiveListings(MarketplaceSystem.getActiveListings());
+      
+      toast({
+        title: "Purchase Successful!",
+        description: `You bought ${purchasedCard.name} (${purchasedCard.edition}) for ${listing.price} gems`,
+      });
+    }
   };
 
   const formatTimeRemaining = (seconds: number) => {
     const hours = Math.floor(seconds / 3600);
     const minutes = Math.floor((seconds % 3600) / 60);
     return `${hours}h ${minutes}m`;
+  };
+
+  const getEditionBadgeColor = (edition: EditionType) => {
+    switch (edition) {
+      case EditionType.LIMITED:
+        return 'bg-gradient-to-r from-yellow-500 to-orange-500 text-white';
+      case EditionType.SPECIAL:
+        return 'bg-gradient-to-r from-purple-500 to-pink-500 text-white';
+      case EditionType.PREMIUM:
+        return 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white';
+      default:
+        return 'bg-gray-500 text-white';
+    }
   };
 
   return (
@@ -152,19 +124,14 @@ export function Marketplace({ collection, gameStats, onBack, onTradeCard, onBuyC
           Back
         </Button>
         <div>
-          <h1 className="text-2xl font-bold">🏪 Marketplace</h1>
-          <p className="text-muted-foreground">Trade heroes with other players</p>
+          <h1 className="text-2xl font-bold">💎 Gem Marketplace</h1>
+          <p className="text-muted-foreground">Trade premium card editions with gems</p>
         </div>
       </div>
 
       {/* Currency Display */}
       <Card className="p-4 mb-6">
         <div className="flex gap-6">
-          <div className="flex items-center gap-2">
-            <Coins className="w-5 h-5 text-game-coins" />
-            <span className="font-medium">{gameStats.coins.toLocaleString()}</span>
-            <span className="text-sm text-muted-foreground">Coins</span>
-          </div>
           <div className="flex items-center gap-2">
             <Gem className="w-5 h-5 text-game-gems" />
             <span className="font-medium">{gameStats.gems.toLocaleString()}</span>
@@ -175,89 +142,133 @@ export function Marketplace({ collection, gameStats, onBack, onTradeCard, onBuyC
 
       <Tabs defaultValue="browse" className="w-full">
         <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="browse">Browse Listings</TabsTrigger>
-          <TabsTrigger value="sell">Sell Cards</TabsTrigger>
+          <TabsTrigger value="browse">Browse Marketplace</TabsTrigger>
+          <TabsTrigger value="sell">List Cards</TabsTrigger>
         </TabsList>
 
         <TabsContent value="browse" className="space-y-4">
-          {/* Search */}
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-            <Input
-              placeholder="Search marketplace..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10"
-            />
+          {/* Search and Filters */}
+          <div className="flex gap-4">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <Input
+                placeholder="Search marketplace..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10"
+              />
+            </div>
+            <Select value={editionFilter} onValueChange={(value) => setEditionFilter(value as any)}>
+              <SelectTrigger className="w-40">
+                <Filter className="w-4 h-4 mr-2" />
+                <SelectValue placeholder="Edition" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Editions</SelectItem>
+                <SelectItem value={EditionType.NORMAL}>Normal</SelectItem>
+                <SelectItem value={EditionType.PREMIUM}>Premium</SelectItem>
+                <SelectItem value={EditionType.SPECIAL}>Special</SelectItem>
+                <SelectItem value={EditionType.LIMITED}>Limited</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
+
+          {/* Edition Guide */}
+          <Card className="p-4 mb-4 bg-gradient-to-r from-primary/10 to-secondary/10">
+            <h3 className="font-semibold mb-2">Edition Guide</h3>
+            <div className="grid md:grid-cols-4 gap-4 text-sm">
+              <div>
+                <Badge className={getEditionBadgeColor(EditionType.NORMAL)}>Normal</Badge>
+                <p className="mt-1">Basic outfit, simple effects</p>
+              </div>
+              <div>
+                <Badge className={getEditionBadgeColor(EditionType.PREMIUM)}>Premium</Badge>
+                <p className="mt-1">Enhanced outfit, moderate effects</p>
+              </div>
+              <div>
+                <Badge className={getEditionBadgeColor(EditionType.SPECIAL)}>Special</Badge>
+                <p className="mt-1">Rare outfit, advanced effects</p>
+              </div>
+              <div>
+                <Badge className={getEditionBadgeColor(EditionType.LIMITED)}>Limited</Badge>
+                <p className="mt-1">Ultra-rare, exclusive effects</p>
+              </div>
+            </div>
+          </Card>
 
           {/* Listings */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {filteredListings.map((listing) => (
-              <Card key={listing.id} className="p-4">
-                <div className="flex gap-4">
-                  <div className="flex-shrink-0">
-                    <HeroCard 
-                      hero={listing.card} 
-                      size="small"
-                      showStats={false}
-                    />
-                  </div>
-                  <div className="flex-1 space-y-2">
-                    <div>
-                      <h3 className="font-bold">{listing.card.name}</h3>
-                      <Badge 
-                        variant="outline" 
-                        className={`text-rarity-${listing.card.rarity} border-rarity-${listing.card.rarity}`}
-                      >
-                        {listing.card.rarity}
-                      </Badge>
+            {filteredListings.map((listing) => {
+              const priceStats = MarketplaceSystem.getCardPriceStats(listing.card.name, listing.card.edition);
+              
+              return (
+                <Card key={listing.id} className="p-4 hover:shadow-lg transition-shadow">
+                  <div className="flex gap-4">
+                    <div className="flex-shrink-0">
+                      <HeroCard 
+                        hero={listing.card} 
+                        size="small"
+                        showStats={false}
+                      />
                     </div>
-                    
-                    <div className="text-sm space-y-1">
-                      <div className="flex items-center gap-1">
-                        <Users className="w-3 h-3" />
-                        <span>{listing.seller}</span>
+                    <div className="flex-1 space-y-2">
+                      <div>
+                        <h3 className="font-bold">{listing.card.name}</h3>
+                        <Badge className={getEditionBadgeColor(listing.card.edition)}>
+                          {listing.card.edition}
+                        </Badge>
                       </div>
-                      <div className="flex items-center gap-1">
-                        <Clock className="w-3 h-3" />
-                        <span>{formatTimeRemaining(listing.timeRemaining)}</span>
+                      
+                      <div className="text-sm space-y-1">
+                        <div className="flex items-center gap-1">
+                          <Users className="w-3 h-3" />
+                          <span>{listing.seller}</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <Clock className="w-3 h-3" />
+                          <span>{formatTimeRemaining(listing.timeRemaining)}</span>
+                        </div>
                       </div>
-                    </div>
 
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-1">
-                        {listing.currency === 'coins' ? 
-                          <Coins className="w-4 h-4 text-game-coins" /> : 
+                      {/* Price Statistics */}
+                      {priceStats.totalListings > 1 && (
+                        <div className="text-xs text-muted-foreground">
+                          Avg: {Math.round(priceStats.averagePrice)} • Low: {priceStats.lowestPrice}
+                        </div>
+                      )}
+
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-1">
                           <Gem className="w-4 h-4 text-game-gems" />
-                        }
-                        <span className="font-bold">{listing.price}</span>
+                          <span className="font-bold text-lg">{listing.price}</span>
+                        </div>
+                        <Button 
+                          size="sm" 
+                          onClick={() => handleBuyCard(listing.id, listing)}
+                          disabled={gameStats.gems < listing.price}
+                        >
+                          Buy
+                        </Button>
                       </div>
-                      <Button 
-                        size="sm" 
-                        onClick={() => handleBuyCard(listing)}
-                      >
-                        Buy
-                      </Button>
                     </div>
                   </div>
-                </div>
-              </Card>
-            ))}
+                </Card>
+              );
+            })}
           </div>
 
           {filteredListings.length === 0 && (
             <div className="text-center py-12">
               <div className="text-4xl mb-4">🔍</div>
               <h3 className="text-lg font-semibold mb-2">No listings found</h3>
-              <p className="text-muted-foreground">Try adjusting your search</p>
+              <p className="text-muted-foreground">Try adjusting your search or filters</p>
             </div>
           )}
         </TabsContent>
 
         <TabsContent value="sell" className="space-y-4">
           <Card className="p-4">
-            <h3 className="font-semibold mb-4">List a Card for Sale</h3>
+            <h3 className="font-semibold mb-4">List Card for Gem Sale</h3>
             
             {/* Card Selection */}
             <div className="space-y-4">
@@ -265,14 +276,20 @@ export function Marketplace({ collection, gameStats, onBack, onTradeCard, onBuyC
                 <label className="text-sm font-medium mb-2 block">Select Card to Sell</label>
                 <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2 max-h-48 overflow-y-auto">
                   {tradableCards.map((card) => (
-                    <HeroCard
-                      key={card.id}
-                      hero={card}
-                      size="small"
-                      isSelected={selectedCard?.id === card.id}
-                      onClick={() => setSelectedCard(card)}
-                      showStats={false}
-                    />
+                    <div key={card.id} className="relative">
+                      <HeroCard
+                        hero={card}
+                        size="small"
+                        isSelected={selectedCard?.id === card.id}
+                        onClick={() => setSelectedCard(card)}
+                        showStats={false}
+                      />
+                      <Badge 
+                        className={`absolute -top-1 -right-1 text-xs ${getEditionBadgeColor(card.edition)}`}
+                      >
+                        {card.edition.charAt(0).toUpperCase()}
+                      </Badge>
+                    </div>
                   ))}
                 </div>
               </div>
@@ -280,47 +297,40 @@ export function Marketplace({ collection, gameStats, onBack, onTradeCard, onBuyC
               {selectedCard && (
                 <div className="space-y-4 p-4 bg-muted/50 rounded-lg">
                   <div>
-                    <h4 className="font-medium">Selected: {selectedCard.name}</h4>
+                    <h4 className="font-medium">
+                      {selectedCard.name} 
+                      <Badge className={`ml-2 ${getEditionBadgeColor(selectedCard.edition)}`}>
+                        {selectedCard.edition}
+                      </Badge>
+                    </h4>
                     <p className="text-sm text-muted-foreground">Level {selectedCard.level}</p>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="text-sm font-medium mb-2 block">Price</label>
-                      <Input
-                        type="number"
-                        value={tradePrice}
-                        onChange={(e) => setTradePrice(e.target.value)}
-                        placeholder="Enter price"
-                        min="1"
-                      />
-                    </div>
-                    <div>
-                      <label className="text-sm font-medium mb-2 block">Currency</label>
-                      <div className="flex gap-2">
-                        <Button
-                          variant={tradeCurrency === 'coins' ? 'default' : 'outline'}
-                          size="sm"
-                          onClick={() => setTradeCurrency('coins')}
-                          className="flex-1"
-                        >
-                          <Coins className="w-3 h-3 mr-1" />
-                          Coins
-                        </Button>
-                        <Button
-                          variant={tradeCurrency === 'gems' ? 'default' : 'outline'}
-                          size="sm"
-                          onClick={() => setTradeCurrency('gems')}
-                          className="flex-1"
-                        >
-                          <Gem className="w-3 h-3 mr-1" />
-                          Gems
-                        </Button>
+                  {/* Price Suggestion */}
+                  {(() => {
+                    const priceStats = MarketplaceSystem.getCardPriceStats(selectedCard.name, selectedCard.edition);
+                    return priceStats.totalListings > 0 && (
+                      <div className="p-3 bg-primary/10 rounded">
+                        <p className="text-sm font-medium">Market Price Guide:</p>
+                        <p className="text-sm">Average: {Math.round(priceStats.averagePrice)} gems</p>
+                        <p className="text-sm">Range: {priceStats.lowestPrice} - {priceStats.highestPrice} gems</p>
                       </div>
-                    </div>
+                    );
+                  })()}
+
+                  <div>
+                    <label className="text-sm font-medium mb-2 block">Price (Gems Only)</label>
+                    <Input
+                      type="number"
+                      value={tradePrice}
+                      onChange={(e) => setTradePrice(e.target.value)}
+                      placeholder="Enter gem price"
+                      min="1"
+                    />
                   </div>
 
                   <Button onClick={handleListCard} className="w-full">
+                    <Gem className="w-4 h-4 mr-2" />
                     List Card for Sale
                   </Button>
                 </div>

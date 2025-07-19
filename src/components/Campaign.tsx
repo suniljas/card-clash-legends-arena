@@ -7,8 +7,10 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { ArrowLeft, Sword, Trophy, Coins } from 'lucide-react';
+import { ArrowLeft, Sword, Trophy, Coins, Users, Clock } from 'lucide-react';
 import { HERO_DATABASE } from '@/data/heroes';
+import { CampaignSystem } from '@/services/campaignSystem';
+import { useToast } from '@/hooks/use-toast';
 
 interface CampaignProps {
   playerDeck: PlayerDeck;
@@ -22,6 +24,7 @@ export function Campaign({ playerDeck, gameStats, onBack, onBattleComplete, onSt
   const [selectedLevel, setSelectedLevel] = useState<CampaignLevel | null>(null);
   const [battling, setBattling] = useState(false);
   const [battleResult, setBattleResult] = useState<BattleResult | null>(null);
+  const { toast } = useToast();
 
   // Get campaign levels from data
   const baseCampaignLevels = CAMPAIGN_DATA.map(level => ({
@@ -67,9 +70,20 @@ export function Campaign({ playerDeck, gameStats, onBack, onBattleComplete, onSt
 
   const handleBattle = async (level: CampaignLevel) => {
     if (playerDeck.cards.length === 0) {
-      alert('You need to build a deck first!');
+      toast({
+        title: "No Deck",
+        description: "You need to build a deck first!",
+        variant: "destructive"
+      });
       return;
     }
+
+    // Join campaign instance (100-player logic)
+    const campaignInstance = CampaignSystem.joinCampaignLevel(
+      level.id, 
+      `player-${Date.now()}`, 
+      'Player'
+    );
 
     if (onStartBattle) {
       // Use new battle system
@@ -77,7 +91,7 @@ export function Campaign({ playerDeck, gameStats, onBack, onBattleComplete, onSt
       return;
     }
 
-    // Fallback to old system
+    // Fallback to old system with campaign rewards
     setBattling(true);
     setSelectedLevel(level);
 
@@ -89,18 +103,42 @@ export function Campaign({ playerDeck, gameStats, onBack, onBattleComplete, onSt
       
       const victory = playerPower > enemyPower * 0.8;
       
-      const result: BattleResult = {
-        victory,
-        experienceGained: victory ? level.rewards.experience : Math.floor(level.rewards.experience * 0.3),
-        coinsEarned: victory ? level.rewards.coins : Math.floor(level.rewards.coins * 0.3),
-        cardsEarned: victory && level.rewards.cards ? level.rewards.cards : [],
-        survivingCards: playerDeck.cards
-      };
+      if (victory) {
+        // Complete campaign level and get distributed rewards
+        const campaignResult = CampaignSystem.completeCampaignLevel(
+          campaignInstance.id,
+          `player-${Date.now()}`,
+          'Player',
+          level.id
+        );
 
-      setBattleResult(result);
+        setBattleResult({
+          ...campaignResult,
+          survivingCards: playerDeck.cards
+        });
+
+        toast({
+          title: "Campaign Victory!",
+          description: `${campaignResult.cardsEarned.length > 0 ? 'Card rewards earned!' : 'Coins earned!'}`,
+        });
+      } else {
+        setBattleResult({
+          victory: false,
+          experienceGained: Math.floor(level.rewards.experience * 0.3),
+          coinsEarned: Math.floor(level.rewards.coins * 0.3),
+          cardsEarned: [],
+          survivingCards: playerDeck.cards
+        });
+      }
+
       setBattling(false);
-      onBattleComplete(result);
+      onBattleComplete(battleResult!);
     }, 3000);
+  };
+
+  // Get campaign statistics
+  const getCampaignStats = (levelId: number) => {
+    return CampaignSystem.getCampaignStats(levelId);
   };
 
   if (battleResult) {
@@ -117,12 +155,12 @@ export function Campaign({ playerDeck, gameStats, onBack, onBattleComplete, onSt
           
           <p className="text-muted-foreground mb-6">
             {battleResult.victory 
-              ? 'Excellent work, champion!'
+              ? 'Excellent work, champion! Campaign rewards distributed!'
               : 'Better luck next time. Train harder!'}
           </p>
 
           <Card className="p-6 mb-6">
-            <h3 className="font-semibold mb-4">Battle Rewards</h3>
+            <h3 className="font-semibold mb-4">Campaign Rewards</h3>
             <div className="grid grid-cols-2 gap-4">
               <div className="flex items-center gap-2">
                 <Coins className="w-5 h-5 text-accent" />
@@ -136,12 +174,23 @@ export function Campaign({ playerDeck, gameStats, onBack, onBattleComplete, onSt
             
             {battleResult.cardsEarned.length > 0 && (
               <div className="mt-4">
-                <h4 className="font-medium mb-2">New Cards Earned:</h4>
+                <h4 className="font-medium mb-2">Campaign Card Drops:</h4>
                 <div className="flex justify-center gap-2">
                   {battleResult.cardsEarned.map(card => (
-                    <HeroCard key={card.id} hero={card} size="small" />
+                    <div key={card.id} className="text-center">
+                      <HeroCard hero={card} size="small" />
+                      <Badge className="mt-1 text-xs">{card.edition}</Badge>
+                    </div>
                   ))}
                 </div>
+              </div>
+            )}
+
+            {battleResult.victory && (
+              <div className="mt-4 p-3 bg-primary/10 rounded">
+                <p className="text-sm text-primary font-medium">
+                  🎯 100-Player Campaign System: Rewards distributed based on completion order!
+                </p>
               </div>
             )}
           </Card>
@@ -159,8 +208,8 @@ export function Campaign({ playerDeck, gameStats, onBack, onBattleComplete, onSt
       <div className="container mx-auto px-4 py-6 flex items-center justify-center min-h-[60vh]">
         <div className="text-center">
           <div className="text-6xl mb-4 animate-pulse">⚔️</div>
-          <h2 className="text-2xl font-bold mb-2">Battle in Progress...</h2>
-          <p className="text-muted-foreground mb-4">Your heroes are fighting!</p>
+          <h2 className="text-2xl font-bold mb-2">Campaign Battle in Progress...</h2>
+          <p className="text-muted-foreground mb-4">Your heroes are fighting for campaign rewards!</p>
           <Progress value={66} className="w-64 mx-auto" />
         </div>
       </div>
@@ -176,9 +225,9 @@ export function Campaign({ playerDeck, gameStats, onBack, onBattleComplete, onSt
           Back
         </Button>
         <div>
-          <h1 className="text-2xl font-bold">Campaign</h1>
+          <h1 className="text-2xl font-bold">Campaign Arena</h1>
           <p className="text-muted-foreground">
-            Progress: {gameStats.campaignProgress}/20 levels
+            Join 100-player campaign instances • Progress: {gameStats.campaignProgress}/20 levels
           </p>
         </div>
       </div>
@@ -192,54 +241,87 @@ export function Campaign({ playerDeck, gameStats, onBack, onBattleComplete, onSt
         </div>
       </Card>
 
+      {/* Campaign System Info */}
+      <Card className="p-4 mb-6 bg-gradient-to-r from-primary/10 to-secondary/10">
+        <h3 className="font-semibold mb-2">🏟️ 100-Player Campaign System</h3>
+        <div className="grid md:grid-cols-4 gap-4 text-sm">
+          <div>
+            <strong>Guaranteed:</strong> Gold for completion
+          </div>
+          <div>
+            <strong>5% (5 players):</strong> Common Card
+          </div>
+          <div>
+            <strong>3% (3 players):</strong> Uncommon Card
+          </div>
+          <div>
+            <strong>2% (2 players):</strong> Rare Card + 1% Legendary
+          </div>
+        </div>
+      </Card>
+
       {/* Level Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {campaignLevels.map((level) => (
-          <Card
-            key={level.id}
-            className={`p-4 cursor-pointer transition-all duration-200 ${
-              level.unlocked 
-                ? 'hover:scale-105 hover:shadow-lg' 
-                : 'opacity-50 cursor-not-allowed'
-            } ${level.completed ? 'bg-accent/10' : ''}`}
-            onClick={() => level.unlocked && !level.completed && handleBattle(level)}
-          >
-            <div className="flex justify-between items-start mb-2">
-              <h3 className="font-semibold">{level.name}</h3>
-              <div className="flex gap-1">
-                {level.completed && <Badge variant="outline">✓</Badge>}
-                {!level.unlocked && <Badge variant="outline">🔒</Badge>}
-              </div>
-            </div>
-            
-            <div className="text-sm text-muted-foreground mb-3">
-              Difficulty: {Array.from({ length: level.difficulty }).map((_, i) => '⭐').join('')}
-            </div>
-
-            <div className="text-xs space-y-1">
-              <div className="flex items-center gap-2">
-                <Coins className="w-3 h-3 text-accent" />
-                <span>{level.rewards.coins} coins</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Trophy className="w-3 h-3 text-secondary" />
-                <span>{level.rewards.experience} XP</span>
-              </div>
-              {level.rewards.cards && (
-                <div className="flex items-center gap-2">
-                  <span className="text-xs">🎁 Bonus card!</span>
+        {campaignLevels.map((level) => {
+          const stats = getCampaignStats(level.id);
+          
+          return (
+            <Card
+              key={level.id}
+              className={`p-4 cursor-pointer transition-all duration-200 ${
+                level.unlocked 
+                  ? 'hover:scale-105 hover:shadow-lg' 
+                  : 'opacity-50 cursor-not-allowed'
+              } ${level.completed ? 'bg-accent/10' : ''}`}
+              onClick={() => level.unlocked && !level.completed && handleBattle(level)}
+            >
+              <div className="flex justify-between items-start mb-2">
+                <h3 className="font-semibold">{level.name}</h3>
+                <div className="flex gap-1">
+                  {level.completed && <Badge variant="outline">✓</Badge>}
+                  {!level.unlocked && <Badge variant="outline">🔒</Badge>}
                 </div>
-              )}
-            </div>
+              </div>
+              
+              <div className="text-sm text-muted-foreground mb-3">
+                Difficulty: {Array.from({ length: level.difficulty }).map((_, i) => '⭐').join('')}
+              </div>
 
-            {level.unlocked && !level.completed && (
-              <Button size="sm" className="w-full mt-3">
-                <Sword className="w-3 h-3 mr-1" />
-                Battle
-              </Button>
-            )}
-          </Card>
-        ))}
+              {/* Campaign Instance Stats */}
+              <div className="text-xs mb-3 p-2 bg-muted/30 rounded">
+                <div className="flex items-center gap-2 mb-1">
+                  <Users className="w-3 h-3" />
+                  <span>{stats.totalParticipants} players joined</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Clock className="w-3 h-3" />
+                  <span>{stats.completedInstances} instances completed</span>
+                </div>
+              </div>
+
+              <div className="text-xs space-y-1">
+                <div className="flex items-center gap-2">
+                  <Coins className="w-3 h-3 text-accent" />
+                  <span>{level.rewards.coins} coins (guaranteed)</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Trophy className="w-3 h-3 text-secondary" />
+                  <span>{level.rewards.experience} XP</span>
+                </div>
+                <div className="text-xs text-primary">
+                  🎁 Card drops: 5% Common, 3% Uncommon, 2% Rare, 1% Legendary
+                </div>
+              </div>
+
+              {level.unlocked && !level.completed && (
+                <Button size="sm" className="w-full mt-3">
+                  <Sword className="w-3 h-3 mr-1" />
+                  Join Campaign Battle
+                </Button>
+              )}
+            </Card>
+          );
+        })}
       </div>
 
       {/* Deck Status */}
