@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { PlayerDeck, GameStats, BattleResult, CampaignLevel } from '@/types/game';
-import { CAMPAIGN_DATA, generateEndlessCampaign } from '@/data/campaigns';
+// Campaign data integrated directly into component
 import { HeroCard } from './HeroCard';
 import { HeroCard as HeroCardType } from '@/types/game';
 import { Button } from '@/components/ui/button';
@@ -24,9 +24,76 @@ export function Campaign({ playerDeck, gameStats, onBack, onBattleComplete, onSt
   const [selectedLevel, setSelectedLevel] = useState<CampaignLevel | null>(null);
   const [battling, setBattling] = useState(false);
   const [battleResult, setBattleResult] = useState<BattleResult | null>(null);
+  const campaignSystem = new CampaignSystem();
   const { toast } = useToast();
 
-  // Get campaign levels from data
+  // Campaign data - integrated into component after cleanup
+  const CAMPAIGN_DATA: CampaignLevel[] = [
+    {
+      id: 1,
+      name: "Forest Outpost",
+      difficulty: 1,
+      enemyDeck: [],
+      rewards: { coins: 100, experience: 50 },
+      unlocked: true,
+      completed: false,
+    },
+    {
+      id: 2,
+      name: "Mountain Pass", 
+      difficulty: 2,
+      enemyDeck: [],
+      rewards: { coins: 150, experience: 75 },
+      unlocked: false,
+      completed: false,
+    },
+    {
+      id: 3,
+      name: "Dark Caverns",
+      difficulty: 3,
+      enemyDeck: [],
+      rewards: { coins: 200, experience: 100 },
+      unlocked: false,
+      completed: false,
+    },
+    {
+      id: 4,
+      name: "Ancient Ruins",
+      difficulty: 4,
+      enemyDeck: [],
+      rewards: { coins: 300, experience: 150 },
+      unlocked: false,
+      completed: false,
+    },
+    {
+      id: 5,
+      name: "Dragon's Lair",
+      difficulty: 5,
+      enemyDeck: [],
+      rewards: { coins: 500, experience: 250 },
+      unlocked: false,
+      completed: false,
+    }
+  ];
+
+  // Generate endless campaign function
+  function generateEndlessCampaign(level: number): CampaignLevel {
+    const difficulty = Math.min(level, 10);
+    
+    return {
+      id: level,
+      name: `Endless Battle ${level}`,
+      difficulty,
+      enemyDeck: [],
+      rewards: {
+        coins: 50 + (level * 25),
+        experience: 25 + (level * 15),
+      },
+      unlocked: true,
+      completed: false,
+    };
+  }
+
   const baseCampaignLevels = CAMPAIGN_DATA.map(level => ({
     ...level,
     unlocked: level.id <= gameStats.campaignProgress,
