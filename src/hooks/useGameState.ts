@@ -123,6 +123,8 @@ export function useGameState() {
       } else {
         // No cloud data exists, save current local data to cloud
         await cloudSaveService.saveToCloud({ collection, currentDeck, gameStats });
+      }
+    }
     if (!auth) {
       // Firebase not initialized, set demo mode
       setIsAuthenticated(false);

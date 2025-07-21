@@ -40,7 +40,7 @@ class AnalyticsService {
   // Set user ID for tracking
   setUserId(userId: string) {
     try {
-      if (analytics) {
+      if (analytics && typeof analytics === 'object') {
         setUserId(analytics, userId);
       }
     } catch (error) {
