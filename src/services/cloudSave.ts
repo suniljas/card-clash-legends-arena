@@ -17,6 +17,7 @@ export class CloudSaveService {
   private unsubscribe: (() => void) | null = null;
 
   async saveToCloud(data: Omit<CloudSaveData, 'lastSaved' | 'version'>): Promise<void> {
+    if (!auth) throw new Error('Firebase auth not initialized');
     const user = auth.currentUser;
     if (!user) throw new Error('No authenticated user');
 
@@ -31,6 +32,7 @@ export class CloudSaveService {
   }
 
   async loadFromCloud(): Promise<CloudSaveData | null> {
+    if (!auth) return null;
     const user = auth.currentUser;
     if (!user) return null;
 
@@ -44,6 +46,7 @@ export class CloudSaveService {
   }
 
   subscribeToCloudChanges(callback: (data: CloudSaveData | null) => void): void {
+    if (!auth) return;
     const user = auth.currentUser;
     if (!user) return;
 
