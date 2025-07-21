@@ -21,12 +21,13 @@ import { ProgressionSystem, Faction } from '../engine/ProgressionSystem';
 import { PathOfLegends } from './PathOfLegends';
 import { LegendsLab } from './LegendsLab';
 import { Challenges } from './Challenges';
-import { Marketplace } from './Marketplace';
+import { WildcardSystem } from './WildcardSystem';
+import { PositionalBattleSystem } from './PositionalBattleSystem';
 import { EventCenter } from './EventCenter';
 import { Achievements } from './Achievements';
 import { Leaderboards } from './Leaderboards';
 import { AchievementNotification } from './AchievementNotification';
-// Card Showcase removed as per requirements
+// Marketplace removed - replaced with ethical wildcard system
 
 import { NetworkStatusIndicator } from './NetworkStatusIndicator';
 import { OnboardingFlow } from './OnboardingFlow';
@@ -44,7 +45,7 @@ type GamePage =
   | 'pvp' 
   | 'battle'
   | 'tournament' 
-  | 'marketplace'
+  | 'wildcards'
   | 'events'
   | 'settings'
   | 'gem-purchase'
@@ -224,20 +225,10 @@ export function Game() {
           />
         );
       
-      case 'marketplace':
+      case 'wildcards':
         return (
-          <Marketplace
-            collection={gameState.collection}
-            gameStats={gameState.gameStats}
+          <WildcardSystem
             onBack={() => setCurrentPage('menu')}
-            onTradeCard={(cardId, price, currency) => {
-              // Handle card trading logic
-              console.log('Trading card:', cardId, price, currency);
-            }}
-            onBuyCard={(listing) => {
-              // Handle card purchase logic
-              console.log('Buying card:', listing);
-            }}
           />
         );
       

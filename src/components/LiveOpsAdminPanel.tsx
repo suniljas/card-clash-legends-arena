@@ -7,8 +7,16 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
 import { Badge } from '@/components/ui/badge';
-import { AlertCircle, Calendar, DollarSign, Users, Settings, MessageSquare, Activity } from 'lucide-react';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { AlertCircle, Calendar, DollarSign, Users, Settings, MessageSquare, Activity, Heart, TrendingUp, Award } from 'lucide-react';
 import { useGameStore } from '@/store/gameStore';
+
+interface PlayerSentiment {
+  rating: number;
+  feedback: string;
+  category: 'balance' | 'fun' | 'monetization' | 'community';
+  timestamp: Date;
+}
 
 interface GameEvent {
   id: string;
@@ -54,27 +62,31 @@ export function LiveOpsAdminPanel({ onClose }: { onClose: () => void }) {
   const [events, setEvents] = useState<GameEvent[]>([]);
   const [economySettings, setEconomySettings] = useState<EconomySettings>({
     shopPrices: {
-      'basic-pack': 100,
-      'premium-pack': 200,
-      'mega-pack': 500
+      'wildcard-common': 50,
+      'wildcard-rare': 150,
+      'wildcard-epic': 400,
+      'wildcard-legendary': 1000,
+      'shards-pack': 25
     },
     bundleOffers: [],
     dailyRewards: {
-      'day-1': 'coins:100',
-      'day-2': 'gems:10',
-      'day-3': 'pack:basic'
+      'day-1': 'shards:100',
+      'day-2': 'wildcard:common',
+      'day-3': 'wildcardEssence:10'
     }
   });
   const [messageOfTheDay, setMessageOfTheDay] = useState('');
   const [playerSearchId, setPlayerSearchId] = useState('');
   const [playerData, setPlayerData] = useState<PlayerAccountData | null>(null);
+  const [communitySpotlight, setCommunitySpotlight] = useState('');
+  const [sentimentData, setSentimentData] = useState<PlayerSentiment[]>([]);
   const [gameToggles, setGameToggles] = useState({
     pvpEnabled: true,
     shopEnabled: true,
     legendsLabEnabled: true,
     pathOfLegendsEnabled: true,
     challengesEnabled: true,
-    marketplaceEnabled: true
+    wildcardSystemEnabled: true
   });
 
   const gameStore = useGameStore();
@@ -139,7 +151,7 @@ export function LiveOpsAdminPanel({ onClose }: { onClose: () => void }) {
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-6">
+          <TabsList className="grid w-full grid-cols-7">
             <TabsTrigger value="events" className="flex items-center gap-2">
               <Calendar className="h-4 w-4" />
               Events
@@ -155,6 +167,10 @@ export function LiveOpsAdminPanel({ onClose }: { onClose: () => void }) {
             <TabsTrigger value="content" className="flex items-center gap-2">
               <MessageSquare className="h-4 w-4" />
               Content
+            </TabsTrigger>
+            <TabsTrigger value="community" className="flex items-center gap-2">
+              <Heart className="h-4 w-4" />
+              Community
             </TabsTrigger>
             <TabsTrigger value="toggles" className="flex items-center gap-2">
               <Settings className="h-4 w-4" />
@@ -209,7 +225,7 @@ export function LiveOpsAdminPanel({ onClose }: { onClose: () => void }) {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <Card>
                 <CardHeader>
-                  <CardTitle>Shop Prices</CardTitle>
+                  <CardTitle>Ethical Economy Pricing</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {Object.entries(economySettings.shopPrices).map(([item, price]) => (
@@ -234,7 +250,7 @@ export function LiveOpsAdminPanel({ onClose }: { onClose: () => void }) {
 
               <Card>
                 <CardHeader>
-                  <CardTitle>Economic Overview</CardTitle>
+                  <CardTitle>Wildcard Economy Health</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
@@ -243,12 +259,16 @@ export function LiveOpsAdminPanel({ onClose }: { onClose: () => void }) {
                       <span className="font-semibold">12,450</span>
                     </div>
                     <div className="flex justify-between">
-                      <span>Daily Revenue:</span>
-                      <span className="font-semibold">$2,340</span>
+                      <span>Avg Shards/Player:</span>
+                      <span className="font-semibold">1,240</span>
                     </div>
                     <div className="flex justify-between">
-                      <span>Average Spend:</span>
-                      <span className="font-semibold">$0.19</span>
+                      <span>Wildcards Crafted Today:</span>
+                      <span className="font-semibold">847</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>F2P Collection Rate:</span>
+                      <span className="font-semibold text-green-600">87%</span>
                     </div>
                   </div>
                 </CardContent>
@@ -312,7 +332,7 @@ export function LiveOpsAdminPanel({ onClose }: { onClose: () => void }) {
             </Card>
           </TabsContent>
 
-          <TabsContent value="content" className="space-y-4">
+          <TabsContent value="toggles" className="space-y-4">
             <Card>
               <CardHeader>
                 <CardTitle>Message of the Day</CardTitle>
@@ -340,6 +360,84 @@ export function LiveOpsAdminPanel({ onClose }: { onClose: () => void }) {
             </Card>
           </TabsContent>
 
+          <TabsContent value="community" className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Award className="h-5 w-5" />
+                    Community Deck Spotlight
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <Textarea
+                    placeholder="Feature a creative community deck..."
+                    value={communitySpotlight}
+                    onChange={(e) => setCommunitySpotlight(e.target.value)}
+                    rows={4}
+                  />
+                  <Button>Spotlight Deck</Button>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Heart className="h-5 w-5" />
+                    Player Sentiment Tracking
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3">
+                    <div className="flex justify-between">
+                      <span>Fun Rating (This Week):</span>
+                      <span className="font-semibold text-green-600">4.2/5</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Balance Satisfaction:</span>
+                      <span className="font-semibold text-yellow-600">3.8/5</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Community Health:</span>
+                      <span className="font-semibold text-green-600">92%</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Most Loved Card:</span>
+                      <span className="font-semibold">Crystal Wizard</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Proactive Generosity Actions</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <Button variant="outline" className="flex items-center gap-2">
+                    <TrendingUp className="h-4 w-4" />
+                    Grant Free Wildcards
+                  </Button>
+                  <Button variant="outline" className="flex items-center gap-2">
+                    <Award className="h-4 w-4" />
+                    Bonus XP Weekend
+                  </Button>
+                  <Button variant="outline" className="flex items-center gap-2">
+                    <Heart className="h-4 w-4" />
+                    Appreciation Bundle
+                  </Button>
+                </div>
+                <Alert>
+                  <Heart className="h-4 w-4" />
+                  <AlertDescription>
+                    Last generosity action: Free Legendary Wildcard (Server Downtime) - 3 days ago
+                  </AlertDescription>
+                </Alert>
+              </CardContent>
+            </Card>
+          </TabsContent>
           <TabsContent value="toggles" className="space-y-4">
             <Card>
               <CardHeader>
