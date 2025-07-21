@@ -123,16 +123,13 @@ export function useGameState() {
       } else {
         // No cloud data exists, save current local data to cloud
         await cloudSaveService.saveToCloud({ collection, currentDeck, gameStats });
-      }
-    } catch (error) {
-      console.error('Error syncing with cloud:', error);
-    } finally {
-      setIsSyncing(false);
+    if (!auth) {
+      // Firebase not initialized, set demo mode
+      setIsAuthenticated(false);
+      setIsLoading(false);
+      return;
     }
-  }, [isAuthenticated, collection, currentDeck, gameStats]);
 
-  // Auth state listener
-  useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       setIsAuthenticated(!!user);
       
