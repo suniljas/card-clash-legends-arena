@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { DynamicBackground } from './DynamicBackground';
 import { 
   Swords, 
   Users, 
@@ -16,10 +17,13 @@ import {
   Star,
   Target,
   Map,
-  Beaker
+  Beaker,
+  Scroll,
+  Sword
 } from 'lucide-react';
 import premiumLogo from '@/assets/game-logo-premium.png';
 import { cn } from '@/lib/utils';
+import { motion } from 'framer-motion';
 
 interface MainMenuProps {
   onNavigate: (page: string) => void;
@@ -100,24 +104,34 @@ export function MainMenu({ onNavigate, user, onLogout }: MainMenuProps) {
       rarity: 'legend'
     },
     {
-      id: 'gem-purchase',
-      title: 'Buy Gems',
-      description: 'Purchase premium currency',
-      icon: Gem,
-      gradient: 'from-emerald-500 to-emerald-700',
-      borderColor: 'border-emerald-400/30',
-      glowColor: 'shadow-emerald-500/20',
-      rarity: 'ultra-legend'
-    },
-    {
-      id: 'marketplace',
-      title: 'Marketplace',
-      description: 'Trade with other players',
-      icon: ShoppingBag,
+      id: 'lore-codex',
+      title: 'Lore Codex',
+      description: 'Discover the rich lore and stories',
+      icon: Scroll,
       gradient: 'from-violet-500 to-violet-700',
       borderColor: 'border-violet-400/30',
       glowColor: 'shadow-violet-500/20',
       rarity: 'epic'
+    },
+    {
+      id: 'champion-mastery',
+      title: 'Champion Mastery',
+      description: 'Master your champions and unlock rewards',
+      icon: Crown,
+      gradient: 'from-orange-500 to-red-600',
+      borderColor: 'border-orange-400/30',
+      glowColor: 'shadow-orange-500/20',
+      rarity: 'legend'
+    },
+    {
+      id: 'wildcards',
+      title: 'Wildcard System',
+      description: 'Ethical card crafting system',
+      icon: Star,
+      gradient: 'from-emerald-500 to-emerald-700',
+      borderColor: 'border-emerald-400/30',
+      glowColor: 'shadow-emerald-500/20',
+      rarity: 'rare'
     },
     {
       id: 'events',
@@ -138,16 +152,6 @@ export function MainMenu({ onNavigate, user, onLogout }: MainMenuProps) {
       borderColor: 'border-yellow-400/30',
       glowColor: 'shadow-yellow-500/20',
       rarity: 'legend'
-    },
-    {
-      id: 'showcase',
-      title: 'Card Showcase',
-      description: 'View enhanced cards',
-      icon: Star,
-      gradient: 'from-pink-500 to-pink-700',
-      borderColor: 'border-pink-400/30',
-      glowColor: 'shadow-pink-500/20',
-      rarity: 'ultra-legend'
     }
   ];
 
@@ -164,142 +168,255 @@ export function MainMenu({ onNavigate, user, onLogout }: MainMenuProps) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
-      <div className="container mx-auto px-4 py-8">
-        {/* Enhanced Premium Logo and Welcome Section */}
-        <div className="text-center mb-12">
-          <div className="mb-8 flex justify-center">
+    <DynamicBackground variant="menu" intensity="medium">
+      <div className="min-h-screen relative">
+        <div className="container mx-auto px-4 py-8">
+        {/* Enhanced Premium Logo and Welcome Section with Animations */}
+        <motion.div 
+          className="text-center mb-12"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+        >
+          <motion.div 
+            className="mb-8 flex justify-center"
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 1, delay: 0.2, ease: "easeOut" }}
+          >
             <div className="relative">
-              <img 
+              <motion.img 
                 src={premiumLogo} 
                 alt="Card Clash: Legends Arena" 
-                className="h-24 w-auto object-contain filter drop-shadow-2xl animate-pulse-glow"
+                className="h-24 w-auto object-contain filter drop-shadow-2xl"
+                animate={{ 
+                  filter: [
+                    'drop-shadow(0 0 10px rgba(59, 130, 246, 0.3))',
+                    'drop-shadow(0 0 20px rgba(59, 130, 246, 0.6))',
+                    'drop-shadow(0 0 10px rgba(59, 130, 246, 0.3))'
+                  ]
+                }}
+                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
               />
-              {/* Logo glow effect */}
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 rounded-full blur-xl animate-pulse" />
+              {/* Enhanced Logo glow effect */}
+              <motion.div 
+                className="absolute inset-0 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 rounded-full blur-xl" 
+                animate={{
+                  scale: [1, 1.2, 1],
+                  opacity: [0.3, 0.6, 0.3]
+                }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+              />
             </div>
-          </div>
+          </motion.div>
           
-          <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent animate-pulse-glow">
+          <motion.h1 
+            className="text-4xl font-bold mb-4 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+          >
             Card Clash: Legends Arena
-          </h1>
+          </motion.h1>
           
-          <h2 className="text-2xl font-semibold mb-3 text-white">
+          <motion.h2 
+            className="text-2xl font-semibold mb-3 text-white"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+          >
             Welcome, Champion!
-          </h2>
+          </motion.h2>
           
-          <p className="text-slate-300 text-lg max-w-2xl mx-auto">
+          <motion.p 
+            className="text-slate-300 text-lg max-w-2xl mx-auto"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.8 }}
+          >
             Choose your path to glory in the ultimate card battle arena. 
             Collect legendary heroes, build powerful decks, and dominate the battlefield.
-          </p>
+          </motion.p>
           
           {user && (
-            <Card className="mt-6 p-4 max-w-md mx-auto bg-gradient-to-r from-slate-800/80 to-slate-700/80 border border-slate-600/50 backdrop-blur-sm">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
-                    <User className="w-5 h-5 text-white" />
-                  </div>
-                  <div>
-                    <div className="font-semibold text-white">{user.name}</div>
-                    <div className="text-xs text-slate-400">{user.provider}</div>
-                  </div>
-                </div>
-                {onLogout && (
-                  <Button 
-                    variant="ghost" 
-                    size="sm" 
-                    onClick={onLogout}
-                    className="text-slate-400 hover:text-white hover:bg-slate-700/50"
-                  >
-                    <LogOut className="w-4 h-4" />
-                  </Button>
-                )}
-              </div>
-            </Card>
-          )}
-        </div>
-
-        {/* Enhanced Menu Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto px-2">
-          {menuItems.map((item) => {
-            const IconComponent = item.icon;
-            return (
-              <Card
-                key={item.id}
-                className={cn(
-                  'menu-item-lor relative group overflow-hidden',
-                  'bg-gradient-to-br from-slate-800/90 to-slate-700/90',
-                  'border-2 border-slate-600/50 hover:border-slate-500/70',
-                  'shadow-lg hover:shadow-2xl',
-                  'focus-lor',
-                  item.borderColor,
-                  item.glowColor
-                )}
-                onClick={() => onNavigate(item.id)}
-              >
-                {/* Background Gradient */}
-                <div className={`absolute inset-0 bg-gradient-to-br ${item.gradient} opacity-10 group-hover:opacity-20 transition-opacity duration-500`} />
-                
-                {/* Rarity indicator */}
-                <div className="absolute top-3 right-3">
-                  {item.rarity === 'legend' && <Crown className="w-4 h-4 text-yellow-400" />}
-                  {item.rarity === 'ultra-legend' && <Star className="w-4 h-4 text-pink-400 animate-pulse" />}
-                  {item.rarity === 'epic' && <Target className="w-4 h-4 text-purple-400" />}
-                  {item.rarity === 'rare' && <Gem className="w-4 h-4 text-blue-400" />}
-                </div>
-                
-                {/* Content */}
-                <div className="relative z-10 p-6 text-center">
-                  <div className="mb-4 flex justify-center">
-                    <div className={`p-4 rounded-full bg-gradient-to-br ${item.gradient} shadow-lg group-hover:shadow-xl transition-shadow duration-300`}>
-                      <IconComponent className="w-8 h-8 text-white" />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5, delay: 1 }}
+            >
+              <Card className="mt-6 p-4 max-w-md mx-auto bg-gradient-to-r from-slate-800/80 to-slate-700/80 border border-slate-600/50 backdrop-blur-sm hover:bg-slate-700/90 transition-all duration-300">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <motion.div 
+                      className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center"
+                      whileHover={{ scale: 1.1 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <User className="w-5 h-5 text-white" />
+                    </motion.div>
+                    <div>
+                      <div className="font-semibold text-white">{user.name}</div>
+                      <div className="text-xs text-slate-400">{user.provider}</div>
                     </div>
                   </div>
-                  
-                  <h3 className="text-xl font-bold mb-3 text-white group-hover:text-slate-100 transition-colors">
-                    {item.title}
-                  </h3>
-                  
-                  <p className="text-sm text-slate-300 group-hover:text-slate-200 transition-colors">
-                    {item.description}
-                  </p>
+                  {onLogout && (
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      onClick={onLogout}
+                      className="text-slate-400 hover:text-white hover:bg-slate-700/50 transition-all duration-200"
+                    >
+                      <LogOut className="w-4 h-4" />
+                    </Button>
+                  )}
                 </div>
-
-                {/* Enhanced Hover Effect */}
-                <div className={`absolute inset-0 border-2 border-transparent group-hover:border-current/30 rounded-lg transition-colors duration-300 ${item.borderColor}`} />
-                
-                {/* Glow effect on hover */}
-                <div className={`absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${item.glowColor} blur-xl`} />
               </Card>
+            </motion.div>
+          )}
+        </motion.div>
+
+        {/* Enhanced Menu Grid with Staggered Animations */}
+        <motion.div 
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto px-2"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+        >
+          {menuItems.map((item, index) => {
+            const IconComponent = item.icon;
+            return (
+              <motion.div
+                key={item.id}
+                initial={{ opacity: 0, y: 20, scale: 0.9 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ 
+                  duration: 0.5, 
+                  delay: 0.6 + (index * 0.1),
+                  ease: "easeOut"
+                }}
+                whileHover={{ scale: 1.05, y: -5 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Card
+                  className={cn(
+                    'menu-item-lor relative group overflow-hidden cursor-pointer',
+                    'bg-gradient-to-br from-slate-800/90 to-slate-700/90 backdrop-blur-sm',
+                    'border-2 border-slate-600/50 hover:border-slate-500/70',
+                    'shadow-lg hover:shadow-2xl',
+                    'focus-lor transition-all duration-300',
+                    item.borderColor,
+                    item.glowColor
+                  )}
+                  onClick={() => onNavigate(item.id)}
+                >
+                  {/* Enhanced Background Gradient with Animation */}
+                  <motion.div 
+                    className={`absolute inset-0 bg-gradient-to-br ${item.gradient} opacity-10 group-hover:opacity-20`}
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ duration: 0.3 }}
+                  />
+                
+                  {/* Enhanced Rarity indicator with Animation */}
+                  <motion.div 
+                    className="absolute top-3 right-3"
+                    initial={{ rotate: 0 }}
+                    whileHover={{ rotate: 360 }}
+                    transition={{ duration: 0.6 }}
+                  >
+                    {item.rarity === 'legend' && <Crown className="w-4 h-4 text-yellow-400" />}
+                    {item.rarity === 'ultra-legend' && (
+                      <motion.div
+                        animate={{ 
+                          scale: [1, 1.2, 1],
+                          rotate: [0, 180, 360]
+                        }}
+                        transition={{ duration: 3, repeat: Infinity }}
+                      >
+                        <Star className="w-4 h-4 text-pink-400" />
+                      </motion.div>
+                    )}
+                    {item.rarity === 'epic' && <Target className="w-4 h-4 text-purple-400" />}
+                    {item.rarity === 'rare' && <Gem className="w-4 h-4 text-blue-400" />}
+                  </motion.div>
+                  
+                  {/* Enhanced Content with Micro-animations */}
+                  <div className="relative z-10 p-6 text-center">
+                    <motion.div 
+                      className="mb-4 flex justify-center"
+                      whileHover={{ scale: 1.1, rotate: 5 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <div className={`p-4 rounded-full bg-gradient-to-br ${item.gradient} shadow-lg group-hover:shadow-xl transition-shadow duration-300`}>
+                        <IconComponent className="w-8 h-8 text-white" />
+                      </div>
+                    </motion.div>
+                    
+                    <motion.h3 
+                      className="text-xl font-bold mb-3 text-white group-hover:text-slate-100 transition-colors"
+                      whileHover={{ scale: 1.05 }}
+                    >
+                      {item.title}
+                    </motion.h3>
+                    
+                    <p className="text-sm text-slate-300 group-hover:text-slate-200 transition-colors">
+                      {item.description}
+                    </p>
+                  </div>
+
+                  {/* Enhanced Hover Effects */}
+                  <div className={`absolute inset-0 border-2 border-transparent group-hover:border-current/30 rounded-lg transition-colors duration-300 ${item.borderColor}`} />
+                  
+                  {/* Enhanced Glow effect on hover */}
+                  <motion.div 
+                    className={`absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 ${item.glowColor} blur-xl`}
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ duration: 0.3 }}
+                  />
+                </Card>
+              </motion.div>
             );
           })}
-        </div>
+        </motion.div>
 
-        {/* Enhanced Quick Actions */}
-        <div className="mt-12 flex justify-center gap-6">
-          <button
+        {/* Enhanced Quick Actions with Animations */}
+        <motion.div 
+          className="mt-12 flex justify-center gap-6"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 1.2 }}
+        >
+          <motion.button
             className="btn-lor-primary focus-lor"
             onClick={() => onNavigate('tutorial')}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
           >
             <BookOpen className="w-5 h-5 mr-2 inline" />
             Tutorial
-          </button>
-          <button
+          </motion.button>
+          <motion.button
             className="btn-lor-secondary focus-lor"
             onClick={() => onNavigate('settings')}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
           >
             <Settings className="w-5 h-5 mr-2 inline" />
             Settings
-          </button>
-        </div>
+          </motion.button>
+        </motion.div>
         
-        {/* Footer */}
-        <div className="mt-16 text-center text-slate-500 text-sm">
+        {/* Enhanced Footer with Fade-in Animation */}
+        <motion.div 
+          className="mt-16 text-center text-slate-500 text-sm"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 1.4 }}
+        >
           <p>© 2024 Card Clash: Legends Arena. All rights reserved.</p>
           <p className="mt-2">Experience the ultimate card battle adventure</p>
+        </motion.div>
         </div>
       </div>
-    </div>
+    </DynamicBackground>
   );
 }
