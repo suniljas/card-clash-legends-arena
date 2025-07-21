@@ -14,7 +14,9 @@ import {
   User,
   Crown,
   Star,
-  Target
+  Target,
+  Map,
+  Beaker
 } from 'lucide-react';
 import premiumLogo from '@/assets/game-logo-premium.png';
 import { cn } from '@/lib/utils';
