@@ -28,14 +28,34 @@ interface MainMenuProps {
 export function MainMenu({ onNavigate, user, onLogout }: MainMenuProps) {
   const menuItems = [
     {
-      id: 'campaign',
-      title: 'Campaign',
-      description: 'Fight through epic adventures',
-      icon: BookOpen,
-      gradient: 'from-blue-500 to-blue-700',
-      borderColor: 'border-blue-400/30',
-      glowColor: 'shadow-blue-500/20',
-      rarity: 'common'
+      id: 'path-of-legends',
+      title: 'Path of Legends',
+      description: 'Roguelike adventures with your Champions',
+      icon: Map,
+      gradient: 'from-purple-500 to-purple-700',
+      borderColor: 'border-purple-400/30',
+      glowColor: 'shadow-purple-500/20',
+      rarity: 'epic'
+    },
+    {
+      id: 'legends-lab',
+      title: 'Legends\' Lab',
+      description: 'Experimental modes with unique rules',
+      icon: Beaker,
+      gradient: 'from-green-500 to-green-700',
+      borderColor: 'border-green-400/30',
+      glowColor: 'shadow-green-500/20',
+      rarity: 'rare'
+    },
+    {
+      id: 'challenges',
+      title: 'Challenges',
+      description: 'Master game mechanics through focused training',
+      icon: Target,
+      gradient: 'from-orange-500 to-orange-700',
+      borderColor: 'border-orange-400/30',
+      glowColor: 'shadow-orange-500/20',
+      rarity: 'uncommon'
     },
     {
       id: 'pvp',

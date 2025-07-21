@@ -18,6 +18,9 @@ import { FactionRoadProgress } from './FactionRoadProgress';
 import { WeeklyVaultDisplay } from './WeeklyVaultDisplay';
 import { DailyQuestsPanel } from './DailyQuestsPanel';
 import { ProgressionSystem, Faction } from '../engine/ProgressionSystem';
+import { PathOfLegends } from './PathOfLegends';
+import { LegendsLab } from './LegendsLab';
+import { Challenges } from './Challenges';
 import { Marketplace } from './Marketplace';
 import { EventCenter } from './EventCenter';
 import { Achievements } from './Achievements';
@@ -45,7 +48,10 @@ type GamePage =
   | 'auth'
   | 'achievements'
   | 'leaderboards'
-  | 'showcase';
+  | 'showcase'
+  | 'path-of-legends'
+  | 'legends-lab'
+  | 'challenges';
 
 export function Game() {
   const [currentPage, setCurrentPage] = useState<GamePage>('auth');
@@ -279,6 +285,21 @@ export function Game() {
             onNavigate={(page: string) => setCurrentPage(page as GamePage)}
           />
         );
+      
+      case 'path-of-legends':
+        return <PathOfLegends onBack={() => setCurrentPage('menu')} />;
+      
+      case 'legends-lab':
+        return <LegendsLab 
+          onBack={() => setCurrentPage('menu')} 
+          onPlayMode={() => setCurrentPage('battle')} 
+        />;
+      
+      case 'challenges':
+        return <Challenges 
+          onBack={() => setCurrentPage('menu')} 
+          onStartChallenge={() => setCurrentPage('battle')} 
+        />;
       
       case 'showcase':
         return (
