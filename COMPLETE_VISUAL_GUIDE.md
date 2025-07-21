@@ -12,7 +12,7 @@
 ## 1. Game Interface Screenshots
 
 ### Main Menu Interface
-![Main Menu](../src/assets/screenshots/main-menu-interface.jpg)
+![Main Menu](./public/screenshots/main-menu-interface.jpg)
 
 **Key Features Displayed:**
 - **Clean Navigation**: Six primary game mode tiles in an intuitive grid layout
@@ -30,7 +30,7 @@
 - **Event Center** - Special tournaments and limited-time events
 
 ### Battle Interface
-![Battle Screen](../src/assets/screenshots/battle-interface.jpg)
+![Battle Screen](./public/screenshots/battle-interface.jpg)
 
 **Combat Features:**
 - **Active Battlefield**: Cards positioned for strategic combat
@@ -47,7 +47,7 @@
 - **Professional Polish**: High-quality visual effects and animations
 
 ### Collection Management
-![Collection Screen](../src/assets/screenshots/collection-screen.jpg)
+![Collection Screen](./public/screenshots/collection-screen.jpg)
 
 **Collection Features:**
 - **Card Grid Layout**: Organized display of owned cards
@@ -64,7 +64,7 @@
 - **Legendary Cards**: Gold borders for the most coveted champions
 
 ### Faction Selection (Onboarding)
-![Faction Selection](../src/assets/screenshots/faction-selection.jpg)
+![Faction Selection](./public/screenshots/faction-selection.jpg)
 
 **New Player Experience:**
 - **Four Distinct Factions**: Each with unique visual identity and playstyle
@@ -80,7 +80,7 @@
 - **Void Seekers**: Mysterious purple theme with star patterns
 
 ### LiveOps Admin Panel
-![Admin Panel](../src/assets/screenshots/liveops-admin-panel.jpg)
+![Admin Panel](./public/screenshots/liveops-admin-panel.jpg)
 
 **Professional Management Tools:**
 - **Event Management**: Schedule and configure live events
@@ -102,7 +102,7 @@
 ### Legendary Cards
 
 #### Ancient Flame Dragon
-![Legendary Dragon](../src/assets/screenshots/legendary-dragon-card.jpg)
+![Legendary Dragon](./public/screenshots/legendary-dragon-card.jpg)
 
 **Design Elements:**
 - **Epic Artwork**: Majestic dragon with intricate scale details
@@ -118,7 +118,7 @@
 - **Professional Quality**: AAA game art standards
 
 #### Crystal Wizard
-![Wizard Card](../src/assets/screenshots/wizard-card.jpg)
+![Wizard Card](./public/screenshots/wizard-card.jpg)
 
 **Mystical Theme:**
 - **Spell-casting Pose**: Dynamic magic animation
@@ -134,7 +134,7 @@
 - **Professional Polish**: High-resolution artwork
 
 #### Steel Guardian
-![Knight Card](../src/assets/screenshots/knight-card.jpg)
+![Knight Card](./public/screenshots/knight-card.jpg)
 
 **Heroic Design:**
 - **Noble Bearing**: Paladin character with divine blessing
