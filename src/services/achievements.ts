@@ -123,6 +123,16 @@ export function useGameState() {
       } else {
         // No cloud data exists, save current local data to cloud
         await cloudSaveService.saveToCloud({ collection, currentDeck, gameStats });
+      }
+    } catch (error) {
+      console.error('Error syncing with cloud:', error);
+    } finally {
+      setIsSyncing(false);
+    }
+  }, [collection, currentDeck, gameStats, isAuthenticated]);
+
+  // Auth state listener
+  useEffect(() => {
     if (!auth) {
       // Firebase not initialized, set demo mode
       setIsAuthenticated(false);
@@ -138,6 +148,15 @@ export function useGameState() {
         analyticsService.setUserId(user.uid);
         analyticsService.setUserProperties({
           level: gameStats.campaignProgress,
+        });
+        crashReportingService.setUserId(user.uid);
+        
+        // Set up push notifications
+        await pushNotificationService.requestPermission();
+      }
+      
+      setIsLoading(false);
+    });
 
     return unsubscribe;
   }, [gameStats]);
