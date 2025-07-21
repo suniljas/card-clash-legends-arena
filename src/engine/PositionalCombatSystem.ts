@@ -14,6 +14,8 @@ export interface PositionalKeyword {
 }
 
 export interface PositionalCard extends HeroCard {
+  manaCost: number;      // Add missing mana cost property
+  faction: string;       // Add missing faction property
   keywords: PositionalKeyword;
   preferredLane?: LaneType;
   adjacencyBonus?: {
