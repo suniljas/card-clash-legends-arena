@@ -29,6 +29,9 @@ import { AchievementNotification } from './AchievementNotification';
 // Card Showcase removed as per requirements
 
 import { NetworkStatusIndicator } from './NetworkStatusIndicator';
+import { OnboardingFlow } from './OnboardingFlow';
+import { LiveOpsAdminPanel } from './LiveOpsAdminPanel';
+import { PlayerSupportSystem } from './PlayerSupportSystem';
 import { ACHIEVEMENTS_DATABASE } from '@/data/achievements';
 
 type GamePage = 
@@ -51,11 +54,15 @@ type GamePage =
   | 'showcase'
   | 'path-of-legends'
   | 'legends-lab'
-  | 'challenges';
+  | 'challenges'
+  | 'onboarding'
+  | 'liveops-admin'
+  | 'support';
 
 export function Game() {
   const [currentPage, setCurrentPage] = useState<GamePage>('auth');
   const [showTutorial, setShowTutorial] = useState(!localStorage.getItem('tutorial-completed'));
+  const [showOnboarding, setShowOnboarding] = useState(!localStorage.getItem('onboarding-completed'));
   const [battleData, setBattleData] = useState<{ playerDeck: any[], enemyDeck: any[] } | null>(null);
   const [user, setUser] = useState<{ email: string; name: string; provider: string; uid: string } | null>(null);
   const gameState = useGameState();
@@ -80,6 +87,13 @@ export function Game() {
 
   const handleLogin = (userData: { email: string; name: string; provider: string; uid: string }) => {
     setUser(userData);
+    
+    // Check if user needs onboarding
+    const hasCompletedOnboarding = localStorage.getItem('onboarding-completed');
+    if (!hasCompletedOnboarding) {
+      setCurrentPage('onboarding');
+      return;
+    }
     
     // Check if user is new (no previous welcome pack)
     const hasReceivedWelcomePack = localStorage.getItem('welcome-pack-received');
@@ -301,6 +315,30 @@ export function Game() {
           onStartChallenge={() => setCurrentPage('battle')} 
         />;
       
+      case 'onboarding':
+        return (
+          <OnboardingFlow
+            onComplete={() => {
+              setShowOnboarding(false);
+              setCurrentPage('menu');
+            }}
+          />
+        );
+      
+      case 'liveops-admin':
+        return (
+          <LiveOpsAdminPanel
+            onClose={() => setCurrentPage('menu')}
+          />
+        );
+      
+      case 'support':
+        return (
+          <PlayerSupportSystem
+            onClose={() => setCurrentPage('menu')}
+          />
+        );
+      
       case 'showcase':
         return (
           <div className="text-center p-8">
@@ -332,6 +370,17 @@ export function Game() {
       <Tutorial
         onComplete={handleTutorialComplete}
         onSkip={handleTutorialSkip}
+      />
+    );
+  }
+
+  if (showOnboarding && user) {
+    return (
+      <OnboardingFlow
+        onComplete={() => {
+          setShowOnboarding(false);
+          setCurrentPage('menu');
+        }}
       />
     );
   }
