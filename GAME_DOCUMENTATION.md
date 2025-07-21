@@ -53,57 +53,61 @@ src/
 
 ## 🎯 Core Game Features
 
-### 1. Hero Collection System
-- **Hero Roster**: 10+ Epic Heroes with unique abilities and artwork
-- **Rarity System**: 7-tier rarity classification (Common to Ultra Legend)
-- **Edition Types**: 
-  - Normal Edition: Basic outfit, standard effects
-  - Premium Edition: Enhanced outfit, moderate effects
-  - Special Edition: Rare visuals, animated effects
-  - Limited Edition: Exclusive rare variants
+### 1. Enhanced Combat System (Action/Reaction Gameplay)
+- **Action Token System**: LoR-inspired alternating action system with Attack Tokens
+- **Spell Stack**: Players can react to each other's actions, creating strategic depth
+- **Mana & Spell Mana**: Innovative resource management with up to 3 unspent mana converting to Spell Mana
+- **Champion Cards**: Epic Heroes with level-up conditions and transformative animations
+- **Keywords System**: Flying, Guard, Quick Attack, Overwhelm, Regeneration, Spell Shield
+- **Priority Passing**: Strategic decision-making in action resolution order
 
-### 2. Campaign Mode (100-Player System)
-- **Concurrent Play**: 100 players participate per campaign level instance
-- **Guaranteed Rewards**: Every player receives guaranteed gold rewards
-- **Card Drop Distribution**:
-  - 5% of players (5 players) receive Common Cards
-  - 3% of players (3 players) receive Uncommon Cards
-  - 2% of players (2 players) receive Rare Cards
-  - 1% of players (1 player) receives Legendary Cards
-- **Progressive Difficulty**: Endless campaign generation with scaling challenges
-- **Boss Battles**: Special encounters with unique mechanics
+### 2. Champion System (Evolved from Epic Heroes)
+- **Level-Up Mechanics**: Champions transform when meeting specific conditions
+- **Faction Alignment**: Five factions (Fire, Shadow, Nature, Light, Void) with unique playstyles
+- **Multiple Editions**: Normal, Premium, Special, and Limited editions with visual differences
+- **Transformative Animations**: Full-screen level-up sequences create memorable moments
+- **Deck Cornerstones**: Champions designed to be central to deck strategies
 
-### 3. Battle System
-- **Turn-Based Combat**: Strategic card-based battles
-- **Enhanced AI**: Advanced opponent planning with strategic decision making
-- **Real-Time Animations**: Smooth battle effects and transitions
-- **Health & Attack Calculations**: Dynamic stat calculations with level scaling
-- **Victory Conditions**: Multiple win conditions and battle scenarios
+### 3. Faction Road Progression System
+- **Five Faction Roads**: Fire, Shadow, Nature, Light, and Void progression paths
+- **Guaranteed Progression**: Every player receives guaranteed faction cards and rewards
+- **20-Level Progression**: Clear reward structure with Champion cards every 5 levels
+- **Player Agency**: Choose which faction to progress based on preferred playstyle
+- **Crafting Currency**: Shards earned through progression for targeted card acquisition
 
-### 4. Marketplace System
-- **Gem-Only Economy**: All transactions use premium currency (Gems)
-- **Card Matching Logic**: Precise matching by name and edition type
-- **Price Statistics**: Real-time market data and price trends
-- **Listing Management**: Player-to-player trading platform
-- **Transaction Security**: Secure trading mechanisms
+### 4. Weekly Vault System
+- **XP-Based Progression**: Earn XP through daily quests and general gameplay
+- **Tuesday Reset**: Weekly vault opens every Tuesday with accumulated rewards
+- **Guaranteed Upgrades**: Higher vault levels guarantee better chest qualities
+- **Champion Guarantees**: Max-level vaults guarantee Champion cards
+- **Bonus Chests**: Additional rewards for active players
 
-### 5. Deck Building
-- **Strategic Deck Construction**: Build decks from collected cards
-- **Deck Size Limits**: Balanced deck constraints for fair play
-- **Card Synergies**: Strategic combinations and team compositions
-- **Meta Game**: Evolving strategies and optimal builds
+### 5. Daily Quest System
+- **Win Quests**: "Win 3 Games" for consistent XP rewards
+- **Faction Quests**: "Play 10 Fire Cards" to progress specific faction roads
+- **Challenge Quests**: "Level up a Champion" for high-XP rewards
+- **Rotating Content**: Fresh daily objectives to maintain engagement
+- **Vault XP Integration**: All quest rewards feed into Weekly Vault progression
 
-### 6. PvP Arena
-- **Real-Time Matchmaking**: WebSocket-based multiplayer battles
-- **Skill-Based Matching**: Balanced opponent selection
-- **Competitive Seasons**: Ranked play with seasonal rewards
-- **Leaderboards**: Global and seasonal rankings
+### 6. Crafting & Economy System
+- **Shard-Based Crafting**: Craft any card using accumulated Shards
+- **No Player Trading**: Removed marketplace to prevent economy manipulation
+- **Cosmetic Monetization**: Gems used for card skins, battlefields, and cosmetics
+- **Fair F2P Model**: All gameplay cards obtainable through progression
+- **Bad Luck Protection**: Guaranteed progression prevents frustrating RNG
 
-### 7. Event System
-- **Limited-Time Events**: Special challenges and tournaments
-- **Dynamic Rewards**: Rotating prize pools and exclusive cards
-- **Tournament Mechanics**: Bracket-style competitions
-- **Achievement System**: Progress tracking and milestone rewards
+### 7. Enhanced Battle Architecture
+- **Separated Game Engine**: Pure TypeScript game logic independent of React UI
+- **State Machine**: Robust turn phases and action resolution
+- **Visual Polish**: Kinetic feedback, clear stat changes, and keyword tooltips
+- **Mobile Optimization**: Touch-friendly interface with drag-and-drop card play
+- **Performance**: List virtualization for large collections, optimized rendering
+
+### 8. Social & Community Features
+- **Friends System**: Add and challenge friends directly
+- **Direct Challenge Mode**: Unranked matches with full collections
+- **Spectator Mode**: Watch friends' live matches for learning and engagement
+- **Content Creator Support**: Tools for streaming and tournament organization
 
 ## 🔐 Authentication & Authorization
 
