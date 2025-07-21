@@ -27,6 +27,9 @@ import { EventCenter } from './EventCenter';
 import { Achievements } from './Achievements';
 import { Leaderboards } from './Leaderboards';
 import { AchievementNotification } from './AchievementNotification';
+import { LoreCodex } from './LoreCodex';
+import { ChampionMasterySystem } from './ChampionMasterySystem';
+import { CinematicBattleSystem } from './CinematicBattleSystem';
 // Marketplace removed - replaced with ethical wildcard system
 
 import { NetworkStatusIndicator } from './NetworkStatusIndicator';
@@ -44,6 +47,7 @@ type GamePage =
   | 'campaign' 
   | 'pvp' 
   | 'battle'
+  | 'cinematic-battle'
   | 'tournament' 
   | 'wildcards'
   | 'events'
@@ -58,7 +62,9 @@ type GamePage =
   | 'challenges'
   | 'onboarding'
   | 'liveops-admin'
-  | 'support';
+  | 'support'
+  | 'lore-codex'
+  | 'champion-mastery';
 
 export function Game() {
   const [currentPage, setCurrentPage] = useState<GamePage>('auth');
@@ -66,6 +72,35 @@ export function Game() {
   const [showOnboarding, setShowOnboarding] = useState(!localStorage.getItem('onboarding-completed'));
   const [battleData, setBattleData] = useState<{ playerDeck: any[], enemyDeck: any[] } | null>(null);
   const [user, setUser] = useState<{ email: string; name: string; provider: string; uid: string } | null>(null);
+  const [unlockedLore, setUnlockedLore] = useState<string[]>(['mystic_origins']); // Start with one unlocked
+  const [championMasteries, setChampionMasteries] = useState([
+    {
+      championId: 'flame_mage_champion',
+      level: 3,
+      experience: 850,
+      experienceToNext: 1000,
+      gamesPlayed: 25,
+      victories: 18,
+      damageDealt: 15420,
+      unitsKilled: 47,
+      specialAchievements: ['flawless_victory'],
+      unlockedCosmetics: ['silver_border'],
+      title: 'Apprentice'
+    },
+    {
+      championId: 'shadow_assassin_champion',
+      level: 5,
+      experience: 1200,
+      experienceToNext: 1500,
+      gamesPlayed: 42,
+      victories: 31,
+      damageDealt: 22100,
+      unitsKilled: 89,
+      specialAchievements: ['stealth_master', 'assassin_streak'],
+      unlockedCosmetics: ['silver_border', 'victory_emote'],
+      title: 'Adept'
+    }
+  ]);
   const gameState = useGameState();
   
   // Enhanced error handling
@@ -154,6 +189,31 @@ export function Game() {
               setCurrentPage('campaign');
             }}
             onBack={() => setCurrentPage('campaign')}
+          />
+        ) : null;
+      
+      case 'cinematic-battle':
+        return battleData ? (
+          <CinematicBattleSystem
+            playerDeck={battleData.playerDeck}
+            opponentDeck={battleData.enemyDeck}
+            onBattleEnd={(victory) => {
+              // Enhanced battle completion with cinematic feedback
+              if (victory) {
+                // Unlock potential lore entries
+                const newLoreUnlocks = ['flame_mage_legend']; // Based on victory conditions
+                setUnlockedLore(prev => [...prev, ...newLoreUnlocks]);
+                
+                // Update champion mastery
+                setChampionMasteries(prev => prev.map(mastery => ({
+                  ...mastery,
+                  experience: mastery.experience + 100,
+                  victories: mastery.victories + 1,
+                  gamesPlayed: mastery.gamesPlayed + 1
+                })));
+              }
+              setCurrentPage('campaign');
+            }}
           />
         ) : null;
 
@@ -327,6 +387,29 @@ export function Game() {
         return (
           <PlayerSupportSystem
             onClose={() => setCurrentPage('menu')}
+          />
+        );
+      
+      case 'lore-codex':
+        return (
+          <LoreCodex
+            onBack={() => setCurrentPage('menu')}
+            unlockedLore={unlockedLore}
+            onUnlockLore={(loreId) => {
+              setUnlockedLore(prev => [...prev, loreId]);
+            }}
+          />
+        );
+      
+      case 'champion-mastery':
+        return (
+          <ChampionMasterySystem
+            onBack={() => setCurrentPage('menu')}
+            playerMasteries={championMasteries}
+            onEquipCosmetic={(championId, cosmeticId) => {
+              console.log(`Equipped ${cosmeticId} on ${championId}`);
+              // Handle cosmetic equipping
+            }}
           />
         );
       
