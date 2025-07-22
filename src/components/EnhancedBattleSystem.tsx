@@ -110,7 +110,10 @@ export const EnhancedBattleSystem: React.FC<EnhancedBattleSystemProps> = ({
         `}
         onClick={() => !isOpponent && setSelectedCard(cardId)}
         draggable={!isOpponent}
-        onDragStart={() => setDraggedCard(cardId)}
+        onDragStart={(e: React.DragEvent) => {
+          e.dataTransfer.setData("text/plain", cardId);
+          setDraggedCard(cardId);
+        }}
         onDragEnd={() => setDraggedCard(null)}
       >
         <div className="h-full flex flex-col justify-between">

@@ -9,14 +9,15 @@ export class PushNotificationService {
     // Placeholder implementation
   }
 
-  initialize() {
+  async initialize(): Promise<boolean> {
     // Initialize push notification service
     console.log('[PushNotifications] Service initialized');
+    return true;
   }
 
-  subscribe(callback: (notification: any) => void) {
+  async subscribe(userId: string) {
     // Subscribe to notifications
-    console.log('[PushNotifications] Subscribed to notifications');
+    console.log('[PushNotifications] Subscribed to notifications for user:', userId);
     return () => console.log('[PushNotifications] Unsubscribed');
   }
 

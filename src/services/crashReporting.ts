@@ -137,3 +137,5 @@ class CrashReportingService {
     }
   }
 }
+
+export const crashReportingService = new CrashReportingService();

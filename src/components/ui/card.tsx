@@ -1,10 +1,10 @@
 import * as React from "react"
 import { cn } from "@/lib/utils"
-import { motion, AnimatePresence, PanInfo } from "framer-motion"
-import { useState, useEffect } from "react"
+import { motion, AnimatePresence } from "framer-motion"
+import { useState } from "react"
 
 // Enhanced Card Types
-export interface GameCardProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface GameCardProps {
   card?: {
     id: string
     name: string
@@ -25,6 +25,7 @@ export interface GameCardProps extends React.HTMLAttributes<HTMLDivElement> {
   glowEffect?: boolean
   onCardSelect?: (cardId: string) => void
   onCardHover?: (cardId: string | null) => void
+  className?: string
 }
 
 // Particle Component for Card Effects
@@ -84,8 +85,7 @@ const GameCard = React.forwardRef<HTMLDivElement, GameCardProps>(
     interactive = true,
     glowEffect = false,
     onCardSelect,
-    onCardHover,
-    ...props 
+    onCardHover
   }, ref) => {
     const [isHovered, setIsHovered] = useState(false)
     const [showParticles, setShowParticles] = useState(false)
@@ -143,7 +143,6 @@ const GameCard = React.forwardRef<HTMLDivElement, GameCardProps>(
             "flex items-center justify-center text-gray-400",
             className
           )}
-          {...props}
         >
           <span>Empty Slot</span>
         </div>
@@ -179,7 +178,6 @@ const GameCard = React.forwardRef<HTMLDivElement, GameCardProps>(
           transformStyle: 'preserve-3d',
           perspective: 1000
         }}
-        {...props}
       >
         {/* Holographic Border Effect */}
         {(card.rarity === 'legendary' || card.rarity === 'epic') && (
@@ -452,20 +450,25 @@ BattlefieldLane.displayName = "BattlefieldLane"
 const Card = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
-  <motion.div
-    ref={ref}
-    className={cn(
-      "rounded-lg border bg-card text-card-foreground shadow-lg backdrop-blur-sm",
-      "bg-gradient-to-br from-gray-900/90 to-gray-800/90",
-      "border-gray-700/50",
-      className
-    )}
-    whileHover={{ y: -2, scale: 1.02 }}
-    transition={{ duration: 0.2 }}
-    {...props}
-  />
-))
+>(({ className, ...props }, ref) => {
+  // Separate motion props from HTML props
+  const { onDrag, onDragStart, onDragEnd, onAnimationStart, onAnimationEnd, ...htmlProps } = props as any;
+  
+  return (
+    <motion.div
+      ref={ref}
+      className={cn(
+        "rounded-lg border bg-card text-card-foreground shadow-lg backdrop-blur-sm",
+        "bg-gradient-to-br from-gray-900/90 to-gray-800/90",
+        "border-gray-700/50",
+        className
+      )}
+      whileHover={{ y: -2, scale: 1.02 }}
+      transition={{ duration: 0.2 }}
+      {...htmlProps}
+    />
+  );
+})
 Card.displayName = "Card"
 
 const CardHeader = React.forwardRef<
