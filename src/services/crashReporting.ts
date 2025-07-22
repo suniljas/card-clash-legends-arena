@@ -62,6 +62,23 @@ class CrashReportingService {
     }
   }
 
+  reportCrash(crashData: any) {
+    console.log('Crash reported:', crashData);
+  }
+
+  logError(error: Error | string, context?: any) {
+    const errorMessage = typeof error === 'string' ? error : error.message;
+    console.error('[CrashReporting]', errorMessage, context);
+    
+    // In a real implementation, this would send to error tracking service
+    this.reportCrash({
+      message: errorMessage,
+      stack: typeof error === 'object' ? error.stack : undefined,
+      context,
+      timestamp: new Date().toISOString()
+    });
+  }
+
   private async sendToCrashService(report: CrashReport) {
     // This is where you'd integrate with your preferred crash reporting service
     // For now, we'll just log it
@@ -120,5 +137,3 @@ class CrashReportingService {
     }
   }
 }
-
-export const crashReportingService = new CrashReportingService();
