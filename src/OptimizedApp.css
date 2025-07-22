@@ -1,0 +1,93 @@
+/* Optimized CSS for better performance */
+
+/* Low memory mode optimizations */
+.low-memory-mode * {
+  transition-duration: 0.1s !important;
+  animation-duration: 0.1s !important;
+}
+
+.low-memory-mode [class*="animate-"] {
+  animation-iteration-count: 1 !important;
+}
+
+.low-memory-mode .blur-xl {
+  filter: blur(4px) !important;
+}
+
+.low-memory-mode .backdrop-blur-sm {
+  backdrop-filter: none !important;
+  background-color: rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Optimize image loading */
+img {
+  image-rendering: optimizeSpeed;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: optimize-contrast;
+}
+
+/* Hardware acceleration for critical elements */
+.hardware-accelerated {
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
+}
+
+/* Reduce motion for better performance */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Memory-efficient gradients */
+.optimized-gradient {
+  background: linear-gradient(135deg, 
+    hsl(var(--primary)) 0%, 
+    hsl(var(--secondary)) 100%);
+}
+
+/* Simplified shadows for performance */
+.optimized-shadow {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Performance-focused card styles */
+.optimized-card {
+  contain: layout style;
+  will-change: transform;
+}
+
+/* Limit expensive filters */
+.performance-filter {
+  filter: brightness(1) contrast(1);
+}
+
+/* CSS containment for better performance */
+.contain-layout {
+  contain: layout;
+}
+
+.contain-style {
+  contain: style;
+}
+
+.contain-paint {
+  contain: paint;
+}
+
+/* Optimized animations */
+@keyframes optimized-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes optimized-scale {
+  from { transform: scale(0.95); }
+  to { transform: scale(1); }
+}
+
+.animate-optimized-enter {
+  animation: optimized-fade-in 0.3s ease-out, optimized-scale 0.2s ease-out;
+}
