@@ -14,7 +14,150 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      gem_purchases: {
+        Row: {
+          created_at: string
+          gem_amount: number
+          id: string
+          price_usd: number
+          status: string
+          stripe_session_id: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          gem_amount: number
+          id?: string
+          price_usd: number
+          status?: string
+          stripe_session_id?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          gem_amount?: number
+          id?: string
+          price_usd?: number
+          status?: string
+          stripe_session_id?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      marketplace_listings: {
+        Row: {
+          card_edition: string
+          card_id: string
+          card_name: string
+          card_rarity: string
+          created_at: string
+          currency: string
+          id: string
+          price: number
+          seller_id: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          card_edition: string
+          card_id: string
+          card_name: string
+          card_rarity: string
+          created_at?: string
+          currency?: string
+          id?: string
+          price: number
+          seller_id: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          card_edition?: string
+          card_id?: string
+          card_name?: string
+          card_rarity?: string
+          created_at?: string
+          currency?: string
+          id?: string
+          price?: number
+          seller_id?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      path_of_legends_progress: {
+        Row: {
+          adventure_id: string
+          created_at: string
+          current_stage: number
+          id: string
+          last_battle_at: string | null
+          max_stage_reached: number
+          total_losses: number
+          total_wins: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          adventure_id: string
+          created_at?: string
+          current_stage?: number
+          id?: string
+          last_battle_at?: string | null
+          max_stage_reached?: number
+          total_losses?: number
+          total_wins?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          adventure_id?: string
+          created_at?: string
+          current_stage?: number
+          id?: string
+          last_battle_at?: string | null
+          max_stage_reached?: number
+          total_losses?: number
+          total_wins?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          coin_balance: number
+          created_at: string
+          display_name: string | null
+          gem_balance: number
+          id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          coin_balance?: number
+          created_at?: string
+          display_name?: string | null
+          gem_balance?: number
+          id?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          coin_balance?: number
+          created_at?: string
+          display_name?: string | null
+          gem_balance?: number
+          id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

@@ -14,6 +14,7 @@ import { MarketplaceSystem } from '@/services/marketplaceSystem';
 interface MarketplaceProps {
   collection: HeroCardType[];
   gameStats: any;
+  userProfile: any;
   onBack: () => void;
   onTradeCard: (cardId: string, price: number, currency: 'gems') => void;
   onBuyCard: (card: HeroCardType, price: number) => void;
