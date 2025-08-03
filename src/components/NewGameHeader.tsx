@@ -211,7 +211,7 @@ export function NewGameHeader() {
                 </Button>
               )}
             </motion.div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </motion.div>
