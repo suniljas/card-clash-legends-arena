@@ -88,12 +88,6 @@ const ProgressBar = ({ current, max, label, color = "blue" }: {
   );
 };
 
-interface CollectionProps {
-  collection: HeroCardType[];
-  onBack: () => void;
-  onCardSelect?: (card: HeroCardType) => void;
-}
-
 export function Collection({ collection, onBack, onCardSelect }: CollectionProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedRarity, setSelectedRarity] = useState<Rarity | 'all'>('all');
@@ -323,9 +317,11 @@ export function Collection({ collection, onBack, onCardSelect }: CollectionProps
             <Card className="p-6 w-80 bg-gradient-to-br from-slate-900/95 via-slate-800/90 to-slate-900/95 backdrop-blur-md border border-slate-600/50 shadow-2xl">
               <div className="flex items-center gap-3 mb-4">
                 <div className={`p-2 rounded-full bg-gradient-to-br ${rarityConfig[selectedCard.rarity as keyof typeof rarityConfig]?.bgColor || 'from-slate-600/20 to-slate-500/20'}`}>
-                  {rarityConfig[selectedCard.rarity as keyof typeof rarityConfig]?.icon && 
-                    <rarityConfig[selectedCard.rarity as keyof typeof rarityConfig].icon className={`w-5 h-5 ${rarityConfig[selectedCard.rarity as keyof typeof rarityConfig]?.color}`} />
-                  }
+                  {(() => {
+                    const config = rarityConfig[selectedCard.rarity as keyof typeof rarityConfig];
+                    const IconComponent = config?.icon;
+                    return IconComponent ? <IconComponent className={`w-5 h-5 ${config?.color}`} /> : null;
+                  })()}
                 </div>
                 <div>
                   <h4 className="font-bold text-slate-200">{selectedCard.name}</h4>
@@ -369,10 +365,5 @@ export function Collection({ collection, onBack, onCardSelect }: CollectionProps
         )}
       </AnimatePresence>
     </motion.div>
-  );
-}
-        </Card>
-      )}
-    </div>
   );
 }
