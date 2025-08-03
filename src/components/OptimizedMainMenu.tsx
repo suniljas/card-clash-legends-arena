@@ -25,7 +25,7 @@ interface MainMenuProps {
   onLogout?: () => void;
 }
 
-// Enhanced memoized menu item component with premium LoR-inspired styling
+// Enhanced memoized menu item component with premium LoR-inspired styling and magical effects
 const MenuGridItem = memo<{
   icon: React.ElementType;
   title: string;
@@ -35,49 +35,90 @@ const MenuGridItem = memo<{
   index: number;
 }>(({ icon: Icon, title, description, badge, onClick, index }) => (
   <motion.div
-    initial={{ opacity: 0, y: 20 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ delay: index * 0.1, duration: 0.3 }}
-    whileHover={{ y: -8, scale: 1.02 }}
-    whileTap={{ scale: 0.98 }}
+    initial={{ opacity: 0, y: 30, rotateY: -15 }}
+    animate={{ opacity: 1, y: 0, rotateY: 0 }}
+    transition={{ 
+      delay: index * 0.08, 
+      duration: 0.5,
+      type: "spring",
+      stiffness: 100
+    }}
+    whileHover={{ 
+      y: -12, 
+      scale: 1.03,
+      rotateY: 2,
+      transition: { duration: 0.3, type: "spring", stiffness: 200 }
+    }}
+    whileTap={{ scale: 0.96 }}
+    className="perspective-1000"
   >
     <OptimizedCard
-      className="group cursor-pointer relative overflow-hidden backdrop-blur-md bg-gradient-to-br from-slate-900/60 via-slate-800/40 to-slate-900/60 border-slate-700/50 hover:border-primary/50 transition-all duration-300 hover:shadow-2xl hover:shadow-primary/20"
+      className="group cursor-pointer relative overflow-hidden backdrop-blur-md bg-gradient-to-br from-slate-900/70 via-slate-800/60 to-slate-900/70 border-slate-700/50 hover:border-primary/60 transition-all duration-500 hover:shadow-2xl hover:shadow-primary/25 transform-3d"
       onClick={onClick}
     >
-      {/* Premium frosted glass effect */}
-      <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+      {/* Enhanced mystical particles */}
+      <div className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+        <div className="mystical-particle text-primary/60" style={{ top: '20%', left: '15%' }} />
+        <div className="mystical-particle text-accent/50" style={{ top: '60%', right: '20%' }} />
+        <div className="mystical-particle text-blue-400/40" style={{ bottom: '30%', left: '70%' }} />
+      </div>
+
+      {/* Premium frosted glass effect with enhanced gradient */}
+      <div className="absolute inset-0 bg-gradient-to-br from-white/8 via-blue-400/5 to-purple-400/8 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
       
-      {/* Subtle glow border animation */}
-      <div className="absolute inset-0 rounded-lg bg-gradient-to-br from-primary/20 via-transparent to-accent/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10 blur-sm" />
+      {/* Enhanced glow border animation with mystical energy */}
+      <div className="absolute inset-0 rounded-lg bg-gradient-to-br from-primary/25 via-accent/15 to-primary/25 opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10 blur-md animate-pulse-slow" />
       
-      {/* Premium shimmer effect on hover */}
-      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-out" />
+      {/* Premium shimmer effect with legendary colors */}
+      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-amber-400/15 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-800 ease-out" />
       
-      <OptimizedCardHeader className="relative">
-        <div className="flex items-center justify-between mb-2">
-          <div className="p-3 rounded-full bg-gradient-to-br from-primary/20 to-accent/20 backdrop-blur-sm group-hover:from-primary/30 group-hover:to-accent/30 transition-all duration-300 shadow-lg">
-            <Icon className="h-6 w-6 text-primary group-hover:text-primary group-hover:scale-110 transition-all duration-300" />
-          </div>
+      {/* Magical border glow */}
+      <div className="absolute inset-0 rounded-lg border border-transparent group-hover:border-gradient-to-r group-hover:from-primary/40 group-hover:via-accent/40 group-hover:to-primary/40 transition-all duration-500" />
+      
+      <OptimizedCardHeader className="relative z-10">
+        <div className="flex items-center justify-between mb-3">
+          <motion.div 
+            className="p-3 rounded-full bg-gradient-to-br from-primary/25 to-accent/25 backdrop-blur-sm group-hover:from-primary/40 group-hover:to-accent/40 transition-all duration-500 shadow-lg relative"
+            whileHover={{ 
+              scale: 1.1, 
+              rotate: 5,
+              boxShadow: "0 0 25px rgba(59, 130, 246, 0.4)"
+            }}
+          >
+            {/* Icon glow effect */}
+            <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary/20 to-accent/20 blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            <Icon className="h-6 w-6 text-primary group-hover:text-white group-hover:scale-110 transition-all duration-500 relative z-10 drop-shadow-lg" />
+          </motion.div>
           {badge && (
-            <Badge 
-              variant="secondary" 
-              className="bg-gradient-to-r from-amber-500/20 to-yellow-500/20 text-amber-200 text-xs border border-amber-500/30 backdrop-blur-sm font-medium"
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0.8 }}
+              animate={{ scale: 1, opacity: 1 }}
+              whileHover={{ scale: 1.05 }}
             >
-              {badge}
-            </Badge>
+              <Badge 
+                variant="secondary" 
+                className="bg-gradient-to-r from-amber-500/30 to-yellow-500/30 text-amber-100 text-xs border border-amber-500/40 backdrop-blur-sm font-medium shadow-md hover:shadow-lg transition-all duration-300"
+              >
+                {badge}
+              </Badge>
+            </motion.div>
           )}
         </div>
-        <OptimizedCardTitle className="text-lg font-bold bg-gradient-to-r from-slate-100 to-slate-200 bg-clip-text text-transparent group-hover:from-white group-hover:to-slate-100 transition-all duration-300">
+        <OptimizedCardTitle className="text-lg font-bold text-gradient-premium group-hover:text-gradient-legendary transition-all duration-500 mb-1">
           {title}
         </OptimizedCardTitle>
       </OptimizedCardHeader>
       
-      <OptimizedCardContent>
-        <p className="text-sm text-slate-300 group-hover:text-slate-200 leading-relaxed transition-colors duration-300">
+      <OptimizedCardContent className="relative z-10">
+        <p className="text-sm text-slate-300 group-hover:text-slate-100 leading-relaxed transition-colors duration-500 font-medium">
           {description}
         </p>
       </OptimizedCardContent>
+
+      {/* Mystical energy field effect */}
+      <div className="absolute inset-0 opacity-0 group-hover:opacity-30 transition-opacity duration-700 pointer-events-none">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-accent/10 animate-pulse-slow" />
+      </div>
     </OptimizedCard>
   </motion.div>
 ));
@@ -179,39 +220,108 @@ export const MainMenu = memo<MainMenuProps>(({ onNavigate, playerData, user, onL
       <div className="min-h-screen flex flex-col">
         {/* Enhanced Premium Header with LoR inspiration */}
         <motion.header 
-          className="text-center py-12 px-4 relative"
-          initial={{ opacity: 0, y: -20 }}
+          className="text-center py-16 px-4 relative"
+          initial={{ opacity: 0, y: -30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.8, type: "spring", stiffness: 100 }}
         >
-          {/* Premium background glow */}
-          <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-transparent opacity-50" />
+          {/* Premium background glow with mystical energy */}
+          <div className="absolute inset-0 bg-gradient-to-b from-primary/8 via-transparent to-transparent opacity-70" />
+          
+          {/* Mystical particle effects around title */}
+          <div className="absolute inset-0 pointer-events-none overflow-hidden">
+            <motion.div 
+              className="absolute top-1/4 left-1/4 w-2 h-2 bg-primary/60 rounded-full"
+              animate={{
+                y: [-10, 10, -10],
+                x: [-5, 5, -5],
+                opacity: [0.3, 0.8, 0.3]
+              }}
+              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+            />
+            <motion.div 
+              className="absolute top-1/3 right-1/4 w-1.5 h-1.5 bg-accent/50 rounded-full"
+              animate={{
+                y: [5, -15, 5],
+                x: [5, -5, 5],
+                opacity: [0.2, 0.7, 0.2]
+              }}
+              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+            />
+            <motion.div 
+              className="absolute bottom-1/3 left-1/3 w-1 h-1 bg-blue-400/40 rounded-full"
+              animate={{
+                y: [-8, 8, -8],
+                x: [8, -8, 8],
+                opacity: [0.4, 0.9, 0.4]
+              }}
+              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+            />
+          </div>
           
           <div className="relative">
-            {/* Enhanced title with LoR-style gradients */}
-            <h1 className="text-6xl lg:text-7xl font-bold mb-6 relative font-fantasy">
-              <span className="text-gradient-gold font-fantasy tracking-wide drop-shadow-2xl">
+            {/* Enhanced title with premium gradients and magical glow */}
+            <motion.h1 
+              className="text-6xl lg:text-8xl font-bold mb-8 relative font-fantasy"
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 1, delay: 0.2, type: "spring", stiffness: 120 }}
+            >
+              <span className="text-gradient-premium font-fantasy tracking-wide drop-shadow-2xl relative z-10">
                 Card Clash Legends
               </span>
-              {/* Subtle glow effect behind text */}
-              <span className="absolute inset-0 text-gradient-gold opacity-50 blur-sm -z-10 font-fantasy tracking-wide">
+              {/* Enhanced magical glow effect */}
+              <span className="absolute inset-0 text-gradient-legendary opacity-30 blur-lg -z-10 font-fantasy tracking-wide animate-pulse-slow">
                 Card Clash Legends
               </span>
-            </h1>
-            
-            {/* Premium subtitle with enhanced styling */}
-            <p className="text-xl lg:text-2xl text-slate-300 max-w-3xl mx-auto leading-relaxed mb-8">
-              <span className="bg-gradient-to-r from-slate-200 to-slate-400 bg-clip-text text-transparent">
-                Master the art of strategic card combat
+              {/* Mystical energy border */}
+              <span className="absolute inset-0 text-gradient-premium opacity-20 blur-2xl -z-20 font-fantasy tracking-wide scale-110">
+                Card Clash Legends
               </span>
-            </p>
+            </motion.h1>
             
-            {/* Decorative elements inspired by LoR */}
-            <div className="flex justify-center items-center space-x-4 opacity-60">
-              <div className="w-16 h-px bg-gradient-to-r from-transparent via-amber-400 to-transparent"></div>
-              <div className="w-2 h-2 bg-amber-400 rounded-full animate-pulse"></div>
-              <div className="w-16 h-px bg-gradient-to-r from-transparent via-amber-400 to-transparent"></div>
-            </div>
+            {/* Premium subtitle with enhanced styling and typewriter effect */}
+            <motion.p 
+              className="text-xl lg:text-2xl text-slate-300 max-w-4xl mx-auto leading-relaxed mb-10"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.8, delay: 0.5 }}
+            >
+              <span className="bg-gradient-to-r from-slate-200 via-blue-200 to-purple-200 bg-clip-text text-transparent font-medium">
+                Master the art of strategic card combat in mystical realms
+              </span>
+            </motion.p>
+            
+            {/* Enhanced decorative elements with magical energy */}
+            <motion.div 
+              className="flex justify-center items-center space-x-6 opacity-70"
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{ scale: 1, opacity: 0.7 }}
+              transition={{ duration: 0.6, delay: 0.8, type: "spring" }}
+            >
+              <motion.div 
+                className="w-20 h-px bg-gradient-to-r from-transparent via-amber-400 to-transparent"
+                animate={{ scaleX: [1, 1.2, 1] }}
+                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+              />
+              <motion.div 
+                className="w-3 h-3 bg-gradient-to-br from-amber-400 to-yellow-500 rounded-full shadow-lg"
+                animate={{ 
+                  scale: [1, 1.3, 1],
+                  boxShadow: [
+                    "0 0 10px rgba(245, 158, 11, 0.5)",
+                    "0 0 20px rgba(245, 158, 11, 0.8)",
+                    "0 0 10px rgba(245, 158, 11, 0.5)"
+                  ]
+                }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              />
+              <motion.div 
+                className="w-20 h-px bg-gradient-to-r from-transparent via-amber-400 to-transparent"
+                animate={{ scaleX: [1, 1.2, 1] }}
+                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
+              />
+            </motion.div>
           </div>
         </motion.header>
 
