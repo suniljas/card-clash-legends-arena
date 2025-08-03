@@ -94,7 +94,7 @@ export function EnhancedNavigation({
                 <Breadcrumb>
                   <BreadcrumbList className="text-xs">
                     {breadcrumbs.map((item, index) => (
-                      <React.Fragment key={index}>
+                      <React.Fragment key={`breadcrumb-${index}`}>
                         <BreadcrumbItem>
                           {item.isActive ? (
                             <BreadcrumbPage className="text-blue-300 font-medium">

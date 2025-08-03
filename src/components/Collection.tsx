@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
+import { EmptyCollection } from '@/components/ui/empty-state';
 import { ArrowLeft, Search, Filter, Star, Trophy, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
@@ -282,25 +283,20 @@ export function Collection({ collection, onBack, onCardSelect }: CollectionProps
       {/* Enhanced Empty State */}
       <AnimatePresence>
         {filteredCollection.length === 0 && (
-          <motion.div 
-            className="text-center py-16"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.8 }}
-            transition={{ duration: 0.5 }}
-          >
-            <motion.div 
-              className="text-6xl mb-6"
-              animate={{ rotate: [0, 10, -10, 0] }}
-              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-            >
-              🃏
-            </motion.div>
-            <h3 className="text-xl font-bold mb-3 text-slate-300">No heroes found</h3>
-            <p className="text-slate-400 max-w-md mx-auto">
-              Try adjusting your search terms or filters to discover more heroes in your collection
-            </p>
-          </motion.div>
+          <EmptyCollection
+            title={searchTerm ? "No matching heroes found" : undefined}
+            description={searchTerm ? 
+              `No heroes match "${searchTerm}". Try a different search term or clear filters.` :
+              collection.length === 0 ?
+                "Start your adventure by opening card packs from the shop!" :
+                "Try adjusting your filters to see more heroes."
+            }
+            action={collection.length === 0 ? {
+              label: "Visit Shop",
+              onClick: () => {/* Navigate to shop */},
+              variant: "primary"
+            } : undefined}
+          />
         )}
       </AnimatePresence>
 
