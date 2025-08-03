@@ -13,11 +13,16 @@ import {
   Users, 
   Target,
   Settings,
-  Hammer
+  Hammer,
+  ShoppingBag,
+  Gem
 } from 'lucide-react';
 
 interface MainMenuProps {
   onNavigate: (page: string) => void;
+  playerData?: any;
+  user?: { email: string; name: string; provider: string; uid: string } | null;
+  onLogout?: () => void;
 }
 
 // Memoized menu item component for better performance
@@ -68,7 +73,7 @@ const MenuGridItem = memo<{
 
 MenuGridItem.displayName = "MenuGridItem";
 
-export const MainMenu = memo<MainMenuProps>(({ onNavigate }) => {
+export const MainMenu = memo<MainMenuProps>(({ onNavigate, playerData, user, onLogout }) => {
   const settings = useGameSettings();
   
   // Performance monitoring
@@ -131,6 +136,20 @@ export const MainMenu = memo<MainMenuProps>(({ onNavigate }) => {
       description: "Craft the perfect deck for battle",
       badge: "Strategy",
       page: "deck-builder"
+    },
+    {
+      icon: ShoppingBag,
+      title: "Marketplace",
+      description: "Buy and sell cards with other players",
+      badge: "Trade",
+      page: "marketplace"
+    },
+    {
+      icon: Gem,
+      title: "Gem Store",
+      description: "Purchase gems with real money",
+      badge: "Premium",
+      page: "gem-store"
     },
     {
       icon: Settings,

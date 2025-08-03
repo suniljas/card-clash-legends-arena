@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { HeroCard as HeroCardType, Rarity } from '@/types/game';
-import { LORCardEnhanced } from './LORCardEnhanced';
+import { OptimizedGameCard, OptimizedCardGrid } from '@/components/OptimizedCard';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -18,6 +18,19 @@ export function Collection({ collection, onBack, onCardSelect }: CollectionProps
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedRarity, setSelectedRarity] = useState<Rarity | 'all'>('all');
   const [selectedCard, setSelectedCard] = useState<HeroCardType | null>(null);
+
+  // Convert HeroCard to OptimizedGameCard format
+  const convertToOptimizedCard = (heroCard: HeroCardType) => ({
+    id: heroCard.id,
+    name: heroCard.name,
+    artwork: heroCard.imageUrl || '/placeholder.svg',
+    attack: heroCard.baseAttack || 0,
+    health: heroCard.baseHP || 0,
+    cost: heroCard.level || 1,
+    rarity: heroCard.rarity === 'legend' ? 'legendary' as const : heroCard.rarity as "common" | "rare" | "epic" | "legendary",
+    faction: "guardians" as const, // Default faction since HeroCard doesn't have faction
+    description: heroCard.abilityDescription || ''
+  });
 
   const rarities: (Rarity | 'all')[] = ['all', ...Object.values(Rarity)];
 
@@ -100,22 +113,18 @@ export function Collection({ collection, onBack, onCardSelect }: CollectionProps
       </div>
 
       {/* Collection Grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-        {filteredCollection.map((card) => (
-          <LORCardEnhanced
-            key={card.id}
-            hero={card}
-            size="medium"
-            isSelected={selectedCard?.id === card.id}
-            onClick={() => {
-              setSelectedCard(card);
-              onCardSelect?.(card);
-            }}
-            showRarityGlow={true}
-            isHoverable={true}
-          />
-        ))}
-      </div>
+      <OptimizedCardGrid
+        cards={filteredCollection.map(convertToOptimizedCard)}
+        onCardSelect={(cardId) => {
+          const heroCard = filteredCollection.find(c => c.id === cardId);
+          if (heroCard) {
+            setSelectedCard(heroCard);
+            onCardSelect?.(heroCard);
+          }
+        }}
+        selectedCards={selectedCard ? [selectedCard.id] : []}
+        maxVisible={50} // Limit visible cards for performance
+      />
 
       {/* Empty State */}
       {filteredCollection.length === 0 && (

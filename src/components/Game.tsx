@@ -5,7 +5,7 @@ import { GemPurchase } from './GemPurchase';
 import { FirebaseAuth } from './FirebaseAuth';
 import { FirebaseGemPurchase } from './FirebaseGemPurchase';
 import { NewGameHeader } from './NewGameHeader';
-import { MainMenu } from './MainMenu';
+import { MainMenu } from './OptimizedMainMenu';
 import { Collection } from './Collection';
 import { DeckBuilder } from './DeckBuilder';
 import { CardPackShop } from './CardPackShop';
