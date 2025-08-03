@@ -5,7 +5,8 @@ import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import { useGameAudio } from '@/hooks/useAudio';
-import { Shield, Sword, Star, Crown, Gem, Zap, Sparkles, Flame, Droplets, Wind } from 'lucide-react';
+import { Shield, Sword, Star, Crown, Gem, Zap, Sparkles, Flame, Droplets, Wind, Eye } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface LORCardProps {
   hero: HeroCardType;
@@ -166,6 +167,11 @@ export function LORCard({
     onClick?.();
   };
 
+  const handleDetailView = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setShowDetailModal(true);
+  };
+
   const getElementIcon = (heroName: string) => {
     const name = heroName.toLowerCase();
     if (name.includes('fire') || name.includes('flame') || name.includes('burn')) {
@@ -181,16 +187,37 @@ export function LORCard({
   };
 
   return (
-    <div 
+    <motion.div 
       className={cn(
         'clickable-card relative group',
         sizeClasses[size],
         isHoverable && 'cursor-pointer',
         'focus-lor'
       )}
+      initial={isAnimated ? { opacity: 0, scale: 0.8, y: 20 } : false}
+      animate={{ opacity: 1, scale: 1, y: 0 }}
+      transition={{ 
+        duration: 0.5, 
+        ease: "easeOut",
+        type: "spring",
+        stiffness: 100
+      }}
+      whileHover={isHoverable ? { 
+        scale: 1.05, 
+        y: -8,
+        rotateY: 5,
+        transition: { duration: 0.3 }
+      } : {}}
+      whileTap={{ 
+        scale: 0.95,
+        transition: { duration: 0.1 }
+      }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onMouseDown={() => setIsPressed(true)}
+      onMouseUp={() => setIsPressed(false)}
       onClick={handleClick}
+      style={{ perspective: 1000 }}
     >
       {/* Enhanced Energy Field Effect */}
       {showRarityGlow && (
@@ -461,9 +488,90 @@ export function LORCard({
 
       {/* Enhanced Selection Ring */}
       {isSelected && (
-        <div className="absolute inset-0 ring-4 ring-primary/80 ring-offset-2 ring-offset-slate-900 rounded-lg animate-pulse" />
+        <motion.div 
+          className="absolute inset-0 ring-4 ring-primary/80 ring-offset-2 ring-offset-slate-900 rounded-lg"
+          animate={{ scale: [1, 1.02, 1] }}
+          transition={{ duration: 1, repeat: Infinity }}
+        />
       )}
     </Card>
-    </div>
+
+    {/* Detail View Button */}
+    {isHoverable && (
+      <motion.button
+        className={cn(
+          "absolute top-2 right-2 opacity-0 group-hover:opacity-100",
+          "bg-black/70 hover:bg-black/90 text-white rounded-full p-1.5",
+          "transition-all duration-200 backdrop-blur-sm",
+          "z-20 hover:scale-110"
+        )}
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={isHovered ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+        onClick={handleDetailView}
+      >
+        <Eye className="w-3 h-3" />
+      </motion.button>
+    )}
+
+    {/* Card Detail Modal */}
+    <AnimatePresence>
+      {showDetailModal && (
+        <motion.div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          onClick={() => setShowDetailModal(false)}
+        >
+          <motion.div
+            className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-xl p-6 max-w-md w-full mx-4 border border-slate-600"
+            initial={{ scale: 0.8, opacity: 0, y: 20 }}
+            animate={{ scale: 1, opacity: 1, y: 0 }}
+            exit={{ scale: 0.8, opacity: 0, y: 20 }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex justify-between items-start mb-4">
+              <h2 className="text-xl font-bold text-white">{hero.name}</h2>
+              <button
+                onClick={() => setShowDetailModal(false)}
+                className="text-slate-400 hover:text-white transition-colors"
+              >
+                ✕
+              </button>
+            </div>
+            
+            <div className="space-y-3 text-sm">
+              <div className="flex justify-between">
+                <span className="text-slate-400">Rarity:</span>
+                <span className="text-white capitalize">{hero.rarity.replace('_', ' ')}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-slate-400">Level:</span>
+                <span className="text-white">{hero.level}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-slate-400">Attack:</span>
+                <span className="text-red-400">{stats.attack}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-slate-400">Health:</span>
+                <span className="text-green-400">{stats.hp}</span>
+              </div>
+              {hero.abilityName && (
+                <div className="pt-2 border-t border-slate-600">
+                  <div className="text-amber-400 font-semibold">{hero.abilityName}</div>
+                  {hero.abilityDescription && (
+                    <div className="text-slate-300 mt-1">{hero.abilityDescription}</div>
+                  )}
+                </div>
+              )}
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+    </motion.div>
   );
 }
