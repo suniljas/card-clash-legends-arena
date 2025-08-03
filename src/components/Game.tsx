@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useGameState } from '@/hooks/useGameState';
 import { useErrorHandler } from '@/hooks/useErrorHandler';
 import { GemPurchase } from './GemPurchase';
@@ -40,6 +40,25 @@ import { LiveOpsAdminPanel } from './LiveOpsAdminPanel';
 import { PlayerSupportSystem } from './PlayerSupportSystem';
 import { ACHIEVEMENTS_DATABASE } from '@/data/achievements';
 
+// Enhanced UI Components
+import { BottomNavigation, useBottomNavigation } from './ui/bottom-navigation';
+import { EnhancedNavigation } from './ui/enhanced-navigation';
+import { ToastProvider } from './ui/toast-provider';
+import { LoadingOverlay } from './ui/enhanced-loading';
+import { motion, AnimatePresence } from 'framer-motion';
+import { 
+  Home, 
+  Users, 
+  Package, 
+  ShoppingBag, 
+  Swords, 
+  Settings,
+  Trophy,
+  Star,
+  Map,
+  Target
+} from 'lucide-react';
+
 type GamePage = 
   | 'menu' 
   | 'tutorial'
@@ -77,6 +96,120 @@ export function Game() {
   const [battleData, setBattleData] = useState<{ playerDeck: any[], enemyDeck: any[] } | null>(null);
   const [user, setUser] = useState<{ email: string; name: string; provider: string; uid: string } | null>(null);
   const [unlockedLore, setUnlockedLore] = useState<string[]>(['mystic_origins']); // Start with one unlocked
+  const [isLoading, setIsLoading] = useState(false);
+  const [loadingText, setLoadingText] = useState('');
+  const [navigationHistory, setNavigationHistory] = useState<GamePage[]>(['menu']);
+  
+  // Enhanced navigation with bottom nav support
+  const { activeTab, setActiveTab } = useBottomNavigation(currentPage);
+  
+  // Navigation handlers with loading states
+  const navigateToPage = async (page: GamePage, withLoading = false, loadingMessage = '') => {
+    if (withLoading) {
+      setIsLoading(true);
+      setLoadingText(loadingMessage);
+      // Simulate loading time for better UX
+      await new Promise(resolve => setTimeout(resolve, 800));
+    }
+    
+    setNavigationHistory(prev => [...prev, page]);
+    setCurrentPage(page);
+    setActiveTab(page);
+    
+    if (withLoading) {
+      setIsLoading(false);
+    }
+  };
+
+  const goBack = () => {
+    if (navigationHistory.length > 1) {
+      const newHistory = [...navigationHistory];
+      newHistory.pop(); // Remove current page
+      const previousPage = newHistory[newHistory.length - 1];
+      setNavigationHistory(newHistory);
+      setCurrentPage(previousPage);
+      setActiveTab(previousPage);
+    }
+  };
+
+  // Bottom navigation items
+  const bottomNavItems = [
+    {
+      id: 'menu',
+      label: 'Home',
+      icon: <Home className="w-5 h-5" />,
+      isActive: currentPage === 'menu',
+      onClick: () => navigateToPage('menu')
+    },
+    {
+      id: 'collection',
+      label: 'Cards',
+      icon: <Users className="w-5 h-5" />,
+      isActive: currentPage === 'collection',
+      onClick: () => navigateToPage('collection', true, 'Loading collection...')
+    },
+    {
+      id: 'deck',
+      label: 'Decks',
+      icon: <Package className="w-5 h-5" />,
+      isActive: currentPage === 'deck',
+      onClick: () => navigateToPage('deck', true, 'Loading deck builder...')
+    },
+    {
+      id: 'shop',
+      label: 'Shop',
+      icon: <ShoppingBag className="w-5 h-5" />,
+      isActive: currentPage === 'shop',
+      onClick: () => navigateToPage('shop')
+    },
+    {
+      id: 'pvp',
+      label: 'Battle',
+      icon: <Swords className="w-5 h-5" />,
+      isActive: currentPage === 'pvp',
+      onClick: () => navigateToPage('pvp', true, 'Finding opponents...'),
+      badge: 3 // Example notification count
+    }
+  ];
+
+  // Generate breadcrumbs based on current page
+  const getBreadcrumbs = () => {
+    const breadcrumbMap: Record<GamePage, { label: string; onClick?: () => void }[]> = {
+      'menu': [{ label: 'Home', isActive: true }],
+      'collection': [
+        { label: 'Home', onClick: () => navigateToPage('menu') },
+        { label: 'Collection', isActive: true }
+      ],
+      'deck': [
+        { label: 'Home', onClick: () => navigateToPage('menu') },
+        { label: 'Deck Builder', isActive: true }
+      ],
+      'shop': [
+        { label: 'Home', onClick: () => navigateToPage('menu') },
+        { label: 'Card Packs', isActive: true }
+      ],
+      'pvp': [
+        { label: 'Home', onClick: () => navigateToPage('menu') },
+        { label: 'PvP Arena', isActive: true }
+      ],
+      'path-of-legends': [
+        { label: 'Home', onClick: () => navigateToPage('menu') },
+        { label: 'Path of Legends', isActive: true }
+      ],
+      'legends-lab': [
+        { label: 'Home', onClick: () => navigateToPage('menu') },
+        { label: 'Legends Lab', isActive: true }
+      ],
+      'challenges': [
+        { label: 'Home', onClick: () => navigateToPage('menu') },
+        { label: 'Challenges', isActive: true }
+      ],
+      // Add more as needed
+      'auth': [{ label: 'Login', isActive: true }]
+    };
+    
+    return breadcrumbMap[currentPage] || [{ label: 'Unknown', isActive: true }];
+  };
   const [championMasteries, setChampionMasteries] = useState([
     {
       championId: 'flame_mage_champion',
@@ -122,7 +255,7 @@ export function Game() {
 
   const startBattle = (playerDeck: any[], enemyDeck: any[]) => {
     setBattleData({ playerDeck, enemyDeck });
-    setCurrentPage('battle');
+    navigateToPage('battle', true, 'Preparing battle...');
   };
 
   const handleLogin = (userData: { email: string; name: string; provider: string; uid: string }) => {
@@ -131,7 +264,7 @@ export function Game() {
     // Check if user needs onboarding
     const hasCompletedOnboarding = localStorage.getItem('onboarding-completed');
     if (!hasCompletedOnboarding) {
-      setCurrentPage('onboarding');
+      navigateToPage('onboarding');
       return;
     }
     
@@ -148,7 +281,7 @@ export function Game() {
       }, 1000);
     }
     
-    setCurrentPage('menu');
+    navigateToPage('menu', true, 'Loading game...');
   };
 
   const renderCurrentPage = () => {
@@ -509,22 +642,62 @@ export function Game() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <NewGameHeader />
-      {renderCurrentPage()}
-      
-      
-      {/* Achievement Notifications */}
-      {gameState.newAchievements.map((achievementId) => {
-        const achievement = ACHIEVEMENTS_DATABASE.find(a => a.id === achievementId);
-        return achievement ? (
-          <AchievementNotification
-            key={achievementId}
-            achievement={{ ...achievement, unlocked: true }}
-            onDismiss={() => gameState.dismissAchievement(achievementId)}
+    <ToastProvider>
+      <div className="min-h-screen bg-background relative">
+        {/* Enhanced Header with improved design */}
+        <NewGameHeader />
+        
+        {/* Enhanced Navigation for non-menu pages */}
+        {currentPage !== 'menu' && currentPage !== 'auth' && (
+          <EnhancedNavigation
+            onBack={navigationHistory.length > 1 ? goBack : undefined}
+            title={getBreadcrumbs()[getBreadcrumbs().length - 1]?.label}
+            breadcrumbs={getBreadcrumbs()}
+            showBackButton={navigationHistory.length > 1}
           />
-        ) : null;
-      })}
-    </div>
+        )}
+        
+        {/* Main Content with Page Transitions */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentPage}
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className={currentPage !== 'menu' && currentPage !== 'auth' ? 'pb-20 sm:pb-0' : ''}
+          >
+            {renderCurrentPage()}
+          </motion.div>
+        </AnimatePresence>
+        
+        {/* Enhanced Bottom Navigation for Mobile */}
+        {currentPage !== 'auth' && currentPage !== 'onboarding' && (
+          <BottomNavigation items={bottomNavItems} />
+        )}
+        
+        {/* Loading Overlay */}
+        <LoadingOverlay
+          isLoading={isLoading}
+          text={loadingText}
+          variant="premium"
+        />
+        
+        {/* Achievement Notifications */}
+        {gameState.newAchievements.map((achievementId) => {
+          const achievement = ACHIEVEMENTS_DATABASE.find(a => a.id === achievementId);
+          return achievement ? (
+            <AchievementNotification
+              key={achievementId}
+              achievement={{ ...achievement, unlocked: true }}
+              onDismiss={() => gameState.dismissAchievement(achievementId)}
+            />
+          ) : null;
+        })}
+        
+        {/* Network Status Indicator */}
+        <NetworkStatusIndicator />
+      </div>
+    </ToastProvider>
   );
 }
