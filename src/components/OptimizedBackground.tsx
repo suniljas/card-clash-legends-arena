@@ -16,6 +16,9 @@ interface Particle {
   speedY: number;
   color: string;
   opacity: number;
+  pulsePhase: number;
+  trailX: number[];
+  trailY: number[];
 }
 
 export const OptimizedBackground: React.FC<OptimizedBackgroundProps> = ({
@@ -30,38 +33,38 @@ export const OptimizedBackground: React.FC<OptimizedBackgroundProps> = ({
   const lastFrameTime = useRef(0);
   const FPS_LIMIT = 30; // Limit to 30 FPS for better performance
 
-  // Memoized particle configuration to prevent recalculation
+  // Memoized particle configuration with enhanced mystical settings
   const particleConfig = useMemo(() => {
     const configs = {
       menu: {
-        count: intensity === 'low' ? 10 : intensity === 'medium' ? 20 : 30,
-        colors: ['#3b82f6', '#8b5cf6'],
-        speed: 0.3,
-        size: { min: 1, max: 2 }
-      },
-      battle: {
-        count: intensity === 'low' ? 15 : intensity === 'medium' ? 25 : 35,
-        colors: ['#ef4444', '#f97316'],
-        speed: 0.5,
-        size: { min: 1, max: 3 }
-      },
-      collection: {
-        count: intensity === 'low' ? 8 : intensity === 'medium' ? 15 : 25,
-        colors: ['#10b981', '#059669'],
-        speed: 0.2,
-        size: { min: 1, max: 2 }
-      },
-      mystical: {
-        count: intensity === 'low' ? 12 : intensity === 'medium' ? 20 : 30,
-        colors: ['#a855f7', '#c084fc'],
+        count: intensity === 'low' ? 15 : intensity === 'medium' ? 25 : 40,
+        colors: ['#fbbf24', '#3b82f6', '#8b5cf6', '#06b6d4'],
         speed: 0.4,
         size: { min: 1, max: 3 }
+      },
+      battle: {
+        count: intensity === 'low' ? 20 : intensity === 'medium' ? 30 : 45,
+        colors: ['#ef4444', '#f97316', '#fbbf24', '#dc2626'],
+        speed: 0.6,
+        size: { min: 1.5, max: 4 }
+      },
+      collection: {
+        count: intensity === 'low' ? 12 : intensity === 'medium' ? 20 : 35,
+        colors: ['#10b981', '#059669', '#06b6d4', '#0891b2'],
+        speed: 0.3,
+        size: { min: 1, max: 2.5 }
+      },
+      mystical: {
+        count: intensity === 'low' ? 18 : intensity === 'medium' ? 28 : 45,
+        colors: ['#a855f7', '#c084fc', '#fbbf24', '#06b6d4', '#f472b6'],
+        speed: 0.5,
+        size: { min: 1.2, max: 3.5 }
       }
     };
     return configs[variant];
   }, [variant, intensity]);
 
-  // Initialize particles with memoization
+  // Initialize particles with enhanced mystical properties
   const initializeParticles = useCallback(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -76,7 +79,10 @@ export const OptimizedBackground: React.FC<OptimizedBackgroundProps> = ({
         speedX: (Math.random() - 0.5) * particleConfig.speed,
         speedY: (Math.random() - 0.5) * particleConfig.speed,
         color: particleConfig.colors[Math.floor(Math.random() * particleConfig.colors.length)],
-        opacity: Math.random() * 0.4 + 0.1
+        opacity: Math.random() * 0.6 + 0.2,
+        pulsePhase: Math.random() * Math.PI * 2,
+        trailX: [],
+        trailY: []
       });
     }
     particlesRef.current = particles;
@@ -99,11 +105,22 @@ export const OptimizedBackground: React.FC<OptimizedBackgroundProps> = ({
     // Clear canvas efficiently
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Update and draw particles
+    // Enhanced mystical particle rendering with trails and pulse effects
     particlesRef.current.forEach((particle) => {
-      // Update position
-      particle.x += particle.speedX;
-      particle.y += particle.speedY;
+      // Update position with slight drift
+      particle.x += particle.speedX + Math.sin(currentTime * 0.001 + particle.pulsePhase) * 0.1;
+      particle.y += particle.speedY + Math.cos(currentTime * 0.001 + particle.pulsePhase) * 0.1;
+
+      // Update pulse phase
+      particle.pulsePhase += 0.02;
+
+      // Update trail
+      particle.trailX.unshift(particle.x);
+      particle.trailY.unshift(particle.y);
+      if (particle.trailX.length > 5) {
+        particle.trailX.pop();
+        particle.trailY.pop();
+      }
 
       // Wrap around screen edges
       if (particle.x < 0) particle.x = canvas.width;
@@ -111,11 +128,43 @@ export const OptimizedBackground: React.FC<OptimizedBackgroundProps> = ({
       if (particle.y < 0) particle.y = canvas.height;
       if (particle.y > canvas.height) particle.y = 0;
 
-      // Draw particle (simplified rendering)
-      ctx.globalAlpha = particle.opacity;
+      // Draw particle trail
+      if (particle.trailX.length > 1) {
+        for (let i = 1; i < particle.trailX.length; i++) {
+          const trailOpacity = particle.opacity * (1 - i / particle.trailX.length) * 0.3;
+          const trailSize = particle.size * (1 - i / particle.trailX.length);
+          
+          ctx.globalAlpha = trailOpacity;
+          ctx.fillStyle = particle.color;
+          ctx.beginPath();
+          ctx.arc(particle.trailX[i], particle.trailY[i], trailSize, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+
+      // Draw main particle with pulsing glow
+      const pulseSize = particle.size + Math.sin(particle.pulsePhase) * 0.5;
+      const pulseOpacity = particle.opacity + Math.sin(particle.pulsePhase * 2) * 0.2;
+      
+      // Outer glow
+      ctx.globalAlpha = pulseOpacity * 0.3;
       ctx.fillStyle = particle.color;
       ctx.beginPath();
-      ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+      ctx.arc(particle.x, particle.y, pulseSize * 2, 0, Math.PI * 2);
+      ctx.fill();
+      
+      // Main particle
+      ctx.globalAlpha = pulseOpacity;
+      ctx.fillStyle = particle.color;
+      ctx.beginPath();
+      ctx.arc(particle.x, particle.y, pulseSize, 0, Math.PI * 2);
+      ctx.fill();
+      
+      // Inner highlight
+      ctx.globalAlpha = pulseOpacity * 0.8;
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.arc(particle.x - pulseSize * 0.3, particle.y - pulseSize * 0.3, pulseSize * 0.3, 0, Math.PI * 2);
       ctx.fill();
     });
 
