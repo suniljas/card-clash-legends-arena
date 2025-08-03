@@ -52,6 +52,13 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        chart: {
+          "1": "hsl(var(--chart-1))",
+          "2": "hsl(var(--chart-2))",
+          "3": "hsl(var(--chart-3))",
+          "4": "hsl(var(--chart-4))",
+          "5": "hsl(var(--chart-5))",
+        },
         rarity: {
           common: "hsl(var(--common))",
           uncommon: "hsl(var(--uncommon))",
@@ -75,6 +82,23 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+      },
+      backgroundImage: {
+        'gradient-primary': 'var(--gradient-primary)',
+        'gradient-secondary': 'var(--gradient-secondary)', 
+        'gradient-card': 'var(--gradient-card)',
+        'gradient-premium': 'var(--gradient-premium)',
+        'gradient-mystical': 'var(--gradient-mystical)',
+      },
+      boxShadow: {
+        'elegant': 'var(--shadow-elegant)',
+        'premium': 'var(--shadow-premium)',
+        'mystical': 'var(--shadow-mystical)',
+        'glow': 'var(--shadow-glow)',
+      },
+      fontFamily: {
+        'premium': ['Inter', 'system-ui', 'sans-serif'],
+        'display': ['Playfair Display', 'serif'],
       },
       borderRadius: {
         lg: "var(--radius)",

@@ -2,6 +2,91 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  :root {
+    /* Premium Light Theme - Legends of Runeterra Inspired */
+    --background: 28 20% 97%;
+    --foreground: 240 15% 15%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 15% 15%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 15% 15%;
+    --primary: 240 73% 12%;
+    --primary-foreground: 45 100% 95%;
+    --secondary: 240 6% 90%;
+    --secondary-foreground: 240 15% 15%;
+    --muted: 240 5% 94%;
+    --muted-foreground: 240 5% 45%;
+    --accent: 45 93% 58%;
+    --accent-foreground: 240 15% 15%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 6% 88%;
+    --input: 240 6% 88%;
+    --ring: 45 93% 58%;
+    --chart-1: 45 93% 58%;
+    --chart-2: 240 73% 65%;
+    --chart-3: 280 65% 60%;
+    --chart-4: 200 80% 55%;
+    --chart-5: 340 75% 65%;
+    --radius: 0.75rem;
+    
+    /* Premium Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(240, 73%, 12%) 0%, hsl(240, 65%, 20%) 100%);
+    --gradient-secondary: linear-gradient(135deg, hsl(45, 93%, 58%) 0%, hsl(50, 85%, 65%) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(0, 0%, 100%) 0%, hsl(240, 5%, 98%) 100%);
+    --gradient-premium: linear-gradient(135deg, hsl(45, 93%, 58%) 0%, hsl(35, 85%, 65%) 50%, hsl(25, 90%, 70%) 100%);
+    --gradient-mystical: linear-gradient(135deg, hsl(240, 73%, 12%) 0%, hsl(280, 65%, 25%) 50%, hsl(240, 73%, 35%) 100%);
+    
+    /* Premium Shadows */
+    --shadow-elegant: 0 4px 20px -4px hsl(240 73% 12% / 0.15);
+    --shadow-premium: 0 10px 40px -8px hsl(45 93% 58% / 0.3);
+    --shadow-mystical: 0 8px 32px -8px hsl(240 73% 12% / 0.25);
+    --shadow-glow: 0 0 20px hsl(45 93% 58% / 0.4);
+  }
+
+  .dark {
+    /* Premium Dark Theme - Legends of Runeterra Inspired */
+    --background: 240 15% 6%;
+    --foreground: 45 100% 95%;
+    --card: 240 12% 8%;
+    --card-foreground: 45 100% 95%;
+    --popover: 240 12% 8%;
+    --popover-foreground: 45 100% 95%;
+    --primary: 45 93% 58%;
+    --primary-foreground: 240 15% 6%;
+    --secondary: 240 8% 15%;
+    --secondary-foreground: 45 100% 95%;
+    --muted: 240 8% 12%;
+    --muted-foreground: 240 5% 65%;
+    --accent: 240 73% 65%;
+    --accent-foreground: 45 100% 95%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 8% 18%;
+    --input: 240 8% 18%;
+    --ring: 45 93% 58%;
+    --chart-1: 45 93% 58%;
+    --chart-2: 240 73% 65%;
+    --chart-3: 280 65% 60%;
+    --chart-4: 200 80% 55%;
+    --chart-5: 340 75% 65%;
+    
+    /* Premium Dark Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(45, 93%, 58%) 0%, hsl(50, 85%, 65%) 100%);
+    --gradient-secondary: linear-gradient(135deg, hsl(240, 73%, 65%) 0%, hsl(280, 65%, 60%) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(240, 12%, 8%) 0%, hsl(240, 10%, 12%) 100%);
+    --gradient-premium: linear-gradient(135deg, hsl(45, 93%, 58%) 0%, hsl(35, 85%, 65%) 50%, hsl(25, 90%, 70%) 100%);
+    --gradient-mystical: linear-gradient(135deg, hsl(240, 15%, 6%) 0%, hsl(280, 65%, 15%) 50%, hsl(240, 73%, 25%) 100%);
+    
+    /* Premium Dark Shadows */
+    --shadow-elegant: 0 4px 20px -4px hsl(0 0% 0% / 0.4);
+    --shadow-premium: 0 10px 40px -8px hsl(45 93% 58% / 0.25);
+    --shadow-mystical: 0 8px 32px -8px hsl(0 0% 0% / 0.5);
+    --shadow-glow: 0 0 20px hsl(45 93% 58% / 0.3);
+  }
+}
+
 /* Enhanced Card Animations and Effects */
 @layer components {
   .card-premium-enhanced {
@@ -673,18 +758,17 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    font-family: 'Inter', system-ui, sans-serif;
   }
 
   body {
-    @apply bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900;
-    @apply text-white;
-    @apply min-h-screen;
-    @apply font-sans;
+    @apply bg-gradient-mystical text-foreground min-h-screen font-premium;
+    background-attachment: fixed;
   }
 
   /* Enhanced focus styles */
   *:focus {
-    @apply outline-none ring-2 ring-blue-500 ring-offset-2 ring-offset-slate-900;
+    @apply outline-none ring-2 ring-primary ring-offset-2 ring-offset-background;
   }
 
   /* Enhanced selection styles */
