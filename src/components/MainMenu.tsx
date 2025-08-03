@@ -104,6 +104,26 @@ export function MainMenu({ onNavigate, user, onLogout }: MainMenuProps) {
       rarity: 'legend'
     },
     {
+      id: 'marketplace',
+      title: 'Marketplace',
+      description: 'Buy and sell cards with other players',
+      icon: ShoppingBag,
+      gradient: 'from-blue-500 to-blue-700',
+      borderColor: 'border-blue-400/30',
+      glowColor: 'shadow-blue-500/20',
+      rarity: 'epic'
+    },
+    {
+      id: 'gem-store',
+      title: 'Gem Store',
+      description: 'Purchase gems with real money',
+      icon: Gem,
+      gradient: 'from-purple-500 to-purple-700',
+      borderColor: 'border-purple-400/30',
+      glowColor: 'shadow-purple-500/20',
+      rarity: 'legend'
+    },
+    {
       id: 'lore-codex',
       title: 'Lore Codex',
       description: 'Discover the rich lore and stories',

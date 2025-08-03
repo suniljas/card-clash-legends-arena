@@ -19,6 +19,7 @@ import { WeeklyVaultDisplay } from './WeeklyVaultDisplay';
 import { DailyQuestsPanel } from './DailyQuestsPanel';
 import { ProgressionSystem, Faction } from '../engine/ProgressionSystem';
 import { PathOfLegends } from './PathOfLegends';
+import { EnhancedPathOfLegends } from './EnhancedPathOfLegends';
 import { LegendsLab } from './LegendsLab';
 import { Challenges } from './Challenges';
 import { WildcardSystem } from './WildcardSystem';
@@ -30,7 +31,8 @@ import { AchievementNotification } from './AchievementNotification';
 import { LoreCodex } from './LoreCodex';
 import { ChampionMasterySystem } from './ChampionMasterySystem';
 import { CinematicBattleSystem } from './CinematicBattleSystem';
-// Marketplace removed - replaced with ethical wildcard system
+import { DatabaseMarketplace } from './DatabaseMarketplace';
+import { GemStore } from './GemStore';
 
 import { NetworkStatusIndicator } from './NetworkStatusIndicator';
 import { OnboardingFlow } from './OnboardingFlow';
@@ -53,6 +55,8 @@ type GamePage =
   | 'events'
   | 'settings'
   | 'gem-purchase'
+  | 'gem-store'
+  | 'marketplace'
   | 'auth'
   | 'achievements'
   | 'leaderboards'
@@ -163,6 +167,34 @@ export function Game() {
             onPurchaseGems={gameState.purchaseGems}
             onClose={() => setCurrentPage('menu')}
             userId={user?.uid}
+          />
+        );
+
+      case 'gem-store':
+        return (
+          <GemStore
+            onBack={() => setCurrentPage('menu')}
+            userProfile={user}
+            onGemsUpdated={() => {
+              // Refresh user profile or gems balance
+              console.log('Gems updated');
+            }}
+          />
+        );
+
+      case 'marketplace':
+        return (
+          <DatabaseMarketplace
+            onBack={() => setCurrentPage('menu')}
+            userProfile={user}
+            collection={gameState.collection}
+            gameStats={gameState.gameStats}
+            onTradeCard={(cardId, price, currency) => {
+              console.log('Trading card:', cardId, price, currency);
+            }}
+            onBuyCard={(card, price) => {
+              console.log('Buying card:', card, price);
+            }}
           />
         );
 
@@ -352,7 +384,24 @@ export function Game() {
         );
       
       case 'path-of-legends':
-        return <PathOfLegends onBack={() => setCurrentPage('menu')} />;
+        return (
+          <EnhancedPathOfLegends
+            onBack={() => setCurrentPage('menu')}
+            playerDeck={gameState.currentDeck.cards}
+            userProfile={user}
+            onStartBattle={(playerDeck, enemyDeck) => {
+              setBattleData({ playerDeck: Array.isArray(playerDeck) ? playerDeck : [], enemyDeck });
+              setCurrentPage('battle');
+            }}
+            onRewardClaimed={(reward) => {
+              if (reward.type === 'gems') {
+                gameState.addGems(reward.amount);
+              } else if (reward.type === 'coins') {
+                gameState.addCoins(reward.amount);
+              }
+            }}
+          />
+        );
       
       case 'legends-lab':
         return <LegendsLab 
@@ -424,8 +473,8 @@ export function Game() {
       default:
         return <MainMenu 
           onNavigate={(page) => {
-            if (page === 'gem-purchase') {
-              setCurrentPage('gem-purchase');
+            if (page === 'gem-purchase' || page === 'gem-store' || page === 'marketplace') {
+              setCurrentPage(page as GamePage);
             } else {
               setCurrentPage(page as GamePage);
             }
