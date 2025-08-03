@@ -155,15 +155,26 @@ export const OptimizedBackground: React.FC<OptimizedBackgroundProps> = ({
     initializeParticles();
   }, [initializeParticles]);
 
-  // Background gradient memoization
+  // Enhanced background gradient memoization with LoR-inspired premium colors
   const backgroundGradient = useMemo(() => {
     const gradients = {
-      menu: 'from-slate-900 via-purple-900 to-slate-900',
-      battle: 'from-red-950 via-orange-950 to-red-950',
-      collection: 'from-emerald-950 via-green-950 to-emerald-950',
-      mystical: 'from-violet-950 via-purple-950 to-indigo-950'
+      menu: 'from-slate-950 via-blue-950 via-purple-950 to-slate-950',
+      battle: 'from-red-950 via-orange-950 via-yellow-950 to-red-950',
+      collection: 'from-emerald-950 via-teal-950 via-cyan-950 to-emerald-950',
+      mystical: 'from-violet-950 via-purple-950 via-indigo-950 to-violet-950'
     };
     return gradients[variant];
+  }, [variant]);
+
+  // Enhanced overlay gradient for mystical fog effect
+  const overlayGradient = useMemo(() => {
+    const overlays = {
+      menu: 'radial-gradient(ellipse at 30% 20%, rgba(59, 130, 246, 0.15) 0%, transparent 50%), radial-gradient(ellipse at 70% 80%, rgba(139, 92, 246, 0.12) 0%, transparent 50%)',
+      battle: 'radial-gradient(ellipse at 40% 30%, rgba(239, 68, 68, 0.15) 0%, transparent 50%), radial-gradient(ellipse at 60% 70%, rgba(249, 115, 22, 0.12) 0%, transparent 50%)',
+      collection: 'radial-gradient(ellipse at 20% 40%, rgba(16, 185, 129, 0.15) 0%, transparent 50%), radial-gradient(ellipse at 80% 60%, rgba(5, 150, 105, 0.12) 0%, transparent 50%)',
+      mystical: 'radial-gradient(ellipse at 35% 25%, rgba(168, 85, 247, 0.18) 0%, transparent 50%), radial-gradient(ellipse at 65% 75%, rgba(192, 132, 252, 0.15) 0%, transparent 50%)'
+    };
+    return overlays[variant];
   }, [variant]);
 
   useEffect(() => {
@@ -189,25 +200,52 @@ export const OptimizedBackground: React.FC<OptimizedBackgroundProps> = ({
 
   return (
     <div className={`relative min-h-screen bg-gradient-to-br ${backgroundGradient}`}>
-      {/* Optimized Background Canvas */}
+      {/* Optimized Background Canvas for magical particles */}
       <canvas
         ref={canvasRef}
         className="fixed inset-0 w-full h-full pointer-events-none z-0"
         style={{ background: 'transparent' }}
       />
 
-      {/* Simplified Overlay - No heavy animations */}
-      <div className="fixed inset-0 pointer-events-none z-1 opacity-10">
+      {/* Enhanced Mystical Fog Overlay with layered effects */}
+      <div className="fixed inset-0 pointer-events-none z-1">
         <div
-          className="absolute inset-0"
+          className="absolute inset-0 opacity-40"
           style={{
-            background: `radial-gradient(circle at 30% 70%, ${
-              variant === 'menu' ? '#3b82f650' : 
-              variant === 'battle' ? '#ef444450' : 
-              variant === 'collection' ? '#10b98150' : '#a855f750'
-            } 0%, transparent 60%)`
+            background: overlayGradient
           }}
         />
+        {/* Animated fog layer */}
+        <div 
+          className="absolute inset-0 opacity-20 animate-pulse"
+          style={{
+            background: `conic-gradient(from 0deg at 50% 50%, 
+              transparent 0deg, 
+              ${variant === 'menu' ? 'rgba(59, 130, 246, 0.1)' : 
+                variant === 'battle' ? 'rgba(239, 68, 68, 0.1)' : 
+                variant === 'collection' ? 'rgba(16, 185, 129, 0.1)' : 'rgba(168, 85, 247, 0.1)'} 90deg, 
+              transparent 180deg, 
+              ${variant === 'menu' ? 'rgba(139, 92, 246, 0.08)' : 
+                variant === 'battle' ? 'rgba(249, 115, 22, 0.08)' : 
+                variant === 'collection' ? 'rgba(5, 150, 105, 0.08)' : 'rgba(192, 132, 252, 0.08)'} 270deg, 
+              transparent 360deg)`
+          }}
+        />
+        {/* Subtle shimmer effect for premium feel */}
+        <div className="absolute inset-0 opacity-5 animate-shimmer"
+          style={{
+            background: 'linear-gradient(45deg, transparent 30%, rgba(255, 215, 0, 0.3) 50%, transparent 70%)',
+            backgroundSize: '200% 200%'
+          }}
+        />
+      </div>
+
+      {/* Premium glow effects for depth */}
+      <div className="fixed inset-0 pointer-events-none z-2">
+        <div className="absolute top-0 left-0 w-full h-1/3 bg-gradient-to-b from-blue-900/10 to-transparent opacity-60" />
+        <div className="absolute bottom-0 left-0 w-full h-1/3 bg-gradient-to-t from-purple-900/10 to-transparent opacity-60" />
+        <div className="absolute top-0 left-0 w-1/3 h-full bg-gradient-to-r from-indigo-900/5 to-transparent opacity-40" />
+        <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-violet-900/5 to-transparent opacity-40" />
       </div>
 
       {/* Content */}

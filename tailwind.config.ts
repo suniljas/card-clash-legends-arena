@@ -99,6 +99,8 @@ export default {
       fontFamily: {
         'premium': ['Inter', 'system-ui', 'sans-serif'],
         'display': ['Playfair Display', 'serif'],
+        'fantasy': ['Cinzel', 'serif'],
+        'elegant': ['Cinzel', 'Playfair Display', 'serif'],
       },
       borderRadius: {
         lg: "var(--radius)",

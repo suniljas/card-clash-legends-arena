@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700;900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -40,6 +42,8 @@
     
     /* Premium Shadows */
     --shadow-elegant: 0 4px 20px -4px hsl(240 73% 12% / 0.15);
+    --gradient-gold: linear-gradient(135deg, #ffd700 0%, #ffed4e 25%, #fff200 50%, #ffed4e 75%, #ffd700 100%);
+    --gradient-legendary: linear-gradient(135deg, #ff6b35 0%, #f7931e 25%, #ffd700 50%, #f7931e 75%, #ff6b35 100%);
     --shadow-premium: 0 10px 40px -8px hsl(45 93% 58% / 0.3);
     --shadow-mystical: 0 8px 32px -8px hsl(240 73% 12% / 0.25);
     --shadow-glow: 0 0 20px hsl(45 93% 58% / 0.4);
@@ -89,6 +93,35 @@
 
 /* Enhanced Card Animations and Effects */
 @layer components {
+  /* Premium Text Effects */
+  .text-gradient {
+    @apply bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent;
+  }
+  
+  .text-gradient-gold {
+    background: var(--gradient-gold);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+  }
+  
+  .text-gradient-legendary {
+    background: var(--gradient-legendary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 0 30px rgba(255, 107, 53, 0.5);
+  }
+  
+  .text-shadow {
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  }
+  
+  .text-shadow-glow {
+    text-shadow: 0 0 20px currentColor;
+  }
+
   .card-premium-enhanced {
     @apply relative overflow-hidden;
     background: linear-gradient(135deg, #1e293b 0%, #334155 50%, #0f172a 100%);
@@ -109,6 +142,23 @@
 
   .card-premium-enhanced:hover::before {
     transform: translateX(100%);
+  }
+
+  /* Enhanced backdrop blur for premium frosted glass effect */
+  .backdrop-blur-custom {
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+  }
+  
+  /* Premium card hover effect */
+  .card-hover-lift {
+    @apply transition-all duration-300 ease-out;
+    transform: translateY(0) scale(1);
+  }
+  
+  .card-hover-lift:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 40px -8px rgba(0, 0, 0, 0.3);
   }
 
   /* Divine Glow Effect for Ultra Legendary Cards */
