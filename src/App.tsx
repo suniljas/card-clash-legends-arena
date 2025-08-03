@@ -63,14 +63,9 @@ function App() {
   // Memoize the main app content
   const appContent = useMemo(() => (
     <div className="App">
-      <Router>
-        <ErrorBoundary>
-          <Routes>
-            <Route path="/" element={<Game />} />
-            <Route path="*" element={<Game />} />
-          </Routes>
-        </ErrorBoundary>
-      </Router>
+      <ErrorBoundary>
+        <Game />
+      </ErrorBoundary>
       <Toaster />
     </div>
   ), []);
