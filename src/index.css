@@ -89,6 +89,62 @@
     --shadow-mystical: 0 8px 32px -8px hsl(0 0% 0% / 0.5);
     --shadow-glow: 0 0 20px hsl(45 93% 58% / 0.3);
   }
+
+  /* Game-Specific Light Theme */
+  .game-light {
+    /* Enhanced game-focused light theme with richer colors */
+    --background: 35 25% 97%;
+    --foreground: 240 15% 15%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 15% 15%;
+    --primary: 240 73% 12%;
+    --primary-foreground: 45 100% 95%;
+    --secondary: 45 93% 58%;
+    --secondary-foreground: 240 15% 15%;
+    --accent: 280 65% 60%;
+    --accent-foreground: 0 0% 100%;
+    
+    /* Game-specific color tokens */
+    --game-gold: 45 93% 58%;
+    --game-silver: 0 0% 75%;
+    --game-bronze: 25 85% 55%;
+    --game-energy: 200 80% 55%;
+    --game-health: 0 84% 60%;
+    --game-mana: 240 73% 65%;
+    
+    /* Enhanced gradients for game theme */
+    --gradient-game-primary: linear-gradient(135deg, hsl(240, 73%, 12%) 0%, hsl(280, 65%, 25%) 100%);
+    --gradient-game-secondary: linear-gradient(135deg, hsl(45, 93%, 58%) 0%, hsl(35, 85%, 65%) 100%);
+    --gradient-game-legendary: linear-gradient(135deg, hsl(25, 90%, 55%) 0%, hsl(45, 93%, 58%) 50%, hsl(35, 85%, 65%) 100%);
+  }
+
+  /* Game-Specific Dark Theme */
+  .game-dark {
+    /* Enhanced game-focused dark theme with richer colors */
+    --background: 240 15% 4%;
+    --foreground: 45 100% 95%;
+    --card: 240 12% 6%;
+    --card-foreground: 45 100% 95%;
+    --primary: 45 93% 58%;
+    --primary-foreground: 240 15% 6%;
+    --secondary: 240 73% 65%;
+    --secondary-foreground: 45 100% 95%;
+    --accent: 280 65% 60%;
+    --accent-foreground: 0 0% 100%;
+    
+    /* Game-specific color tokens for dark mode */
+    --game-gold: 45 93% 68%;
+    --game-silver: 0 0% 85%;
+    --game-bronze: 25 85% 65%;
+    --game-energy: 200 80% 65%;
+    --game-health: 0 84% 70%;
+    --game-mana: 240 73% 75%;
+    
+    /* Enhanced gradients for dark game theme */
+    --gradient-game-primary: linear-gradient(135deg, hsl(45, 93%, 58%) 0%, hsl(280, 65%, 35%) 100%);
+    --gradient-game-secondary: linear-gradient(135deg, hsl(240, 73%, 65%) 0%, hsl(280, 65%, 60%) 100%);
+    --gradient-game-legendary: linear-gradient(135deg, hsl(25, 90%, 65%) 0%, hsl(45, 93%, 68%) 50%, hsl(35, 85%, 75%) 100%);
+  }
 }
 
 /* Enhanced Card Animations and Effects */
@@ -122,6 +178,81 @@
     text-shadow: 0 0 20px currentColor;
   }
 
+  /* Accessibility Enhancements */
+  .reduce-motion * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .high-contrast {
+    filter: contrast(150%);
+  }
+
+  .large-text {
+    font-size: 1.25em !important;
+    line-height: 1.5 !important;
+  }
+
+  /* Color blind support filters */
+  .colorblind-protanopia {
+    filter: url('#protanopia-filter');
+  }
+
+  .colorblind-deuteranopia {
+    filter: url('#deuteranopia-filter');
+  }
+
+  .colorblind-tritanopia {
+    filter: url('#tritanopia-filter');
+  }
+
+  /* Enhanced Interactive States */
+  .interactive-element {
+    @apply transition-all duration-200 cursor-pointer;
+    transform-origin: center;
+  }
+
+  .interactive-element:hover {
+    @apply scale-105 -translate-y-1;
+    filter: brightness(1.1);
+  }
+
+  .interactive-element:active {
+    @apply scale-95 translate-y-0;
+    filter: brightness(0.9);
+  }
+
+  .interactive-element:focus-visible {
+    @apply ring-2 ring-primary ring-offset-2 outline-none;
+  }
+
+  /* Button Enhancement Classes */
+  .btn-haptic {
+    @apply active:scale-95 transition-transform duration-100;
+  }
+
+  .btn-ripple {
+    @apply relative overflow-hidden;
+  }
+
+  .btn-shine::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+  }
+
+  .btn-shine:hover::after {
+    left: 100%;
+  }
+
+  /* Card Enhancement Classes */
   .card-premium-enhanced {
     @apply relative overflow-hidden;
     background: linear-gradient(135deg, #1e293b 0%, #334155 50%, #0f172a 100%);
