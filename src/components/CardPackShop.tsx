@@ -98,9 +98,9 @@ export function CardPackShop({
 
   if (showCards && revealedCards.length > 0) {
     return (
-      <div className="container mx-auto px-4 py-6 bg-gradient-to-br from-slate-900 via-purple-900/20 to-slate-900 min-h-screen">
+      <div className="container mx-auto px-4 py-6">
         <div className="text-center mb-8">
-          <h2 className="gradient-text text-3xl font-bold mb-2 font-fantasy">🎉 Pack Opened! 🎉</h2>
+          <h2 className="text-3xl font-bold mb-2">🎉 Pack Opened! 🎉</h2>
           <p className="text-muted-foreground">You received these heroes:</p>
         </div>
 
@@ -117,7 +117,7 @@ export function CardPackShop({
         </div>
 
         <div className="text-center">
-          <Button onClick={handleContinue} size="lg" className="btn-modern-primary">
+          <Button onClick={handleContinue} size="lg">
             Continue
           </Button>
         </div>
@@ -127,10 +127,10 @@ export function CardPackShop({
 
   if (openingPack) {
     return (
-      <div className="container mx-auto px-4 py-6 bg-gradient-to-br from-slate-900 via-purple-900/20 to-slate-900 min-h-screen flex items-center justify-center">
+      <div className="container mx-auto px-4 py-6 flex items-center justify-center min-h-[60vh]">
         <div className="text-center">
           <div className="text-6xl mb-4 animate-bounce">📦</div>
-          <h2 className="gradient-text text-2xl font-bold mb-2 font-fantasy">Opening Pack...</h2>
+          <h2 className="text-2xl font-bold mb-2">Opening Pack...</h2>
           <p className="text-muted-foreground">Revealing your new heroes!</p>
         </div>
       </div>
@@ -138,15 +138,15 @@ export function CardPackShop({
   }
 
   return (
-    <div className="container mx-auto px-4 py-6 bg-gradient-to-br from-slate-900 via-purple-900/20 to-slate-900 min-h-screen">
+    <div className="container mx-auto px-4 py-6">
       {/* Header */}
       <div className="flex items-center gap-4 mb-6">
-        <Button variant="ghost" onClick={onBack} className="btn-modern-secondary">
+        <Button variant="ghost" onClick={onBack}>
           <ArrowLeft className="w-4 h-4 mr-2" />
           Back
         </Button>
         <div>
-          <h1 className="gradient-text text-2xl font-bold font-fantasy">Card Pack Shop</h1>
+          <h1 className="text-2xl font-bold">Card Pack Shop</h1>
           <p className="text-muted-foreground">
             Expand your collection with new heroes
           </p>
@@ -154,7 +154,7 @@ export function CardPackShop({
       </div>
 
       {/* Currency Display */}
-      <Card className="modern-card p-4 mb-6">
+      <Card className="p-4 mb-6">
         <div className="flex gap-6">
           <div className="flex items-center gap-2">
             <Coins className="w-5 h-5 text-accent" />
@@ -222,9 +222,10 @@ export function CardPackShop({
 
                 {/* Buy Button */}
                 <Button
-                  className={canAfford ? "btn-modern-primary w-full" : "btn-modern-secondary w-full"}
+                  className="w-full"
                   disabled={!canAfford}
                   onClick={() => handleOpenPack(pack)}
+                  variant={canAfford ? "default" : "outline"}
                 >
                   {canAfford ? "Open Pack" : "Cannot Afford"}
                 </Button>
@@ -235,7 +236,7 @@ export function CardPackShop({
       </div>
 
       {/* Pack Opening Tips */}
-      <Card className="modern-card mt-8 p-4 max-w-2xl mx-auto">
+      <Card className="mt-8 p-4 max-w-2xl mx-auto">
         <h4 className="font-semibold mb-2">💡 Pack Opening Tips</h4>
         <ul className="text-sm text-muted-foreground space-y-1">
           <li>• All packs now contain 2 cards for better value</li>

@@ -295,7 +295,7 @@ export function Collection({ collection, onBack, onCardSelect, userDecks = [], o
 
   return (
     <motion.div 
-      className="container mx-auto px-6 py-8 min-h-screen bg-gradient-to-br from-slate-900 via-purple-900/20 to-slate-900"
+      className="container mx-auto px-6 py-8 min-h-screen"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
@@ -310,14 +310,14 @@ export function Collection({ collection, onBack, onCardSelect, userDecks = [], o
         <Button 
           variant="ghost" 
           onClick={onBack}
-          className="btn-modern-secondary group"
+          className="bg-gradient-to-r from-slate-700/50 to-slate-600/50 hover:from-slate-600/60 hover:to-slate-500/60 border border-slate-600/50 hover:border-slate-500/60 transition-all duration-300 group"
         >
           <ArrowLeft className="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform" />
           Back
         </Button>
         
         <div className="flex-1">
-          <h1 className="gradient-text text-4xl font-bold font-fantasy">
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-amber-200 via-amber-300 to-amber-200 bg-clip-text text-transparent font-fantasy">
             Hero Collection
           </h1>
           <div className="flex items-center gap-4 mt-2">
@@ -337,7 +337,7 @@ export function Collection({ collection, onBack, onCardSelect, userDecks = [], o
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.6, delay: 0.3 }}
         >
-          <Card className="modern-card p-4">
+          <Card className="p-4 bg-gradient-to-br from-slate-900/80 via-slate-800/60 to-slate-900/80 backdrop-blur-md border border-slate-700/50">
             <ProgressBar 
               current={collectedCards} 
               max={nextMilestone} 
@@ -359,9 +359,9 @@ export function Collection({ collection, onBack, onCardSelect, userDecks = [], o
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.2 }}
       >
-        <Card className="modern-card p-6 mb-8">
+        <Card className="p-6 mb-8 bg-gradient-to-br from-slate-900/80 via-slate-800/60 to-slate-900/80 backdrop-blur-md border border-slate-700/50 shadow-xl">
           <div className="flex items-center justify-between mb-6">
-            <h3 className="gradient-text font-bold text-xl">
+            <h3 className="font-bold text-xl bg-gradient-to-r from-slate-200 to-slate-300 bg-clip-text text-transparent">
               Rarity Collection Progress
             </h3>
             <Badge className="bg-gradient-to-r from-purple-500/20 to-purple-400/20 text-purple-300 border-purple-400/30">
@@ -459,7 +459,7 @@ export function Collection({ collection, onBack, onCardSelect, userDecks = [], o
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.3 }}
       >
-        <Card className="modern-card p-6">
+        <Card className="p-6 bg-gradient-to-br from-slate-900/80 via-slate-800/60 to-slate-900/80 backdrop-blur-md border border-slate-700/50">
           {/* Search Bar with Suggestions */}
           <div className="relative mb-6">
             <div className="relative">

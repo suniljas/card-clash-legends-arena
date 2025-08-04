@@ -6,127 +6,93 @@
 
 @layer base {
   :root {
-    /* Premium Light Theme - Modern Card Game Inspired */
-    --background: 210 40% 8%;
-    --foreground: 210 40% 96%;
-    --card: 210 35% 12%;
-    --card-foreground: 210 40% 96%;
-    --popover: 210 35% 12%;
-    --popover-foreground: 210 40% 96%;
-    --primary: 35 100% 50%;
-    --primary-foreground: 210 40% 8%;
-    --secondary: 210 30% 18%;
-    --secondary-foreground: 210 40% 96%;
-    --muted: 210 30% 16%;
-    --muted-foreground: 210 30% 65%;
-    --accent: 280 100% 70%;
-    --accent-foreground: 210 40% 8%;
+    /* Premium Light Theme - Legends of Runeterra Inspired */
+    --background: 28 20% 97%;
+    --foreground: 240 15% 15%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 15% 15%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 15% 15%;
+    --primary: 240 73% 12%;
+    --primary-foreground: 45 100% 95%;
+    --secondary: 240 6% 90%;
+    --secondary-foreground: 240 15% 15%;
+    --muted: 240 5% 94%;
+    --muted-foreground: 240 5% 45%;
+    --accent: 45 93% 58%;
+    --accent-foreground: 240 15% 15%;
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
-    --border: 210 30% 20%;
-    --input: 210 30% 18%;
-    --ring: 35 100% 50%;
-    --chart-1: 35 100% 50%;
-    --chart-2: 280 100% 70%;
-    --chart-3: 200 100% 60%;
-    --chart-4: 120 100% 40%;
-    --chart-5: 340 100% 65%;
-    --radius: 0.875rem;
+    --border: 240 6% 88%;
+    --input: 240 6% 88%;
+    --ring: 45 93% 58%;
+    --chart-1: 45 93% 58%;
+    --chart-2: 240 73% 65%;
+    --chart-3: 280 65% 60%;
+    --chart-4: 200 80% 55%;
+    --chart-5: 340 75% 65%;
+    --radius: 0.75rem;
     
-    /* Premium Gradients - Modern Dark Theme */
-    --gradient-primary: linear-gradient(135deg, hsl(35, 100%, 50%) 0%, hsl(45, 100%, 60%) 100%);
-    --gradient-secondary: linear-gradient(135deg, hsl(280, 100%, 70%) 0%, hsl(260, 100%, 75%) 100%);
-    --gradient-card: linear-gradient(145deg, hsl(210, 35%, 12%) 0%, hsl(210, 30%, 16%) 100%);
-    --gradient-premium: linear-gradient(135deg, hsl(35, 100%, 50%) 0%, hsl(45, 100%, 60%) 50%, hsl(280, 100%, 70%) 100%);
-    --gradient-mystical: linear-gradient(135deg, hsl(210, 40%, 8%) 0%, hsl(280, 60%, 15%) 50%, hsl(210, 35%, 12%) 100%);
-    --gradient-hero: linear-gradient(135deg, hsl(200, 100%, 60%) 0%, hsl(280, 100%, 70%) 50%, hsl(35, 100%, 50%) 100%);
+    /* Premium Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(240, 73%, 12%) 0%, hsl(240, 65%, 20%) 100%);
+    --gradient-secondary: linear-gradient(135deg, hsl(45, 93%, 58%) 0%, hsl(50, 85%, 65%) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(0, 0%, 100%) 0%, hsl(240, 5%, 98%) 100%);
+    --gradient-premium: linear-gradient(135deg, hsl(45, 93%, 58%) 0%, hsl(35, 85%, 65%) 50%, hsl(25, 90%, 70%) 100%);
+    --gradient-mystical: linear-gradient(135deg, hsl(240, 73%, 12%) 0%, hsl(280, 65%, 25%) 50%, hsl(240, 73%, 35%) 100%);
     
-    /* Premium Shadows - Enhanced */
-    --shadow-elegant: 0 8px 32px -8px hsl(0 0% 0% / 0.6);
+    /* Premium Shadows */
+    --shadow-elegant: 0 4px 20px -4px hsl(240 73% 12% / 0.15);
     --gradient-gold: linear-gradient(135deg, #ffd700 0%, #ffed4e 25%, #fff200 50%, #ffed4e 75%, #ffd700 100%);
     --gradient-legendary: linear-gradient(135deg, #ff6b35 0%, #f7931e 25%, #ffd700 50%, #f7931e 75%, #ff6b35 100%);
-    --shadow-premium: 0 12px 48px -8px hsl(35 100% 50% / 0.4);
-    --shadow-mystical: 0 16px 64px -8px hsl(280 100% 70% / 0.3);
-    --shadow-glow: 0 0 32px hsl(35 100% 50% / 0.6);
-    --shadow-card: 0 4px 16px -4px hsl(0 0% 0% / 0.4);
-    --shadow-card-hover: 0 8px 32px -8px hsl(0 0% 0% / 0.6), 0 0 20px hsl(35 100% 50% / 0.2);
+    --shadow-premium: 0 10px 40px -8px hsl(45 93% 58% / 0.3);
+    --shadow-mystical: 0 8px 32px -8px hsl(240 73% 12% / 0.25);
+    --shadow-glow: 0 0 20px hsl(45 93% 58% / 0.4);
   }
 
   .dark {
-    /* Premium Dark Theme - Enhanced Modern Design */
-    --background: 210 40% 6%;
-    --foreground: 210 40% 98%;
-    --card: 210 35% 10%;
-    --card-foreground: 210 40% 98%;
-    --popover: 210 35% 10%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 35 100% 55%;
-    --primary-foreground: 210 40% 6%;
-    --secondary: 210 30% 15%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 210 30% 12%;
-    --muted-foreground: 210 30% 70%;
-    --accent: 280 100% 75%;
-    --accent-foreground: 210 40% 6%;
+    /* Premium Dark Theme - Legends of Runeterra Inspired */
+    --background: 240 15% 6%;
+    --foreground: 45 100% 95%;
+    --card: 240 12% 8%;
+    --card-foreground: 45 100% 95%;
+    --popover: 240 12% 8%;
+    --popover-foreground: 45 100% 95%;
+    --primary: 45 93% 58%;
+    --primary-foreground: 240 15% 6%;
+    --secondary: 240 8% 15%;
+    --secondary-foreground: 45 100% 95%;
+    --muted: 240 8% 12%;
+    --muted-foreground: 240 5% 65%;
+    --accent: 240 73% 65%;
+    --accent-foreground: 45 100% 95%;
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
-    --border: 210 30% 18%;
-    --input: 210 30% 15%;
-    --ring: 35 100% 55%;
-    --chart-1: 35 100% 55%;
-    --chart-2: 280 100% 75%;
-    --chart-3: 200 100% 65%;
-    --chart-4: 120 100% 45%;
-    --chart-5: 340 100% 70%;
+    --border: 240 8% 18%;
+    --input: 240 8% 18%;
+    --ring: 45 93% 58%;
+    --chart-1: 45 93% 58%;
+    --chart-2: 240 73% 65%;
+    --chart-3: 280 65% 60%;
+    --chart-4: 200 80% 55%;
+    --chart-5: 340 75% 65%;
     
     /* Premium Dark Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(35, 100%, 55%) 0%, hsl(45, 100%, 65%) 100%);
-    --gradient-secondary: linear-gradient(135deg, hsl(280, 100%, 75%) 0%, hsl(260, 100%, 80%) 100%);
-    --gradient-card: linear-gradient(145deg, hsl(210, 35%, 10%) 0%, hsl(210, 30%, 14%) 100%);
-    --gradient-premium: linear-gradient(135deg, hsl(35, 100%, 55%) 0%, hsl(45, 100%, 65%) 50%, hsl(280, 100%, 75%) 100%);
-    --gradient-mystical: linear-gradient(135deg, hsl(210, 40%, 6%) 0%, hsl(280, 60%, 12%) 50%, hsl(210, 35%, 10%) 100%);
-    --gradient-hero: linear-gradient(135deg, hsl(200, 100%, 65%) 0%, hsl(280, 100%, 75%) 50%, hsl(35, 100%, 55%) 100%);
+    --gradient-primary: linear-gradient(135deg, hsl(45, 93%, 58%) 0%, hsl(50, 85%, 65%) 100%);
+    --gradient-secondary: linear-gradient(135deg, hsl(240, 73%, 65%) 0%, hsl(280, 65%, 60%) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(240, 12%, 8%) 0%, hsl(240, 10%, 12%) 100%);
+    --gradient-premium: linear-gradient(135deg, hsl(45, 93%, 58%) 0%, hsl(35, 85%, 65%) 50%, hsl(25, 90%, 70%) 100%);
+    --gradient-mystical: linear-gradient(135deg, hsl(240, 15%, 6%) 0%, hsl(280, 65%, 15%) 50%, hsl(240, 73%, 25%) 100%);
     
     /* Premium Dark Shadows */
-    --shadow-elegant: 0 8px 32px -8px hsl(0 0% 0% / 0.8);
-    --shadow-premium: 0 12px 48px -8px hsl(35 100% 55% / 0.3);
-    --shadow-mystical: 0 16px 64px -8px hsl(280 100% 75% / 0.25);
-    --shadow-glow: 0 0 32px hsl(35 100% 55% / 0.5);
-    --shadow-card: 0 4px 16px -4px hsl(0 0% 0% / 0.5);
-    --shadow-card-hover: 0 8px 32px -8px hsl(0 0% 0% / 0.7), 0 0 20px hsl(35 100% 55% / 0.3);
+    --shadow-elegant: 0 4px 20px -4px hsl(0 0% 0% / 0.4);
+    --shadow-premium: 0 10px 40px -8px hsl(45 93% 58% / 0.25);
+    --shadow-mystical: 0 8px 32px -8px hsl(0 0% 0% / 0.5);
+    --shadow-glow: 0 0 20px hsl(45 93% 58% / 0.3);
   }
 }
 
 /* Enhanced Card Animations and Effects */
 @layer components {
-  /* Modern Card Design */
-  .modern-card {
-    @apply bg-card border border-border rounded-xl p-6 shadow-[var(--shadow-card)];
-    @apply transition-all duration-300 ease-out;
-    @apply backdrop-blur-sm;
-    background: linear-gradient(145deg, hsl(var(--card)) 0%, hsl(210, 30%, 14%) 100%);
-  }
-  
-  .modern-card:hover {
-    @apply shadow-[var(--shadow-card-hover)] scale-[1.02] -translate-y-1;
-    @apply border-primary/30;
-  }
-  
-  .modern-card-interactive {
-    @apply modern-card cursor-pointer;
-    @apply hover:bg-gradient-to-br hover:from-card hover:to-secondary/50;
-  }
-  
-  .premium-card {
-    @apply modern-card;
-    background: linear-gradient(145deg, hsl(var(--card)) 0%, hsl(210, 30%, 16%) 50%, hsl(280, 20%, 12%) 100%);
-    box-shadow: var(--shadow-card), 0 0 20px hsl(var(--primary) / 0.1);
-  }
-  
-  .premium-card:hover {
-    box-shadow: var(--shadow-premium), 0 0 32px hsl(var(--primary) / 0.2);
-  }
-  
   /* Premium Text Effects */
   .text-gradient {
     @apply bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent;
@@ -140,14 +106,6 @@
     text-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
   }
   
-  .text-gradient-hero {
-    background: var(--gradient-hero);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    text-shadow: 0 0 20px hsl(var(--primary) / 0.4);
-  }
-  
   .text-gradient-legendary {
     background: var(--gradient-legendary);
     -webkit-background-clip: text;
@@ -157,7 +115,7 @@
   }
   
   .text-shadow {
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
   }
   
   .text-shadow-glow {
@@ -515,55 +473,31 @@
     background: linear-gradient(135deg, #64748b 0%, #475569 25%, #334155 50%, #1e293b 75%, #0f172a 100%);
   }
 
-  /* Modern Button Styles */
-  .btn-modern-primary {
-    @apply relative overflow-hidden;
-    @apply bg-gradient-to-r from-primary to-primary/80;
-    @apply text-primary-foreground font-semibold py-3 px-6 rounded-xl;
-    @apply transition-all duration-300 ease-out;
+  /* Enhanced Button Styles */
+  .btn-lor-primary {
+    @apply bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700;
+    @apply text-white font-bold py-3 px-6 rounded-lg;
+    @apply transition-all duration-300 ease-in-out;
     @apply shadow-lg hover:shadow-xl;
     @apply transform hover:scale-105 active:scale-95;
-    @apply border border-primary/30;
-    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(45, 100%, 45%) 100%);
-    box-shadow: 0 4px 16px -4px hsl(var(--primary) / 0.4);
+    @apply border border-blue-400/30;
+    @apply relative overflow-hidden;
+    @apply cursor-pointer;
   }
 
-  .btn-modern-primary::before {
+  .btn-lor-primary::before {
     content: '';
     position: absolute;
     top: 0;
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-    transition: left 0.5s ease;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
   }
 
-  .btn-modern-primary:hover::before {
+  .btn-lor-primary:hover::before {
     left: 100%;
-  }
-
-  .btn-modern-primary:hover {
-    box-shadow: 0 8px 32px -8px hsl(var(--primary) / 0.6);
-  }
-
-  .btn-modern-secondary {
-    @apply relative overflow-hidden;
-    @apply bg-secondary border border-border;
-    @apply text-secondary-foreground font-semibold py-3 px-6 rounded-xl;
-    @apply transition-all duration-300 ease-out;
-    @apply shadow-md hover:shadow-lg;
-    @apply transform hover:scale-105 active:scale-95;
-    @apply hover:bg-secondary/80 hover:border-primary/30;
-  }
-
-  .btn-modern-ghost {
-    @apply relative overflow-hidden;
-    @apply bg-transparent border border-border/50;
-    @apply text-foreground font-medium py-3 px-6 rounded-xl;
-    @apply transition-all duration-300 ease-out;
-    @apply hover:bg-card hover:border-primary/30;
-    @apply transform hover:scale-105 active:scale-95;
   }
 
   .btn-lor-secondary {
@@ -956,8 +890,7 @@
   }
 
   body {
-    @apply bg-background text-foreground min-h-screen font-medium;
-    background: linear-gradient(135deg, hsl(var(--background)) 0%, hsl(210, 35%, 4%) 100%);
+    @apply bg-gradient-mystical text-foreground min-h-screen font-premium;
     background-attachment: fixed;
   }
 
@@ -968,11 +901,11 @@
 
   /* Enhanced selection styles */
   ::selection {
-    @apply bg-primary text-primary-foreground;
+    @apply bg-blue-500 text-white;
   }
 
   ::-moz-selection {
-    @apply bg-primary text-primary-foreground;
+    @apply bg-blue-500 text-white;
   }
 }
 

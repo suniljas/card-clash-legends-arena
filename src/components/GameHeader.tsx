@@ -12,24 +12,18 @@ interface GameHeaderProps {
 
 export function GameHeader({ stats, isAuthenticated = false, isSyncing = false }: GameHeaderProps) {
   return (
-    <div className="w-full bg-card/90 backdrop-blur-md border-b border-border/50 shadow-lg relative">
-      {/* Ambient background glow */}
-      <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-accent/5 pointer-events-none" />
-      
-      <div className="container mx-auto px-4 py-4 relative z-10">
+    <div className="w-full bg-gradient-to-r from-primary/20 to-secondary/20 backdrop-blur-sm border-b border-border">
+      <div className="container mx-auto px-4 py-3">
         <div className="flex justify-between items-center">
           {/* Premium Game Logo */}
-          <div className="flex items-center gap-4">
-            <div className="relative">
-              <img 
-                src={premiumLogo} 
-                alt="Legends Card Clash Arena" 
-                className="h-14 w-auto object-contain filter drop-shadow-2xl"
-              />
-              <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-accent/20 rounded-lg blur-xl -z-10" />
-            </div>
+          <div className="flex items-center gap-3">
+            <img 
+              src={premiumLogo} 
+              alt="Legends Card Clash Arena" 
+              className="h-12 w-auto object-contain filter drop-shadow-lg"
+            />
             <div className="flex flex-col gap-1">
-              <p className="text-sm font-medium text-foreground/90">
+              <p className="text-sm text-muted-foreground">
                 Campaign Level {stats.campaignProgress}
               </p>
               <CloudSaveIndicator 
@@ -40,43 +34,35 @@ export function GameHeader({ stats, isAuthenticated = false, isSyncing = false }
             </div>
           </div>
 
-          {/* Enhanced Resources */}
-          <div className="flex gap-3 flex-wrap">
-            <div className="modern-card !p-3 !bg-gradient-to-r !from-accent/10 !to-accent/20 !border-accent/30">
-              <div className="flex items-center gap-2">
-                <Coins className="w-4 h-4 text-accent drop-shadow-sm" />
-                <span className="font-semibold text-accent text-sm tracking-wide">
-                  {stats.coins.toLocaleString()}
-                </span>
+          {/* Resources */}
+          <div className="flex gap-2 sm:gap-4 flex-wrap">
+            <Card className="px-2 sm:px-3 py-1 sm:py-2 bg-card/50 backdrop-blur-sm">
+              <div className="flex items-center gap-1 sm:gap-2">
+                <Coins className="w-3 h-3 sm:w-4 sm:h-4 text-accent" />
+                <span className="font-medium text-accent text-xs sm:text-sm">{stats.coins.toLocaleString()}</span>
               </div>
-            </div>
+            </Card>
 
-            <div className="modern-card !p-3 !bg-gradient-to-r !from-primary/10 !to-primary/20 !border-primary/30">
-              <div className="flex items-center gap-2">
-                <Gem className="w-4 h-4 text-primary drop-shadow-sm" />
-                <span className="font-semibold text-primary text-sm tracking-wide">
-                  {stats.gems}
-                </span>
+            <Card className="px-2 sm:px-3 py-1 sm:py-2 bg-card/50 backdrop-blur-sm">
+              <div className="flex items-center gap-1 sm:gap-2">
+                <Gem className="w-3 h-3 sm:w-4 sm:h-4 text-primary" />
+                <span className="font-medium text-primary text-xs sm:text-sm">{stats.gems}</span>
               </div>
-            </div>
+            </Card>
 
-            <div className="modern-card !p-3 !bg-gradient-to-r !from-green-500/10 !to-green-500/20 !border-green-500/30">
-              <div className="flex items-center gap-2">
-                <Trophy className="w-4 h-4 text-green-400 drop-shadow-sm" />
-                <span className="font-semibold text-green-400 text-sm tracking-wide">
-                  {stats.pvpWins}
-                </span>
+            <Card className="px-2 sm:px-3 py-1 sm:py-2 bg-card/50 backdrop-blur-sm">
+              <div className="flex items-center gap-1 sm:gap-2">
+                <Trophy className="w-3 h-3 sm:w-4 sm:h-4 text-secondary" />
+                <span className="font-medium text-secondary text-xs sm:text-sm">{stats.pvpWins}</span>
               </div>
-            </div>
+            </Card>
 
-            <div className="modern-card !p-3 !bg-gradient-to-r !from-blue-500/10 !to-blue-500/20 !border-blue-500/30">
-              <div className="flex items-center gap-2">
-                <Zap className="w-4 h-4 text-blue-400 drop-shadow-sm" />
-                <span className="font-semibold text-blue-400 text-sm tracking-wide">
-                  {stats.totalCards}
-                </span>
+            <Card className="px-2 sm:px-3 py-1 sm:py-2 bg-card/50 backdrop-blur-sm">
+              <div className="flex items-center gap-1 sm:gap-2">
+                <Zap className="w-3 h-3 sm:w-4 sm:h-4 text-foreground" />
+                <span className="font-medium text-xs sm:text-sm">{stats.totalCards}</span>
               </div>
-            </div>
+            </Card>
           </div>
         </div>
       </div>

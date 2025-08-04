@@ -144,13 +144,13 @@ export function PvPArena({ playerDeck, gameStats, onBack, onBattleComplete }: Pv
 
   if (battleResult) {
     return (
-      <div className="container mx-auto px-4 py-6 bg-gradient-to-br from-slate-900 via-purple-900/20 to-slate-900 min-h-screen">
+      <div className="container mx-auto px-4 py-6">
         <div className="max-w-2xl mx-auto text-center">
           <div className="text-6xl mb-4">
             {battleResult.victory ? '🏆' : '💀'}
           </div>
           
-          <h2 className="gradient-text text-3xl font-bold mb-2 font-fantasy">
+          <h2 className="text-3xl font-bold mb-2">
             {battleResult.victory ? 'Victory!' : 'Defeat'}
           </h2>
           
@@ -160,7 +160,7 @@ export function PvPArena({ playerDeck, gameStats, onBack, onBattleComplete }: Pv
               : `${currentOpponent?.name} was too strong this time.`}
           </p>
 
-          <Card className="modern-card p-6 mb-6">
+          <Card className="p-6 mb-6">
             <h3 className="font-semibold mb-4">Battle Rewards</h3>
             <div className="grid grid-cols-2 gap-4">
               <div className="flex items-center gap-2">
@@ -174,7 +174,7 @@ export function PvPArena({ playerDeck, gameStats, onBack, onBattleComplete }: Pv
             </div>
           </Card>
 
-          <Button onClick={() => setBattleResult(null)} className="btn-modern-primary">
+          <Button onClick={() => setBattleResult(null)}>
             Continue
           </Button>
         </div>
@@ -184,10 +184,10 @@ export function PvPArena({ playerDeck, gameStats, onBack, onBattleComplete }: Pv
 
   if (battling) {
     return (
-      <div className="container mx-auto px-4 py-6 bg-gradient-to-br from-slate-900 via-purple-900/20 to-slate-900 min-h-screen flex items-center justify-center">
+      <div className="container mx-auto px-4 py-6 flex items-center justify-center min-h-[60vh]">
         <div className="text-center">
           <div className="text-6xl mb-4 animate-bounce">⚔️</div>
-          <h2 className="gradient-text text-2xl font-bold mb-2 font-fantasy">PvP Battle!</h2>
+          <h2 className="text-2xl font-bold mb-2">PvP Battle!</h2>
           <p className="text-muted-foreground mb-4">
             Fighting against {currentOpponent?.name}
           </p>
@@ -209,7 +209,7 @@ export function PvPArena({ playerDeck, gameStats, onBack, onBattleComplete }: Pv
 
   if (searching) {
     return (
-      <div className="container mx-auto px-4 py-6 bg-gradient-to-br from-slate-900 via-purple-900/20 to-slate-900 min-h-screen flex items-center justify-center">
+      <div className="container mx-auto px-4 py-6 flex items-center justify-center min-h-[60vh]">
         <div className="text-center space-y-4">
           <EnhancedLoadingSpinner 
             size="xl"
@@ -236,7 +236,6 @@ export function PvPArena({ playerDeck, gameStats, onBack, onBattleComplete }: Pv
               setSearching(false);
               setMatchmakingProgress(0);
             }}
-            className="btn-modern-secondary"
           >
             Cancel Search
           </Button>
@@ -246,16 +245,16 @@ export function PvPArena({ playerDeck, gameStats, onBack, onBattleComplete }: Pv
   }
 
   return (
-    <div className="container mx-auto px-4 py-6 bg-gradient-to-br from-slate-900 via-purple-900/20 to-slate-900 min-h-screen">
+    <div className="container mx-auto px-4 py-6">
       {/* Header */}
       <div className="flex items-center gap-4 mb-6">
-        <Button variant="ghost" onClick={onBack} className="btn-modern-secondary">
+        <Button variant="ghost" onClick={onBack} className="touch-target">
           <ArrowLeft className="w-4 h-4 mr-2" />
           Back
         </Button>
         <div className="flex-1">
           <div className="flex items-center gap-3">
-            <h1 className="gradient-text text-mobile-2xl font-bold font-fantasy">PvP Arena</h1>
+            <h1 className="text-mobile-2xl font-bold">PvP Arena</h1>
             <NetworkStatusIndicator latency={latency} />
           </div>
           <p className="text-muted-foreground text-mobile-sm">
@@ -266,7 +265,7 @@ export function PvPArena({ playerDeck, gameStats, onBack, onBattleComplete }: Pv
 
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-        <Card className="modern-card p-4">
+        <Card className="p-4">
           <div className="flex items-center gap-3">
             <Trophy className="w-8 h-8 text-secondary" />
             <div>
@@ -276,7 +275,7 @@ export function PvPArena({ playerDeck, gameStats, onBack, onBattleComplete }: Pv
           </div>
         </Card>
         
-        <Card className="modern-card p-4">
+        <Card className="p-4">
           <div className="flex items-center gap-3">
             <Users className="w-8 h-8 text-destructive" />
             <div>
@@ -286,7 +285,7 @@ export function PvPArena({ playerDeck, gameStats, onBack, onBattleComplete }: Pv
           </div>
         </Card>
         
-        <Card className="modern-card p-4">
+        <Card className="p-4">
           <div className="flex items-center gap-3">
             <Zap className="w-8 h-8 text-primary" />
             <div>
@@ -302,7 +301,7 @@ export function PvPArena({ playerDeck, gameStats, onBack, onBattleComplete }: Pv
 
       {/* Battle Modes */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-        <Card className="modern-card p-6">
+        <Card className="p-6">
           <h3 className="text-xl font-bold mb-3">⚔️ Quick Match</h3>
           <p className="text-muted-foreground mb-4">
             Get matched with a player of similar skill level
@@ -318,7 +317,7 @@ export function PvPArena({ playerDeck, gameStats, onBack, onBattleComplete }: Pv
             </div>
           </div>
           <Button 
-            className="btn-modern-primary w-full" 
+            className="w-full" 
             onClick={handleFindMatch}
             disabled={playerDeck.cards.length === 0}
           >
@@ -327,7 +326,7 @@ export function PvPArena({ playerDeck, gameStats, onBack, onBattleComplete }: Pv
           </Button>
         </Card>
 
-        <Card className="modern-card p-6 opacity-50">
+        <Card className="p-6 opacity-50">
           <h3 className="text-xl font-bold mb-3">🏆 Ranked Battle</h3>
           <p className="text-muted-foreground mb-4">
             Climb the ladder in competitive ranked matches
@@ -342,7 +341,7 @@ export function PvPArena({ playerDeck, gameStats, onBack, onBattleComplete }: Pv
               <span>100 coins</span>
             </div>
           </div>
-          <Button className="btn-modern-secondary w-full" disabled>
+          <Button className="w-full" disabled>
             Coming Soon
           </Button>
         </Card>

@@ -295,9 +295,9 @@ export function AuthLogin({ onLogin, onClose }: AuthLoginProps) {
               transition={{ duration: 0.8, delay: 0.8 }}
             >
               <Button
-                variant="outline"
+                variant="premium"
                 size="lg"
-                className="w-full btn-modern-secondary group relative overflow-hidden"
+                className="w-full group relative overflow-hidden"
                 onClick={() => handleSocialLogin('google')}
                 disabled={loading}
               >
@@ -311,9 +311,9 @@ export function AuthLogin({ onLogin, onClose }: AuthLoginProps) {
               </Button>
 
               <Button
-                variant="outline"
+                variant="premium"
                 size="lg"
-                className="w-full btn-modern-secondary group relative overflow-hidden"
+                className="w-full group relative overflow-hidden"
                 onClick={() => handleSocialLogin('facebook')}
                 disabled={loading}
               >
@@ -321,6 +321,19 @@ export function AuthLogin({ onLogin, onClose }: AuthLoginProps) {
                   <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
                 </svg>
                 Continue with Facebook
+              </Button>
+
+              <Button
+                variant="premium"
+                size="lg"
+                className="w-full group relative overflow-hidden"
+                onClick={() => handleSocialLogin('apple')}
+                disabled={loading}
+              >
+                <svg className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12.017 0C8.396 0 8.013.024 6.624.096 5.237.168 4.322.404 3.51.763c-.875.394-1.621.923-2.36 1.662C.41 3.165-.12 3.911-.514 4.786-.873 5.598-1.109 6.513-1.181 7.9-.253 9.289-.229 9.672-.229 13.293s-.024 4.004.096 5.393c.072 1.387.308 2.302.667 3.114.394.875.923 1.621 1.662 2.36.739.739 1.485 1.268 2.36 1.662.812.359 1.727.595 3.114.667 1.389.072 1.772.096 5.393.096s4.004-.024 5.393-.096c1.387-.072 2.302-.308 3.114-.667.875-.394 1.621-.923 2.36-1.662.739-.739 1.268-1.485 1.662-2.36.359-.812.595-1.727.667-3.114.072-1.389.096-1.772.096-5.393s-.024-4.004-.096-5.393c-.072-1.387-.308-2.302-.667-3.114a6.578 6.578 0 0 0-1.662-2.36C18.981.923 18.235.394 17.36 0 16.548-.359 15.633-.595 14.246-.667 12.857-.739 12.474-.763 8.853-.763s-4.004.024-5.393.096zm-.717 1.442h.718c3.136 0 3.464.011 4.69.072 1.131.05 1.747.234 2.157.388.542.21.93.462 1.337.869.407.407.659.795.869 1.337.154.41.338 1.026.388 2.157.061 1.226.072 1.554.072 4.69s-.011 3.464-.072 4.69c-.05 1.131-.234 1.747-.388 2.157-.21.542-.462.93-.869 1.337-.407.407-.795.659-1.337.869-.41.154-1.026.338-2.157.388-1.226.061-1.554.072-4.69.072s-3.464-.011-4.69-.072c-1.131-.05-1.747-.234-2.157-.388a3.61 3.61 0 0 1-1.337-.869 3.61 3.61 0 0 1-.869-1.337c-.154-.41-.338-1.026-.388-2.157-.061-1.226-.072-1.554-.072-4.69s.011-3.464.072-4.69c.05-1.131.234-1.747.388-2.157.21-.542.462-.93.869-1.337a3.61 3.61 0 0 1 1.337-.869c.41-.154 1.026-.338 2.157-.388 1.074-.048 1.49-.06 4.69-.06l.045.03zm0 2.452a4.108 4.108 0 1 0 0 8.215 4.108 4.108 0 0 0 0-8.215zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334zm5.23-.247a.96.96 0 1 1-1.92 0 .96.96 0 0 1 1.92 0z"/>
+                </svg>
+                Continue with Apple
               </Button>
             </motion.div>
 
