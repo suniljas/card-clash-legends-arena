@@ -5,6 +5,8 @@ import { usePerformanceMonitor, usePerformanceOptimization } from '@/hooks/usePe
 import { useOptimizedGameStore, useMemoryManager } from '@/store/optimizedGameStore';
 import { Game } from '@/components/Game';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
+import { ThemeProvider } from '@/components/ui-design-system/utility/ThemeProvider';
+import { AudioProvider } from '@/components/ui-design-system/utility/AudioProvider';
 import './App.css';
 import './OptimizedApp.css';
 
@@ -62,12 +64,16 @@ function App() {
 
   // Memoize the main app content
   const appContent = useMemo(() => (
-    <div className="App">
-      <ErrorBoundary>
-        <Game />
-      </ErrorBoundary>
-      <Toaster />
-    </div>
+    <ThemeProvider defaultTheme="system" enableGameThemes={true} enableAccessibility={true}>
+      <AudioProvider enablePreloading={true}>
+        <div className="App">
+          <ErrorBoundary>
+            <Game />
+          </ErrorBoundary>
+          <Toaster />
+        </div>
+      </AudioProvider>
+    </ThemeProvider>
   ), []);
 
   return appContent;

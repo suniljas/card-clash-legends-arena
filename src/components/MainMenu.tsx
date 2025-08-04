@@ -1,5 +1,8 @@
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
+import { Button } from '@/components/ui-design-system/foundation/Button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui-design-system/foundation/Card';
+import { ThemeToggle } from '@/components/ui-design-system/utility/ThemeProvider';
+import { QuickFeedback, useFeedback } from '@/components/ui-design-system/utility/QuickFeedback';
+import { useUISound } from '@/components/ui-design-system/utility/AudioProvider';
 import { DynamicBackground } from './DynamicBackground';
 import { 
   Swords, 
@@ -19,7 +22,10 @@ import {
   Map,
   Beaker,
   Scroll,
-  Sword
+  Sword,
+  Volume2,
+  Moon,
+  Sun
 } from 'lucide-react';
 import premiumLogo from '@/assets/game-logo-premium.png';
 import { cn } from '@/lib/utils';
@@ -32,164 +38,160 @@ interface MainMenuProps {
 }
 
 export function MainMenu({ onNavigate, user, onLogout }: MainMenuProps) {
+  const { clickSound, hoverSound } = useUISound();
+  const { handleFeedback } = useFeedback();
+  
   const menuItems = [
     {
       id: 'path-of-legends',
       title: 'Path of Legends',
       description: 'Roguelike adventures with your Champions',
       icon: Map,
-      gradient: 'from-purple-500 to-purple-700',
-      borderColor: 'border-purple-400/30',
-      glowColor: 'shadow-purple-500/20',
-      rarity: 'epic'
+      variant: 'epic' as const,
+      rarity: 'epic' as const
     },
     {
       id: 'legends-lab',
       title: 'Legends\' Lab',
       description: 'Experimental modes with unique rules',
       icon: Beaker,
-      gradient: 'from-green-500 to-green-700',
-      borderColor: 'border-green-400/30',
-      glowColor: 'shadow-green-500/20',
-      rarity: 'rare'
+      variant: 'rare' as const,
+      rarity: 'rare' as const
     },
     {
       id: 'challenges',
       title: 'Challenges',
       description: 'Master game mechanics through focused training',
       icon: Target,
-      gradient: 'from-orange-500 to-orange-700',
-      borderColor: 'border-orange-400/30',
-      glowColor: 'shadow-orange-500/20',
-      rarity: 'uncommon'
+      variant: 'uncommon' as const,
+      rarity: 'uncommon' as const
     },
     {
       id: 'pvp',
       title: 'PvP Arena',
       description: 'Battle other players',
       icon: Swords,
-      gradient: 'from-red-500 to-red-700',
-      borderColor: 'border-red-400/30',
-      glowColor: 'shadow-red-500/20',
-      rarity: 'rare'
+      variant: 'rare' as const,
+      rarity: 'rare' as const
     },
     {
       id: 'collection',
       title: 'Collection',
       description: 'View your heroes',
       icon: Users,
-      gradient: 'from-green-500 to-green-700',
-      borderColor: 'border-green-400/30',
-      glowColor: 'shadow-green-500/20',
-      rarity: 'uncommon'
+      variant: 'uncommon' as const,
+      rarity: 'uncommon' as const
     },
     {
       id: 'deck',
       title: 'Deck Builder',
       description: 'Build your battle deck',
       icon: Package,
-      gradient: 'from-purple-500 to-purple-700',
-      borderColor: 'border-purple-400/30',
-      glowColor: 'shadow-purple-500/20',
-      rarity: 'epic'
+      variant: 'epic' as const,
+      rarity: 'epic' as const
     },
     {
       id: 'shop',
       title: 'Card Packs',
       description: 'Open new card packs',
       icon: ShoppingBag,
-      gradient: 'from-amber-500 to-amber-700',
-      borderColor: 'border-amber-400/30',
-      glowColor: 'shadow-amber-500/20',
-      rarity: 'legend'
+      variant: 'legend' as const,
+      rarity: 'legend' as const
     },
     {
       id: 'marketplace',
       title: 'Marketplace',
       description: 'Buy and sell cards with other players',
       icon: ShoppingBag,
-      gradient: 'from-blue-500 to-blue-700',
-      borderColor: 'border-blue-400/30',
-      glowColor: 'shadow-blue-500/20',
-      rarity: 'epic'
+      variant: 'epic' as const,
+      rarity: 'epic' as const
     },
     {
       id: 'gem-store',
       title: 'Gem Store',
       description: 'Purchase gems with real money',
       icon: Gem,
-      gradient: 'from-purple-500 to-purple-700',
-      borderColor: 'border-purple-400/30',
-      glowColor: 'shadow-purple-500/20',
-      rarity: 'legend'
+      variant: 'legendary' as const,
+      rarity: 'legend' as const
     },
     {
       id: 'lore-codex',
       title: 'Lore Codex',
       description: 'Discover the rich lore and stories',
       icon: Scroll,
-      gradient: 'from-violet-500 to-violet-700',
-      borderColor: 'border-violet-400/30',
-      glowColor: 'shadow-violet-500/20',
-      rarity: 'epic'
+      variant: 'epic' as const,
+      rarity: 'epic' as const
     },
     {
       id: 'champion-mastery',
       title: 'Champion Mastery',
       description: 'Master your champions and unlock rewards',
       icon: Crown,
-      gradient: 'from-orange-500 to-red-600',
-      borderColor: 'border-orange-400/30',
-      glowColor: 'shadow-orange-500/20',
-      rarity: 'legend'
+      variant: 'legendary' as const,
+      rarity: 'legend' as const
     },
     {
       id: 'wildcards',
       title: 'Wildcard System',
       description: 'Ethical card crafting system',
       icon: Star,
-      gradient: 'from-emerald-500 to-emerald-700',
-      borderColor: 'border-emerald-400/30',
-      glowColor: 'shadow-emerald-500/20',
-      rarity: 'rare'
+      variant: 'rare' as const,
+      rarity: 'rare' as const
     },
     {
       id: 'events',
       title: 'Events',
       description: 'Limited-time challenges',
       icon: Zap,
-      gradient: 'from-orange-500 to-red-600',
-      borderColor: 'border-orange-400/30',
-      glowColor: 'shadow-orange-500/20',
-      rarity: 'rare'
+      variant: 'rare' as const,
+      rarity: 'rare' as const
     },
     {
       id: 'tournament',
       title: 'Tournaments',
       description: 'Compete for prizes',
       icon: Trophy,
-      gradient: 'from-yellow-500 to-yellow-700',
-      borderColor: 'border-yellow-400/30',
-      glowColor: 'shadow-yellow-500/20',
-      rarity: 'legend'
+      variant: 'legendary' as const,
+      rarity: 'legend' as const
     }
   ];
 
-  const getRarityIcon = (rarity: string) => {
-    switch (rarity) {
-      case 'common': return <Star className="w-3 h-3" />;
-      case 'uncommon': return <Star className="w-3 h-3" />;
-      case 'rare': return <Gem className="w-3 h-3" />;
-      case 'epic': return <Crown className="w-3 h-3" />;
-      case 'legend': return <Crown className="w-4 h-4" />;
-      case 'ultra-legend': return <Crown className="w-4 h-4" />;
-      default: return <Star className="w-3 h-3" />;
-    }
+  const handleMenuClick = (itemId: string) => {
+    clickSound();
+    onNavigate(itemId);
+  };
+
+  const handleMenuHover = () => {
+    hoverSound();
   };
 
   return (
     <DynamicBackground variant="menu" intensity="medium">
       <div className="min-h-screen relative">
+        {/* Enhanced Header with Theme Toggle */}
+        <motion.div 
+          className="absolute top-4 right-4 z-10 flex items-center gap-3"
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.3 }}
+        >
+          <ThemeToggle />
+          {user && (
+            <Button
+              variant="outline"
+              size="sm"
+              icon={<LogOut className="h-4 w-4" />}
+              onClick={() => {
+                clickSound();
+                onLogout?.();
+              }}
+              className="backdrop-blur-sm"
+            >
+              Logout
+            </Button>
+          )}
+        </motion.div>
+
         <div className="container mx-auto px-4 py-8">
         {/* Enhanced Premium Logo and Welcome Section with Animations */}
         <motion.div 
@@ -314,120 +316,108 @@ export function MainMenu({ onNavigate, user, onLogout }: MainMenuProps) {
                   delay: 0.6 + (index * 0.1),
                   ease: "easeOut"
                 }}
-                whileHover={{ scale: 1.05, y: -5 }}
-                whileTap={{ scale: 0.95 }}
               >
                 <Card
-                  className={cn(
-                    'menu-item-lor relative group overflow-hidden cursor-pointer',
-                    'bg-gradient-to-br from-slate-800/90 to-slate-700/90 backdrop-blur-sm',
-                    'border-2 border-slate-600/50 hover:border-slate-500/70',
-                    'shadow-lg hover:shadow-2xl',
-                    'focus-lor transition-all duration-300',
-                    item.borderColor,
-                    item.glowColor
-                  )}
-                  onClick={() => onNavigate(item.id)}
+                  variant={item.variant}
+                  rarity={item.rarity}
+                  interactive={true}
+                  tilt={true}
+                  className="h-full cursor-pointer group"
+                  onCardClick={() => handleMenuClick(item.id)}
+                  onCardHover={handleMenuHover}
+                  haptic={true}
                 >
-                  {/* Enhanced Background Gradient with Animation */}
-                  <motion.div 
-                    className={`absolute inset-0 bg-gradient-to-br ${item.gradient} opacity-10 group-hover:opacity-20`}
-                    whileHover={{ scale: 1.05 }}
-                    transition={{ duration: 0.3 }}
-                  />
-                
-                  {/* Enhanced Rarity indicator with Animation */}
-                  <motion.div 
-                    className="absolute top-3 right-3"
-                    initial={{ rotate: 0 }}
-                    whileHover={{ rotate: 360 }}
-                    transition={{ duration: 0.6 }}
-                  >
-                    {item.rarity === 'legend' && <Crown className="w-4 h-4 text-yellow-400" />}
-                    {item.rarity === 'ultra-legend' && (
+                  <CardHeader className="pb-3">
+                    <div className="flex items-center justify-between">
                       <motion.div
-                        animate={{ 
-                          scale: [1, 1.2, 1],
-                          rotate: [0, 180, 360]
-                        }}
-                        transition={{ duration: 3, repeat: Infinity }}
+                        className="p-3 rounded-lg bg-gradient-to-br from-primary/20 to-accent/20 backdrop-blur-sm group-hover:scale-110 transition-transform duration-200"
+                        whileHover={{ rotate: 5 }}
                       >
-                        <Star className="w-4 h-4 text-pink-400" />
+                        <IconComponent className="h-6 w-6 text-primary" />
                       </motion.div>
-                    )}
-                    {item.rarity === 'epic' && <Target className="w-4 h-4 text-purple-400" />}
-                    {item.rarity === 'rare' && <Gem className="w-4 h-4 text-blue-400" />}
-                  </motion.div>
-                  
-                  {/* Enhanced Content with Micro-animations */}
-                  <div className="relative z-10 p-6 text-center">
-                    <motion.div 
-                      className="mb-4 flex justify-center"
-                      whileHover={{ scale: 1.1, rotate: 5 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      <div className={`p-4 rounded-full bg-gradient-to-br ${item.gradient} shadow-lg group-hover:shadow-xl transition-shadow duration-300`}>
-                        <IconComponent className="w-8 h-8 text-white" />
+                      
+                      {/* Rarity indicator */}
+                      <div className="flex items-center gap-1">
+                        {item.rarity === 'legend' && <Crown className="h-4 w-4 text-yellow-400" />}
+                        {item.rarity === 'epic' && <Gem className="h-4 w-4 text-purple-400" />}
+                        {item.rarity === 'rare' && <Star className="h-4 w-4 text-blue-400" />}
+                        {item.rarity === 'uncommon' && <Star className="h-3 w-3 text-green-400" />}
                       </div>
-                    </motion.div>
+                    </div>
                     
-                    <motion.h3 
-                      className="text-xl font-bold mb-3 text-white group-hover:text-slate-100 transition-colors"
-                      whileHover={{ scale: 1.05 }}
-                    >
+                    <CardTitle className="text-xl font-bold group-hover:text-primary transition-colors duration-200">
                       {item.title}
-                    </motion.h3>
-                    
-                    <p className="text-sm text-slate-300 group-hover:text-slate-200 transition-colors">
-                      {item.description}
-                    </p>
-                  </div>
-
-                  {/* Enhanced Hover Effects */}
-                  <div className={`absolute inset-0 border-2 border-transparent group-hover:border-current/30 rounded-lg transition-colors duration-300 ${item.borderColor}`} />
+                    </CardTitle>
+                  </CardHeader>
                   
-                  {/* Enhanced Glow effect on hover */}
-                  <motion.div 
-                    className={`absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 ${item.glowColor} blur-xl`}
-                    whileHover={{ scale: 1.05 }}
-                    transition={{ duration: 0.3 }}
-                  />
+                  <CardContent>
+                    <CardDescription className="text-muted-foreground group-hover:text-foreground transition-colors duration-200">
+                      {item.description}
+                    </CardDescription>
+                  </CardContent>
                 </Card>
               </motion.div>
             );
           })}
         </motion.div>
 
-        {/* Enhanced Quick Actions with Animations */}
-        <motion.div 
-          className="mt-12 flex justify-center gap-6"
+        {/* Quick Actions Bar */}
+        <motion.div
+          className="mt-12 flex justify-center gap-4"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 1.2 }}
+          transition={{ delay: 1.2 }}
         >
-          <motion.button
-            className="btn-lor-primary focus-lor"
-            onClick={() => onNavigate('tutorial')}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+          <Button
+            variant="outline"
+            size="lg"
+            icon={<Settings className="h-5 w-5" />}
+            onClick={() => handleMenuClick('settings')}
+            className="backdrop-blur-sm"
           >
-            <BookOpen className="w-5 h-5 mr-2 inline" />
-            Tutorial
-          </motion.button>
-          <motion.button
-            className="btn-lor-secondary focus-lor"
-            onClick={() => onNavigate('settings')}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <Settings className="w-5 h-5 mr-2 inline" />
             Settings
-          </motion.button>
+          </Button>
+          
+          <Button
+            variant="magical"
+            size="lg"
+            icon={<Star className="h-5 w-5" />}
+            onClick={() => handleMenuClick('tutorial')}
+            glow={true}
+          >
+            Tutorial
+          </Button>
         </motion.div>
+        
+        {/* User Welcome Card */}
+        {user && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, delay: 1 }}
+            className="mt-8 flex justify-center"
+          >
+            <Card variant="glass" size="lg" className="max-w-md mx-auto">
+              <CardContent className="flex items-center gap-4">
+                <motion.div 
+                  className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center"
+                  whileHover={{ scale: 1.1 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <User className="w-6 h-6 text-primary-foreground" />
+                </motion.div>
+                <div className="flex-1">
+                  <div className="font-semibold text-card-foreground text-lg">{user.name}</div>
+                  <div className="text-sm text-muted-foreground capitalize">{user.provider} account</div>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+        )}
         
         {/* Enhanced Footer with Fade-in Animation */}
         <motion.div 
-          className="mt-16 text-center text-slate-500 text-sm"
+          className="mt-16 text-center text-muted-foreground text-sm"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5, delay: 1.4 }}
