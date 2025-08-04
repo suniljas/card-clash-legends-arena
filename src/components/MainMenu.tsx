@@ -318,40 +318,67 @@ export function MainMenu({ onNavigate, user, onLogout }: MainMenuProps) {
                 whileTap={{ scale: 0.95 }}
               >
                 <Card
-                  variant={item.variant}
-                  rarity={item.rarity}
-                  interactive={true}
-                  tilt={true}
-                  className="h-full cursor-pointer group"
-                  onCardClick={() => handleMenuClick(item.id)}
-                  onCardHover={handleMenuHover}
-                  haptic={true}
+                  className={cn(
+                    'menu-item-lor relative group overflow-hidden cursor-pointer',
+                    'bg-gradient-to-br from-slate-800/90 to-slate-700/90 backdrop-blur-sm',
+                    'border-2 border-slate-600/50 hover:border-slate-500/70',
+                    'shadow-lg hover:shadow-2xl',
+                    'focus-lor transition-all duration-300',
+                    item.borderColor,
+                    item.glowColor
+                  )}
+                  onClick={() => onNavigate(item.id)}
                 >
-                  <CardHeader className="pb-3">
-                    <div className="flex items-center justify-between">
+                  {/* Enhanced Background Gradient with Animation */}
+                  <motion.div 
+                    className={`absolute inset-0 bg-gradient-to-br ${item.gradient} opacity-10 group-hover:opacity-20`}
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ duration: 0.3 }}
+                  />
+                
+                  {/* Enhanced Rarity indicator with Animation */}
+                  <motion.div 
+                    className="absolute top-3 right-3"
+                    initial={{ rotate: 0 }}
+                    whileHover={{ rotate: 360 }}
+                    transition={{ duration: 0.6 }}
+                  >
+                    {item.rarity === 'legend' && <Crown className="w-4 h-4 text-yellow-400" />}
+                    {item.rarity === 'ultra-legend' && (
                       <motion.div
-                        className="p-3 rounded-lg bg-gradient-to-br from-primary/20 to-accent/20 backdrop-blur-sm group-hover:scale-110 transition-transform duration-200"
-                        whileHover={{ rotate: 5 }}
+                        animate={{ 
+                          scale: [1, 1.2, 1],
+                          rotate: [0, 180, 360]
+                        }}
+                        transition={{ duration: 3, repeat: Infinity }}
                       >
-                        <IconComponent className="h-6 w-6 text-primary" />
+                        <Star className="w-4 h-4 text-pink-400" />
                       </motion.div>
-                      
-                      {/* Rarity indicator */}
-                      <div className="flex items-center gap-1">
-                        {item.rarity === 'legend' && <Crown className="h-4 w-4 text-yellow-400" />}
-                        {item.rarity === 'epic' && <Gem className="h-4 w-4 text-purple-400" />}
-                        {item.rarity === 'rare' && <Star className="h-4 w-4 text-blue-400" />}
-                        {item.rarity === 'uncommon' && <Star className="h-3 w-3 text-green-400" />}
+                    )}
+                    {item.rarity === 'epic' && <Target className="w-4 h-4 text-purple-400" />}
+                    {item.rarity === 'rare' && <Gem className="w-4 h-4 text-blue-400" />}
+                  </motion.div>
+                  
+                  {/* Enhanced Content with Micro-animations */}
+                  <div className="relative z-10 p-6 text-center">
+                    <motion.div 
+                      className="mb-4 flex justify-center"
+                      whileHover={{ scale: 1.1, rotate: 5 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <div className={`p-4 rounded-full bg-gradient-to-br ${item.gradient} shadow-lg group-hover:shadow-xl transition-shadow duration-300`}>
+                        <IconComponent className="w-8 h-8 text-white" />
                       </div>
                     </motion.div>
                     
-                    <CardTitle className="text-xl font-bold group-hover:text-primary transition-colors duration-200">
+                    <motion.h3 
+                      className="text-xl font-bold mb-3 text-white group-hover:text-slate-100 transition-colors"
+                      whileHover={{ scale: 1.05 }}
+                    >
                       {item.title}
-                    </CardTitle>
-                  </CardHeader>
-                  
-                  <CardContent>
-                    <CardDescription className="text-muted-foreground group-hover:text-foreground transition-colors duration-200">
+                    </motion.h3>
+                    
+                    <p className="text-sm text-slate-300 group-hover:text-slate-200 transition-colors">
                       {item.description}
                     </p>
                   </div>
@@ -371,33 +398,31 @@ export function MainMenu({ onNavigate, user, onLogout }: MainMenuProps) {
           })}
         </motion.div>
 
-        {/* Quick Actions Bar */}
-        <motion.div
-          className="mt-12 flex justify-center gap-4"
+        {/* Enhanced Quick Actions with Animations */}
+        <motion.div 
+          className="mt-12 flex justify-center gap-6"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 1.2 }}
         >
-          <Button
-            variant="outline"
-            size="lg"
-            icon={<Settings className="h-5 w-5" />}
-            onClick={() => handleMenuClick('settings')}
-            className="backdrop-blur-sm"
+          <motion.button
+            className="btn-lor-primary focus-lor"
+            onClick={() => onNavigate('tutorial')}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <BookOpen className="w-5 h-5 mr-2 inline" />
+            Tutorial
+          </motion.button>
+          <motion.button
+            className="btn-lor-secondary focus-lor"
+            onClick={() => onNavigate('settings')}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
           >
             <Settings className="w-5 h-5 mr-2 inline" />
             Settings
-          </Button>
-          
-          <Button
-            variant="magical"
-            size="lg"
-            icon={<Star className="h-5 w-5" />}
-            onClick={() => handleMenuClick('tutorial')}
-            glow={true}
-          >
-            Tutorial
-          </Button>
+          </motion.button>
         </motion.div>
         
         {/* Enhanced Footer with Fade-in Animation */}
