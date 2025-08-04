@@ -20,9 +20,9 @@ export function Settings() {
   const [showAuth, setShowAuth] = useState(false);
 
   return (
-    <div className="max-w-lg mx-auto p-6 space-y-6">
-      <h2 className="text-2xl font-bold mb-4">Settings</h2>
-      <Card className="p-4 space-y-4">
+    <div className="max-w-lg mx-auto p-6 space-y-6 bg-gradient-to-br from-slate-900 via-purple-900/20 to-slate-900 min-h-screen">
+      <h2 className="gradient-text text-2xl font-bold mb-4 font-fantasy">Settings</h2>
+      <Card className="modern-card p-4 space-y-4">
         <div className="flex items-center justify-between">
           <span>Music</span>
           <div className="flex items-center gap-2">
@@ -82,9 +82,9 @@ export function Settings() {
           <span>Account</span>
           <div>
             {settings.accountProvider === 'none' ? (
-              <Button onClick={() => setShowAuth(true)} size="sm">Bind Account</Button>
+              <Button onClick={() => setShowAuth(true)} size="sm" className="btn-modern-primary">Bind Account</Button>
             ) : (
-              <Button onClick={() => updateSettings({ accountProvider: 'none' })} size="sm" variant="destructive">Unlink</Button>
+              <Button onClick={() => updateSettings({ accountProvider: 'none' })} size="sm" variant="destructive" className="btn-modern-secondary">Unlink</Button>
             )}
           </div>
         </div>

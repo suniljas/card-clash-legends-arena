@@ -167,7 +167,7 @@ export function DeckBuilder({
 
   return (
     <motion.div 
-      className="container mx-auto px-6 py-8"
+      className="container mx-auto px-6 py-8 bg-gradient-to-br from-slate-900 via-purple-900/20 to-slate-900"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
@@ -183,13 +183,13 @@ export function DeckBuilder({
           <Button 
             variant="ghost" 
             onClick={onBack}
-            className="bg-gradient-to-r from-slate-700/50 to-slate-600/50 hover:from-slate-600/60 hover:to-slate-500/60 border border-slate-600/50 hover:border-slate-500/60 transition-all duration-300"
+            className="btn-modern-secondary"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back
           </Button>
           <div>
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-amber-200 via-amber-300 to-amber-200 bg-clip-text text-transparent font-fantasy">
+            <h1 className="gradient-text text-3xl font-bold font-fantasy">
               Deck Builder
             </h1>
             <div className="flex items-center gap-4 mt-1">
@@ -212,7 +212,7 @@ export function DeckBuilder({
           <Button 
             variant="outline" 
             onClick={handleAutoFill}
-            className="bg-gradient-to-r from-blue-600/20 to-cyan-600/20 border-blue-500/50 hover:border-blue-400/60 text-blue-300 hover:text-blue-200 transition-all duration-300"
+            className="btn-modern-secondary"
           >
             <Shuffle className="w-4 h-4 mr-2" />
             Auto-fill
@@ -220,7 +220,7 @@ export function DeckBuilder({
           {onSaveDeck && (
             <Button 
               onClick={onSaveDeck}
-              className="bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-slate-900 font-medium shadow-lg hover:shadow-amber-400/20 transition-all duration-300"
+              className="btn-modern-primary"
             >
               <Save className="w-4 h-4 mr-2" />
               Save Deck

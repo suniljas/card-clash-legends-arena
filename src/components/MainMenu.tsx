@@ -233,7 +233,7 @@ export function MainMenu({ onNavigate, user, onLogout }: MainMenuProps) {
           </motion.div>
           
           <motion.h1 
-            className="text-4xl font-bold mb-4 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent"
+            className="text-5xl font-bold mb-4 text-gradient-hero drop-shadow-lg"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
@@ -242,7 +242,7 @@ export function MainMenu({ onNavigate, user, onLogout }: MainMenuProps) {
           </motion.h1>
           
           <motion.h2 
-            className="text-2xl font-semibold mb-3 text-white"
+            className="text-2xl font-semibold mb-3 text-foreground/90"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.6 }}
@@ -251,7 +251,7 @@ export function MainMenu({ onNavigate, user, onLogout }: MainMenuProps) {
           </motion.h2>
           
           <motion.p 
-            className="text-slate-300 text-lg max-w-2xl mx-auto"
+            className="text-foreground/70 text-lg max-w-2xl mx-auto leading-relaxed"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.8 }}
@@ -322,7 +322,7 @@ export function MainMenu({ onNavigate, user, onLogout }: MainMenuProps) {
                   rarity={item.rarity}
                   interactive={true}
                   tilt={true}
-                  className="h-full cursor-pointer group"
+                  className="h-full cursor-pointer group modern-card-interactive !bg-gradient-to-br !from-card !to-secondary/20 hover:!from-card hover:!to-primary/10"
                   onCardClick={() => handleMenuClick(item.id)}
                   onCardHover={handleMenuHover}
                   haptic={true}
@@ -330,28 +330,45 @@ export function MainMenu({ onNavigate, user, onLogout }: MainMenuProps) {
                   <CardHeader className="pb-3">
                     <div className="flex items-center justify-between">
                       <motion.div
-                        className="p-3 rounded-lg bg-gradient-to-br from-primary/20 to-accent/20 backdrop-blur-sm group-hover:scale-110 transition-transform duration-200"
-                        whileHover={{ rotate: 5 }}
+                        className="p-4 rounded-xl bg-gradient-to-br from-primary/20 to-accent/20 backdrop-blur-sm group-hover:scale-110 transition-all duration-300 shadow-lg"
+                        whileHover={{ rotate: 5, scale: 1.1 }}
+                        transition={{ duration: 0.2 }}
                       >
-                        <IconComponent className="h-6 w-6 text-primary" />
+                        <IconComponent className="h-7 w-7 text-primary drop-shadow-sm" />
                       </motion.div>
                       
-                      {/* Rarity indicator */}
+                      {/* Enhanced rarity indicator */}
                       <div className="flex items-center gap-1">
-                        {item.rarity === 'legend' && <Crown className="h-4 w-4 text-yellow-400" />}
-                        {item.rarity === 'epic' && <Gem className="h-4 w-4 text-purple-400" />}
-                        {item.rarity === 'rare' && <Star className="h-4 w-4 text-blue-400" />}
-                        {item.rarity === 'uncommon' && <Star className="h-3 w-3 text-green-400" />}
+                        {item.rarity === 'legend' && (
+                          <div className="p-1 rounded-full bg-yellow-400/20">
+                            <Crown className="h-4 w-4 text-yellow-400 drop-shadow-sm" />
+                          </div>
+                        )}
+                        {item.rarity === 'epic' && (
+                          <div className="p-1 rounded-full bg-purple-400/20">
+                            <Gem className="h-4 w-4 text-purple-400 drop-shadow-sm" />
+                          </div>
+                        )}
+                        {item.rarity === 'rare' && (
+                          <div className="p-1 rounded-full bg-blue-400/20">
+                            <Star className="h-4 w-4 text-blue-400 drop-shadow-sm" />
+                          </div>
+                        )}
+                        {item.rarity === 'uncommon' && (
+                          <div className="p-1 rounded-full bg-green-400/20">
+                            <Star className="h-3 w-3 text-green-400 drop-shadow-sm" />
+                          </div>
+                        )}
                       </div>
                     </div>
                     
-                    <CardTitle className="text-xl font-bold group-hover:text-primary transition-colors duration-200">
+                    <CardTitle className="text-xl font-bold group-hover:text-primary transition-colors duration-300 text-shadow">
                       {item.title}
                     </CardTitle>
                   </CardHeader>
                   
                   <CardContent>
-                    <CardDescription className="text-muted-foreground group-hover:text-foreground transition-colors duration-200">
+                    <CardDescription className="text-foreground/70 group-hover:text-foreground/90 transition-colors duration-300 text-sm leading-relaxed">
                       {item.description}
                     </CardDescription>
                   </CardContent>
@@ -361,9 +378,9 @@ export function MainMenu({ onNavigate, user, onLogout }: MainMenuProps) {
           })}
         </motion.div>
 
-        {/* Quick Actions Bar */}
+        {/* Enhanced Quick Actions Bar */}
         <motion.div
-          className="mt-12 flex justify-center gap-4"
+          className="mt-12 flex justify-center gap-6"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.2 }}
@@ -373,7 +390,7 @@ export function MainMenu({ onNavigate, user, onLogout }: MainMenuProps) {
             size="lg"
             icon={<Settings className="h-5 w-5" />}
             onClick={() => handleMenuClick('settings')}
-            className="backdrop-blur-sm"
+            className="btn-modern-secondary backdrop-blur-sm"
           >
             Settings
           </Button>
@@ -383,6 +400,7 @@ export function MainMenu({ onNavigate, user, onLogout }: MainMenuProps) {
             size="lg"
             icon={<Star className="h-5 w-5" />}
             onClick={() => handleMenuClick('tutorial')}
+            className="btn-modern-primary"
             glow={true}
           >
             Tutorial
