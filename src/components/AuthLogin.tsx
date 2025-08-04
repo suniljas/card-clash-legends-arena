@@ -87,20 +87,20 @@ export function AuthLogin({ onLogin, onClose }: AuthLoginProps) {
   return (
     <DynamicBackground variant="mystical" intensity="high">
       <div className="min-h-screen flex items-center justify-center p-4 relative">
-        {/* Premium floating particles with enhanced glow */}
+        {/* Floating mystical particles */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          {[...Array(30)].map((_, i) => (
+          {[...Array(20)].map((_, i) => (
             <motion.div
               key={i}
-              className="absolute w-2 h-2 bg-gradient-to-r from-primary to-accent rounded-full shadow-glow"
+              className="absolute w-1 h-1 bg-primary/30 rounded-full"
               animate={{
-                x: [0, Math.random() * 200 - 100],
-                y: [0, Math.random() * 200 - 100],
-                opacity: [0.3, 1, 0.3],
-                scale: [0.5, 2, 0.5]
+                x: [0, Math.random() * 100 - 50],
+                y: [0, Math.random() * 100 - 50],
+                opacity: [0.2, 0.8, 0.2],
+                scale: [0.5, 1.5, 0.5]
               }}
               transition={{
-                duration: 6 + Math.random() * 6,
+                duration: 4 + Math.random() * 4,
                 repeat: Infinity,
                 delay: i * 0.2,
                 ease: "easeInOut"
@@ -108,15 +108,10 @@ export function AuthLogin({ onLogin, onClose }: AuthLoginProps) {
               style={{
                 left: `${Math.random() * 100}%`,
                 top: `${Math.random() * 100}%`,
-                filter: 'blur(0.5px)',
               }}
             />
           ))}
         </div>
-
-        {/* Premium cosmic background overlay */}
-        <div className="absolute inset-0 bg-gradient-mystical opacity-60" />
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5" />
 
         <motion.div
           initial={{ opacity: 0, y: 30, scale: 0.8 }}
