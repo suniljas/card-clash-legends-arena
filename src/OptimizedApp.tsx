@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Toaster } from '@/components/ui/toaster';
 import { usePerformanceMonitor, usePerformanceOptimization } from '@/hooks/usePerformanceMonitor';
 import { useOptimizedGameStore, useMemoryManager } from '@/store/optimizedGameStore';
-import { MainMenu } from '@/components/OptimizedMainMenu';
+import OptimizedMainMenu from '@/components/OptimizedMainMenu';
 import { Game } from '@/components/Game';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import './App.css';

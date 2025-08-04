@@ -48,6 +48,13 @@ const buttonVariants = cva(
           "active:scale-95"
         ],
         link: "text-primary underline-offset-4 hover:underline rounded-lg",
+        premium: [
+          "bg-gradient-premium text-primary-foreground rounded-lg",
+          "border-2 border-primary/30 shadow-premium",
+          "hover:shadow-glow hover:border-primary/50 hover:scale-105",
+          "active:scale-95 backdrop-blur-sm",
+          "before:absolute before:inset-0 before:bg-gradient-to-r before:from-transparent before:via-white/10 before:to-transparent before:-translate-x-full before:transition-transform before:duration-700 hover:before:translate-x-full"
+        ],
       },
       size: {
         default: "h-10 px-4 py-2",

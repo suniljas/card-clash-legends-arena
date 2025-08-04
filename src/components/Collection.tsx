@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { EmptyCollection } from '@/components/ui/empty-state';
-import { ArrowLeft, Search, Filter, Star, Trophy, Sparkles, Shield, Zap, Heart, Swords, TrendingUp, TrendingDown, BarChart3, BookOpen, Crown, Target, Users, ChevronDown, SortAsc, SortDesc, Plus, Settings, Award, Chest, Gift, User } from 'lucide-react';
+import { ArrowLeft, Search, Filter, Star, Trophy, Sparkles, Shield, Zap, Heart, Swords, TrendingUp, TrendingDown, BarChart3, BookOpen, Crown, Target, Users, ChevronDown, SortAsc, SortDesc, Plus, Settings, Award, Gift, User } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
 

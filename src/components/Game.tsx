@@ -138,35 +138,30 @@ export function Game() {
       id: 'menu',
       label: 'Home',
       icon: <Home className="w-5 h-5" />,
-      isActive: currentPage === 'menu',
       onClick: () => navigateToPage('menu')
     },
     {
       id: 'collection',
       label: 'Cards',
       icon: <Users className="w-5 h-5" />,
-      isActive: currentPage === 'collection',
       onClick: () => navigateToPage('collection', true, 'Loading collection...')
     },
     {
       id: 'deck',
       label: 'Decks',
       icon: <Package className="w-5 h-5" />,
-      isActive: currentPage === 'deck',
       onClick: () => navigateToPage('deck', true, 'Loading deck builder...')
     },
     {
       id: 'shop',
       label: 'Shop',
       icon: <ShoppingBag className="w-5 h-5" />,
-      isActive: currentPage === 'shop',
       onClick: () => navigateToPage('shop')
     },
     {
       id: 'pvp',
       label: 'Battle',
       icon: <Swords className="w-5 h-5" />,
-      isActive: currentPage === 'pvp',
       onClick: () => navigateToPage('pvp', true, 'Finding opponents...'),
       badge: 3 // Example notification count
     }
@@ -174,41 +169,38 @@ export function Game() {
 
   // Generate breadcrumbs based on current page
   const getBreadcrumbs = () => {
-    const breadcrumbMap: Record<GamePage, { label: string; onClick?: () => void }[]> = {
-      'menu': [{ label: 'Home', isActive: true }],
-      'collection': [
-        { label: 'Home', onClick: () => navigateToPage('menu') },
-        { label: 'Collection', isActive: true }
-      ],
-      'deck': [
-        { label: 'Home', onClick: () => navigateToPage('menu') },
-        { label: 'Deck Builder', isActive: true }
-      ],
-      'shop': [
-        { label: 'Home', onClick: () => navigateToPage('menu') },
-        { label: 'Card Packs', isActive: true }
-      ],
-      'pvp': [
-        { label: 'Home', onClick: () => navigateToPage('menu') },
-        { label: 'PvP Arena', isActive: true }
-      ],
-      'path-of-legends': [
-        { label: 'Home', onClick: () => navigateToPage('menu') },
-        { label: 'Path of Legends', isActive: true }
-      ],
-      'legends-lab': [
-        { label: 'Home', onClick: () => navigateToPage('menu') },
-        { label: 'Legends Lab', isActive: true }
-      ],
-      'challenges': [
-        { label: 'Home', onClick: () => navigateToPage('menu') },
-        { label: 'Challenges', isActive: true }
-      ],
-      // Add more as needed
-      'auth': [{ label: 'Login', isActive: true }]
+    const pageNames: Record<GamePage, string> = {
+      'menu': 'Home',
+      'collection': 'Collection', 
+      'deck': 'Deck Builder',
+      'shop': 'Card Packs',
+      'pvp': 'PvP Arena',
+      'path-of-legends': 'Path of Legends',
+      'legends-lab': 'Legends Lab',
+      'challenges': 'Challenges',
+      'auth': 'Login',
+      'tutorial': 'Tutorial',
+      'campaign': 'Campaign',
+      'battle': 'Battle',
+      'cinematic-battle': 'Cinematic Battle',
+      'tournament': 'Tournament',
+      'wildcards': 'Wildcards',
+      'events': 'Events',
+      'settings': 'Settings',
+      'gem-purchase': 'Gem Purchase',
+      'gem-store': 'Gem Store',
+      'marketplace': 'Marketplace',
+      'achievements': 'Achievements',
+      'leaderboards': 'Leaderboards',
+      'showcase': 'Showcase',
+      'onboarding': 'Onboarding',
+      'liveops-admin': 'Admin Panel',
+      'support': 'Support',
+      'lore-codex': 'Lore Codex',
+      'champion-mastery': 'Champion Mastery'
     };
     
-    return breadcrumbMap[currentPage] || [{ label: 'Unknown', isActive: true }];
+    return [{ label: pageNames[currentPage] || 'Unknown' }];
   };
   const [championMasteries, setChampionMasteries] = useState([
     {

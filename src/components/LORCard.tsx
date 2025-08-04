@@ -34,6 +34,8 @@ export function LORCard({
   const stats = calculateHeroStats(hero);
   const { playCardPlay, playLegendaryDrop } = useGameAudio();
   const [isHovered, setIsHovered] = React.useState(false);
+  const [showDetailModal, setShowDetailModal] = React.useState(false);
+  const [isPressed, setIsPressed] = React.useState(false);
   
   const sizeClasses = {
     small: 'w-32 h-44',

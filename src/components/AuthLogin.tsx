@@ -85,124 +85,214 @@ export function AuthLogin({ onLogin, onClose }: AuthLoginProps) {
   };
 
   return (
-    <DynamicBackground variant="menu" intensity="medium">
-      <div className="min-h-screen flex items-center justify-center p-4">
+    <DynamicBackground variant="mystical" intensity="high">
+      <div className="min-h-screen flex items-center justify-center p-4 relative">
+        {/* Floating mystical particles */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          {[...Array(20)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute w-1 h-1 bg-primary/30 rounded-full"
+              animate={{
+                x: [0, Math.random() * 100 - 50],
+                y: [0, Math.random() * 100 - 50],
+                opacity: [0.2, 0.8, 0.2],
+                scale: [0.5, 1.5, 0.5]
+              }}
+              transition={{
+                duration: 4 + Math.random() * 4,
+                repeat: Infinity,
+                delay: i * 0.2,
+                ease: "easeInOut"
+              }}
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+              }}
+            />
+          ))}
+        </div>
+
         <motion.div
-          initial={{ opacity: 0, y: 20, scale: 0.9 }}
+          initial={{ opacity: 0, y: 30, scale: 0.8 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-          className="w-full max-w-md"
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="w-full max-w-md relative z-10"
         >
-          <Card className="p-8 bg-gradient-to-br from-slate-900/95 via-slate-800/90 to-slate-900/95 backdrop-blur-md border border-slate-700/50 shadow-2xl relative overflow-hidden">
-            {/* Animated background elements */}
-            <div className="absolute inset-0 opacity-10">
-              {[...Array(3)].map((_, i) => (
+          <Card className="p-10 bg-gradient-premium backdrop-blur-lg border border-primary/30 shadow-premium relative overflow-hidden group">
+            {/* Premium card glow effect */}
+            <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-accent/5 to-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+            
+            {/* Ornate corner decorations */}
+            <div className="absolute top-4 left-4 w-6 h-6 border-l-2 border-t-2 border-primary/40" />
+            <div className="absolute top-4 right-4 w-6 h-6 border-r-2 border-t-2 border-primary/40" />
+            <div className="absolute bottom-4 left-4 w-6 h-6 border-l-2 border-b-2 border-primary/40" />
+            <div className="absolute bottom-4 right-4 w-6 h-6 border-r-2 border-b-2 border-primary/40" />
+            
+            {/* Inner glow frame */}
+            <div className="absolute inset-[1px] border border-primary/20 rounded-lg pointer-events-none" />
+            {/* Premium floating runes */}
+            <div className="absolute inset-0 opacity-20">
+              {[...Array(6)].map((_, i) => (
                 <motion.div
                   key={i}
-                  className="absolute w-2 h-2 bg-amber-400 rounded-full"
+                  className="absolute"
                   animate={{
-                    x: [0, 100, 0],
-                    y: [0, -50, 0],
-                    opacity: [0.3, 0.8, 0.3]
+                    rotate: [0, 360],
+                    scale: [0.8, 1.2, 0.8],
+                    opacity: [0.2, 0.6, 0.2]
                   }}
                   transition={{
-                    duration: 4,
+                    duration: 8 + i * 2,
                     repeat: Infinity,
-                    delay: i * 1.5,
+                    delay: i * 1.2,
+                    ease: "easeInOut"
                   }}
                   style={{
-                    left: `${20 + i * 30}%`,
-                    top: `${30 + i * 20}%`,
+                    left: `${15 + i * 15}%`,
+                    top: `${20 + (i % 2) * 60}%`,
                   }}
-                />
+                >
+                  <div className="w-3 h-3 border border-primary/30 transform rotate-45 bg-gradient-to-br from-primary/20 to-accent/20" />
+                </motion.div>
               ))}
             </div>
 
-            {/* Logo and Header */}
+            {/* Premium Logo and Header */}
             <motion.div 
-              className="text-center mb-8"
-              initial={{ opacity: 0, y: -20 }}
+              className="text-center mb-10 relative z-10"
+              initial={{ opacity: 0, y: -30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
             >
               <motion.div 
-                className="mb-6 flex justify-center"
-                initial={{ scale: 0.8, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ duration: 0.8, delay: 0.3 }}
+                className="mb-8 flex justify-center"
+                initial={{ scale: 0.6, opacity: 0, rotateY: 180 }}
+                animate={{ scale: 1, opacity: 1, rotateY: 0 }}
+                transition={{ duration: 1.2, delay: 0.3, type: "spring", stiffness: 100 }}
               >
                 <div className="relative">
-                  <motion.img 
-                    src={premiumLogo} 
-                    alt="Card Clash: Legends Arena" 
-                    className="h-16 w-auto object-contain filter drop-shadow-xl"
-                    animate={{ 
-                      filter: [
-                        'drop-shadow(0 0 10px rgba(245, 158, 11, 0.4))',
-                        'drop-shadow(0 0 20px rgba(245, 158, 11, 0.7))',
-                        'drop-shadow(0 0 10px rgba(245, 158, 11, 0.4))'
-                      ]
-                    }}
-                    transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                  />
-                  {/* Logo glow effect */}
-                  <motion.div 
-                    className="absolute inset-0 bg-gradient-to-r from-amber-500/20 via-yellow-500/20 to-amber-500/20 rounded-full blur-xl" 
-                    animate={{
-                      scale: [1, 1.2, 1],
-                      opacity: [0.3, 0.6, 0.3]
-                    }}
-                    transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                  />
+                  {/* Premium logo container with multiple glow layers */}
+                  <div className="relative p-4">
+                    <motion.img 
+                      src={premiumLogo} 
+                      alt="Card Clash: Legends Arena" 
+                      className="h-20 w-auto object-contain relative z-10"
+                      animate={{ 
+                        filter: [
+                          'drop-shadow(0 0 15px hsl(var(--primary) / 0.5))',
+                          'drop-shadow(0 0 25px hsl(var(--primary) / 0.8))',
+                          'drop-shadow(0 0 15px hsl(var(--primary) / 0.5))'
+                        ]
+                      }}
+                      transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                    />
+                    
+                    {/* Multi-layered glow effects */}
+                    <motion.div 
+                      className="absolute inset-0 bg-gradient-radial from-primary/30 via-primary/10 to-transparent rounded-full blur-2xl" 
+                      animate={{
+                        scale: [1, 1.4, 1],
+                        opacity: [0.4, 0.8, 0.4]
+                      }}
+                      transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+                    />
+                    
+                    <motion.div 
+                      className="absolute inset-0 bg-gradient-conic from-accent/20 via-primary/20 to-accent/20 rounded-full blur-xl" 
+                      animate={{
+                        rotate: [0, 360],
+                        scale: [0.8, 1.2, 0.8],
+                        opacity: [0.2, 0.5, 0.2]
+                      }}
+                      transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+                    />
+                  </div>
                 </div>
               </motion.div>
               
-              <motion.h2 
-                className="text-3xl font-bold mb-2 bg-gradient-to-r from-amber-200 via-amber-300 to-amber-200 bg-clip-text text-transparent font-fantasy"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.6, delay: 0.4 }}
+              <motion.h1 
+                className="text-4xl font-bold mb-3 font-display bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.8, delay: 0.5 }}
               >
-                {isLogin ? 'Welcome Back, Champion!' : 'Join the Arena!'}
-              </motion.h2>
+                {isLogin ? 'Return to Glory' : 'Forge Your Legend'}
+              </motion.h1>
               
               <motion.p 
-                className="text-slate-300"
+                className="text-muted-foreground text-lg font-medium"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ duration: 0.6, delay: 0.5 }}
+                transition={{ duration: 0.8, delay: 0.6 }}
               >
-                {isLogin ? 'Continue your legendary journey' : 'Begin your epic adventure in the arena'}
+                {isLogin ? 'The arena awaits your return, champion' : 'Step into the realm of eternal battles'}
               </motion.p>
 
-              {/* Decorative elements */}
-              <div className="flex justify-center items-center gap-4 mt-4">
+              {/* Premium decorative elements */}
+              <motion.div 
+                className="flex justify-center items-center gap-6 mt-6"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.7 }}
+              >
                 <motion.div
+                  className="relative"
                   animate={{ rotate: 360 }}
-                  transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+                  transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
                 >
-                  <Sparkles className="w-4 h-4 text-amber-400" />
+                  <Sparkles className="w-5 h-5 text-primary" />
+                  <motion.div 
+                    className="absolute inset-0 w-5 h-5 text-primary/50"
+                    animate={{ scale: [1, 1.5, 1], opacity: [1, 0, 1] }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                  >
+                    <Sparkles className="w-5 h-5" />
+                  </motion.div>
                 </motion.div>
-                <Crown className="w-5 h-5 text-amber-400" />
+                
                 <motion.div
-                  animate={{ rotate: -360 }}
-                  transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+                  animate={{ 
+                    scale: [1, 1.1, 1],
+                    filter: [
+                      'drop-shadow(0 0 5px hsl(var(--primary) / 0.5))',
+                      'drop-shadow(0 0 15px hsl(var(--primary) / 0.8))',
+                      'drop-shadow(0 0 5px hsl(var(--primary) / 0.5))'
+                    ]
+                  }}
+                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
                 >
-                  <Sparkles className="w-4 h-4 text-amber-400" />
+                  <Crown className="w-8 h-8 text-primary" />
                 </motion.div>
-              </div>
+                
+                <motion.div
+                  className="relative"
+                  animate={{ rotate: -360 }}
+                  transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
+                >
+                  <Sparkles className="w-5 h-5 text-primary" />
+                  <motion.div 
+                    className="absolute inset-0 w-5 h-5 text-primary/50"
+                    animate={{ scale: [1, 1.5, 1], opacity: [1, 0, 1] }}
+                    transition={{ duration: 2, repeat: Infinity, delay: 1 }}
+                  >
+                    <Sparkles className="w-5 h-5" />
+                  </motion.div>
+                </motion.div>
+              </motion.div>
             </motion.div>
 
-            {/* Social Login Buttons */}
+            {/* Premium Social Login Buttons */}
             <motion.div 
-              className="space-y-3 mb-6"
-              initial={{ opacity: 0, y: 20 }}
+              className="space-y-4 mb-8"
+              initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.6 }}
+              transition={{ duration: 0.8, delay: 0.8 }}
             >
               <Button
-                variant="outline"
-                className="w-full bg-slate-800/50 border-slate-600/50 hover:bg-slate-700/60 hover:border-slate-500/60 transition-all duration-300 group"
+                variant="premium"
+                size="lg"
+                className="w-full group relative overflow-hidden"
                 onClick={() => handleSocialLogin('google')}
                 disabled={loading}
               >
@@ -216,8 +306,9 @@ export function AuthLogin({ onLogin, onClose }: AuthLoginProps) {
               </Button>
 
               <Button
-                variant="outline"
-                className="w-full bg-slate-800/50 border-slate-600/50 hover:bg-slate-700/60 hover:border-slate-500/60 transition-all duration-300 group"
+                variant="premium"
+                size="lg"
+                className="w-full group relative overflow-hidden"
                 onClick={() => handleSocialLogin('facebook')}
                 disabled={loading}
               >
@@ -228,8 +319,9 @@ export function AuthLogin({ onLogin, onClose }: AuthLoginProps) {
               </Button>
 
               <Button
-                variant="outline"
-                className="w-full bg-slate-800/50 border-slate-600/50 hover:bg-slate-700/60 hover:border-slate-500/60 transition-all duration-300 group"
+                variant="premium"
+                size="lg"
+                className="w-full group relative overflow-hidden"
                 onClick={() => handleSocialLogin('apple')}
                 disabled={loading}
               >
@@ -241,11 +333,15 @@ export function AuthLogin({ onLogin, onClose }: AuthLoginProps) {
             </motion.div>
 
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.7 }}
+              initial={{ opacity: 0, scaleX: 0 }}
+              animate={{ opacity: 1, scaleX: 1 }}
+              transition={{ duration: 0.8, delay: 1 }}
+              className="relative mb-8"
             >
-              <Separator className="mb-6 bg-slate-600/50" />
+              <Separator className="bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
+              <div className="absolute -top-2 left-1/2 transform -translate-x-1/2 bg-card px-3 text-xs text-muted-foreground font-medium">
+                OR CONTINUE WITH
+              </div>
             </motion.div>
 
             {/* Email/Password Form */}
@@ -316,7 +412,9 @@ export function AuthLogin({ onLogin, onClose }: AuthLoginProps) {
 
               <Button
                 type="submit"
-                className="w-full bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-black font-semibold py-3 transition-all duration-300 shadow-lg hover:shadow-amber-500/25 group"
+                variant="default"
+                size="lg"
+                className="w-full font-semibold group relative overflow-hidden"
                 disabled={loading}
               >
                 {loading ? (
@@ -353,12 +451,27 @@ export function AuthLogin({ onLogin, onClose }: AuthLoginProps) {
               </button>
             </motion.div>
 
-            {/* Footer decorative elements */}
-            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex items-center gap-2 text-slate-600">
-              <Sword className="w-3 h-3" />
-              <span className="text-xs">Legends are forged here</span>
-              <Sword className="w-3 h-3 transform scale-x-[-1]" />
-            </div>
+            {/* Premium footer decorative elements */}
+            <motion.div 
+              className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 flex items-center gap-3 text-muted-foreground/60"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 1.5 }}
+            >
+              <motion.div
+                animate={{ rotate: [0, 15, 0] }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+              >
+                <Sword className="w-4 h-4" />
+              </motion.div>
+              <span className="text-xs font-medium tracking-wider">WHERE LEGENDS ARE BORN</span>
+              <motion.div
+                animate={{ rotate: [0, -15, 0] }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+              >
+                <Sword className="w-4 h-4 transform scale-x-[-1]" />
+              </motion.div>
+            </motion.div>
           </Card>
         </motion.div>
       </div>

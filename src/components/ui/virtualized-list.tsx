@@ -196,14 +196,14 @@ export function MasonryLayout<T>({
 
   return (
     <div ref={containerRef} className={cn("flex gap-4", className)}>
-      {columnItems.map((columnItems, columnIndex) => (
+      {columnItems.map((column, columnIndex) => (
         <div
           key={columnIndex}
           className="flex flex-col gap-4"
           style={{ width: actualColumnWidth }}
         >
-          {columnItems.map((item, itemIndex) => {
-            const globalIndex = columnItems.slice(0, itemIndex).length + 
+          {column.map((item, itemIndex) => {
+            const globalIndex = itemIndex + 
               columnItems.slice(0, columnIndex).reduce((acc, col) => acc + col.length, 0);
             
             return (
