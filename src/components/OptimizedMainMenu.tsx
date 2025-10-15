@@ -1,130 +1,206 @@
-"use client";
+import React, { memo, useCallback } from 'react';
+import { motion } from 'framer-motion';
+import { OptimizedBackground } from '@/components/OptimizedBackground';
+import { OptimizedCard, OptimizedCardContent, OptimizedCardHeader, OptimizedCardTitle } from '@/components/OptimizedCard';
+import { useOptimizedGameStore, useGameSettings } from '@/store/optimizedGameStore';
+import { usePerformanceMonitor } from '@/hooks/usePerformanceMonitor';
+import { Badge } from '@/components/ui/badge';
+import { 
+  Swords, 
+  BookOpen, 
+  Trophy, 
+  Store, 
+  Users, 
+  Target,
+  Settings,
+  Hammer,
+  ShoppingBag,
+  Gem
+} from 'lucide-react';
 
-import { Card, CardContent } from "@/components/ui/card";
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { X } from "lucide-react";
-import { cn } from "@/lib/utils";
+interface MainMenuProps {
+  onNavigate: (page: string) => void;
+  playerData?: any;
+  user?: { email: string; name: string; provider: string; uid: string } | null;
+  onLogout?: () => void;
+}
 
-const rarityStyles = {
-  Common: { color: "gray", icon: "⬤" },
-  Rare: { color: "blue", icon: "⬤" },
-  Epic: { color: "purple", icon: "⬤" },
-  Legendary: { color: "yellow", icon: "⬤" },
-};
+// Memoized menu item component for better performance
+const MenuGridItem = memo<{
+  icon: React.ElementType;
+  title: string;
+  description: string;
+  badge?: string;
+  onClick: () => void;
+  index: number;
+}>(({ icon: Icon, title, description, badge, onClick, index }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ delay: index * 0.1, duration: 0.3 }}
+  >
+    <OptimizedCard
+      className="group cursor-pointer transform hover:scale-105 transition-all duration-200 hover:shadow-xl relative overflow-hidden"
+      onClick={onClick}
+    >
+      {/* Hover effect overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+      
+      <OptimizedCardHeader className="relative">
+        <div className="flex items-center justify-between mb-2">
+          <div className="p-3 rounded-full bg-primary/10 group-hover:bg-primary/20 transition-colors duration-200">
+            <Icon className="h-6 w-6 text-primary" />
+          </div>
+          {badge && (
+            <Badge variant="secondary" className="bg-accent/20 text-accent-foreground text-xs">
+              {badge}
+            </Badge>
+          )}
+        </div>
+        <OptimizedCardTitle className="text-lg font-bold">
+          {title}
+        </OptimizedCardTitle>
+      </OptimizedCardHeader>
+      
+      <OptimizedCardContent>
+        <p className="text-sm text-muted-foreground leading-relaxed">
+          {description}
+        </p>
+      </OptimizedCardContent>
+    </OptimizedCard>
+  </motion.div>
+));
 
-const Collection = ({ cards }) => {
-  const [selectedCard, setSelectedCard] = useState(null);
-  const [filter, setFilter] = useState("All");
-  const [searchTerm, setSearchTerm] = useState("");
+MenuGridItem.displayName = "MenuGridItem";
 
-  const filteredCards = cards.filter((card) => {
-    const matchesFilter = filter === "All" || card.rarity === filter;
-    const matchesSearch = card.name.toLowerCase().includes(searchTerm.toLowerCase());
-    return matchesFilter && matchesSearch;
+export const MainMenu = memo<MainMenuProps>(({ onNavigate, playerData, user, onLogout }) => {
+  const settings = useGameSettings();
+  
+  // Performance monitoring
+  usePerformanceMonitor({
+    enableAutoOptimization: true,
+    memoryThreshold: 150, // 150MB threshold
+    fpsThreshold: 30
   });
 
-  const handleCardClick = (card) => {
-    setSelectedCard(card);
-  };
+  const handleNavigation = useCallback((page: string) => {
+    onNavigate(page);
+  }, [onNavigate]);
+
+  const menuItems = [
+    {
+      icon: Swords,
+      title: "Campaign",
+      description: "Embark on epic quests through mystical realms",
+      badge: "Adventure",
+      page: "campaign"
+    },
+    {
+      icon: BookOpen,
+      title: "Collection",
+      description: "Browse and manage your legendary card collection",
+      badge: "Cards",
+      page: "collection"
+    },
+    {
+      icon: Users,
+      title: "PvP Arena",
+      description: "Challenge players worldwide in ranked battles",
+      badge: "Competitive",
+      page: "pvp-arena"
+    },
+    {
+      icon: Store,
+      title: "Shop",
+      description: "Discover new cards and premium content",
+      badge: "New Packs",
+      page: "shop"
+    },
+    {
+      icon: Trophy,
+      title: "Achievements",
+      description: "Track your progress and unlock rewards",
+      badge: "Rewards",
+      page: "achievements"
+    },
+    {
+      icon: Target,
+      title: "Leaderboards",
+      description: "Compete for glory on global rankings",
+      badge: "Rankings",
+      page: "leaderboards"
+    },
+    {
+      icon: Hammer,
+      title: "Deck Builder",
+      description: "Craft the perfect deck for battle",
+      badge: "Strategy",
+      page: "deck-builder"
+    },
+    {
+      icon: ShoppingBag,
+      title: "Marketplace",
+      description: "Buy and sell cards with other players",
+      badge: "Trade",
+      page: "marketplace"
+    },
+    {
+      icon: Gem,
+      title: "Gem Store",
+      description: "Purchase gems with real money",
+      badge: "Premium",
+      page: "gem-store"
+    },
+    {
+      icon: Settings,
+      title: "Settings",
+      description: "Customize your game experience",
+      badge: "",
+      page: "settings"
+    }
+  ];
 
   return (
-    <div className="p-4">
-      <div className="mb-4 flex flex-col sm:flex-row justify-between items-center gap-4">
-        <div className="flex gap-2 overflow-x-auto">
-          {['All', 'Common', 'Rare', 'Epic', 'Legendary'].map((rarity) => (
-            <Button
-              key={rarity}
-              variant={filter === rarity ? "default" : "outline"}
-              onClick={() => setFilter(rarity)}
-              className={cn("min-w-[80px]", filter === rarity && `border-${rarityStyles[rarity]?.color}`)}
-            >
-              {rarityStyles[rarity]?.icon && (
-                <span className={`text-${rarityStyles[rarity].color} mr-1`}>{rarityStyles[rarity].icon}</span>
-              )}
-              {rarity}
-            </Button>
-          ))}
-        </div>
-        <Input
-          type="text"
-          placeholder="Search cards..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="max-w-xs"
-        />
-      </div>
+    <OptimizedBackground 
+      variant="menu" 
+      intensity={settings.lowMemoryMode ? "low" : "medium"}
+    >
+      <div className="min-h-screen flex flex-col">
+        {/* Header */}
+        <motion.header 
+          className="text-center py-8 px-4"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+            Card Clash Legends
+          </h1>
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+            Master the art of strategic card combat
+          </p>
+        </motion.header>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-        {filteredCards.map((card) => (
-          <motion.div
-            key={card.id}
-            layoutId={`card-${card.id}`}
-            onClick={() => handleCardClick(card)}
-            className="cursor-pointer"
-            whileHover={{ scale: 1.05 }}
-          >
-            <Card className="overflow-hidden">
-              <CardContent className="p-0">
-                <img
-                  src={card.imageUrl}
-                  alt={card.name}
-                  className="w-full h-48 object-cover"
-                />
-              </CardContent>
-              <div className="p-2">
-                <div className="flex justify-between items-center">
-                  <h3 className="text-sm font-semibold truncate">{card.name}</h3>
-                  <Badge variant="outline" className={`text-${rarityStyles[card.rarity].color}`}>
-                    {card.rarity}
-                  </Badge>
-                </div>
-              </div>
-            </Card>
-          </motion.div>
-        ))}
-      </div>
-
-      <AnimatePresence>
-        {selectedCard && (
-          <motion.div
-            className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-          >
-            <motion.div
-              layoutId={`card-${selectedCard.id}`}
-              className="bg-white dark:bg-gray-800 rounded-lg shadow-lg w-11/12 max-w-md p-6 relative"
-              initial={{ scale: 0.8 }}
-              animate={{ scale: 1 }}
-              exit={{ scale: 0.8 }}
-            >
-              <Button
-                variant="ghost"
-                size="icon"
-                className="absolute top-2 right-2"
-                onClick={() => setSelectedCard(null)}
-              >
-                <X className="w-5 h-5" />
-              </Button>
-              <img
-                src={selectedCard.imageUrl}
-                alt={selectedCard.name}
-                className="w-full h-64 object-cover rounded-md mb-4"
+        {/* Main Content */}
+        <main className="flex-1 container mx-auto px-4 pb-8">
+          {/* Menu Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            {menuItems.map((item, index) => (
+              <MenuGridItem
+                key={item.page}
+                icon={item.icon}
+                title={item.title}
+                description={item.description}
+                badge={item.badge}
+                onClick={() => handleNavigation(item.page)}
+                index={index}
               />
-              <h2 className="text-xl font-bold mb-2">{selectedCard.name}</h2>
-              <Badge variant="outline" className={`text-${rarityStyles[selectedCard.rarity].color}`}>{selectedCard.rarity}</Badge>
-              <p className="mt-4 text-sm text-gray-600 dark:text-gray-300">{selectedCard.description}</p>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
+            ))}
+          </div>
+        </main>
+      </div>
+    </OptimizedBackground>
   );
-};
+});
 
-export default Collection;
+MainMenu.displayName = "MainMenu";
